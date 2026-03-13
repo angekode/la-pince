@@ -1,62 +1,70 @@
-# La Pince
+# Déploiement et installation
 
-## Présentation Générale
+Cette partie répertorie l'ensemble des actions à effectuer pour lancer les environnements de 
+développement, de test ou de déploiement.
 
-- **Quoi ?** Une application web de gestion de finances personnelles.
-- **Qui ?** Une société fictive souhaitant proposer un outil simple et intuitif pour aider les particuliers à mieux gérer leur budget.
-- **Pour qui ?** Destinée à un public varié (jeunes adultes, familles, étudiants, travailleurs indépendants) souhaitant gérer efficacement leur budget.
-- **Comment ?** En équipe à définir (positionnement via un formulaire de voeux) par l'équipe pédagogique. Organisation en méthode agile pour la gestion de projet.
-- **Quand ?** En plusieurs sprints qui inclueront des tâches de : conception, code, déploiement, recettage, etc.
-- **Pourquoi ?** Pour la réalisation d'un projet fictif à but pédagogique visant l'obtention du Titre Professionnel.
 
-## Présentation du Projet de Développement
+## Client
 
-### Besoins Fonctionnels (Minimum Viable Product - MVP)
+Commande pour lancer l'interface front durant le développement :
+```
+cd client # si on est à la racine du dépot
+npm install
+npm run dev
+```
 
-- **Système d'authentification :** inscription, connexion.
-- **Suivi des dépenses :** ajout, modification, suppression de dépenses.
-- **Création de budgets :** définition de budgets par catégorie (nourriture, factures, sorties, etc.) avec suivi du respect des limites.
-- **Alertes de dépenses :** notifications lorsque les dépenses approchent ou dépassent les limites fixées.
 
-### Propositions d’évolutions possibles
+## API
 
-- **Tableau de bord :** visualisation graphique de la situation financière globale (dépenses, budget).
-- **Gestion de groupes d’utilisateurs :** pour gérer un budget à plusieurs (familles, collocation, etc.).
-- **Planification de l'épargne :** définition d'objectifs d'épargne et suivi de la progression.
-- **Génération de rapports personnalisés :** dépenses par période, catégorie, etc.
-- **Système d’objectifs et de récompenses :** mise en place d'objectifs financiers personnalisés avec récompenses virtuelles (badges).
-- **Budget collaboratif :** gestion des permissions pour des budgets partagés en famille ou entre amis (administrateur, lecture seule, contribution).
-- **Système de notifications avancé :** alertes personnalisées en temps réel pour les dépenses, les budgets, les objectifs, etc.
-- **Intégration d'une API pour la conversion de devises :** pour les voyages ou les achats à l'étranger.
-- **Catégorisation intelligente des dépenses :** catégorisation automatique via reconnaissance textuelle simple des intitulés des opérations.
-- **Synchronisation bancaire (simulation) :** permettre l’import automatique (via CSV par exemple) des relevés bancaires pour automatiser la saisie des dépenses.
-- **Support multilingue :** au moins anglais et français.
+Pour lancer le serveur API durant le développement :
 
-### Contraintes Techniques (notamment liées au TP)
+- Copier le fichier `api/.env.example` vers `api/.env`.
+- Saisir les commandes suivantes :
+```
+cd api # si on est à la racine du dépot
+npm install
+npm run dev
+```
 
-- **Technologies** : choix libres mais justifiés.
-- **Sécurité :** authentification sécurisée, protection contre les failles courantes (XSS, injections SQL, etc.).
-- **Déploiement :** rédaction a minima d'une procédure de déploiement (CI/CD en bonus).
-- **Responsive :** application développée en mobile first et responsive.
-- **Accessibilité :** respect des normes d'accessibilité web [WCAG](https://www.w3.org/Translations/WCAG20-fr/).
-- **RGPD et mentions légales :** mettre en place les mentions légales liées au règlement général sur la protection des données (RGPD).
-- **Versionning :** utilisation de Git et GitHub.
-- **API** : en consommer au moins une (qu’elle soit interne ou externe). Un seul appel peut être suffisant, l’API ne doit pas forcément être utilisée pour tout le projet.
-- **SEO** : appliquer les bonnes pratiques visant à maximiser le référencement du projet.
-- **Tests** : plan de tests couvrant les fonctionnalités principales du projet.
-- **Conteneurisation (Docker)** : pour l'environnement de développement voire pour le déploiement
-- **Démarche d'éco-conception** (optimisation des images, minification des fichiers, etc.).
+## Base de donnée
 
-### Informations & Ressources complémentaires
+*A remplir*
 
-- Ne pas hésiter à utiliser des contenus “lorem ipsum” au moins le temps d'avoir un MVP fonctionnel.
-- Inspirations graphiques possibles : sites web comme [Agicap](https://agicap.com/fr/), etc.
 
-## Pour terminer
 
-- Le projet est libre d'interprétation, l'équipe peut proposer ses propres choix techniques et fonctionnels. Il est donc évolutif et il ne faut pas hésiter à se l'approprier.
-- L'accent doit être mis sur l'apprentissage et la mise en pratique des compétences acquises pendant la formation (objectif TP).
-- L'équipe pédagogique assure l'accompagnement et conseille tout au long du projet. Elle interviendra aussi lors de la validation des choix techniques et fonctionnels. Elle sera garante de l'évaluation de la progression en vue de se préparer au mieux pour le TP.
-- L'équipe pédagogique n'est en aucun cas positionnée en tant que représentante du client fictif du projet proposé.
+# Instructions code
 
-:arrow_right: [Attendus sur le sprint 0](../.github/ISSUE_TEMPLATE/sp0-suivi-conception.md), dédié à la conception.
+
+Pour chaque création de nouvelle fonctionnalité le code doit être écrit dans une nouvelle branche
+au format suivant : `feature/nom-de-la-fonctionnalité`. 
+
+- Avant de créer une nouvelle branche il faut s'assurer d'être dans la branche master :
+```
+git switch master
+```
+
+- Ensuiter créer une nouvelle branche :
+```
+git checkout -b feature/nom-de-la-fonctionnalité
+```
+
+- Penser à créer des commits réguliers au format: `feat: création d'un composant pour l'accueil` : 
+```
+git add .
+git commit -m "feat: création d'un composant pour l'accueil"
+```
+
+- Une fois la fonctionnalité est terminée et fonctionnelle, pousser le code sur le repot distant :
+```
+git push -u origin feature/nom-de-la-fonctionnalité
+```
+
+- Faire une pull request sur le dépot [github](https://github.com/O-clock-Francfort/la-pince) :
+
+  - Cliquer sur "Compare & pull request"
+  
+  ![alt text](docs/images/compare-pull-request.png)
+  
+  - Cliquer sur "Create Pull Request"
+  
+  ![alt text](docs/images/pull-request-create.png)
