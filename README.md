@@ -28,7 +28,20 @@ npm run dev
 
 ## Base de donnée
 
-*A remplir*
+Il faut créer une base de donnée dans PostgreSQL.
+
+- Se connecter au client psql avec l'utilsateur `posgres` : 
+```
+psql -U postgres
+```
+- Puis saisir ces commandes dans le client psql :
+```
+CREATE USER lapince PASSWORD 'lapince';
+CREATE DATABASE lapince OWNER lapince;
+ALTER ROLE lapince CREATEDB;
+```
+
+La dernière commande est utile pour prisma qui a besoin des droits pour créer une base de donnée test. Sans cela une erreur `Error: P3014` peut appraitre avec la commande `npx prisma migrate dev`.
 
 
 
