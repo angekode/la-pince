@@ -1,7 +1,7 @@
-# Déploiement et installation
+# Installation et développement
 
 Cette partie répertorie l'ensemble des actions à effectuer pour lancer les environnements de 
-développement, de test ou de déploiement.
+développement, de test.
 
 
 ## Client
@@ -81,3 +81,26 @@ git push -u origin feature/nom-de-la-fonctionnalité
   - Cliquer sur "Create Pull Request"
   
   ![alt text](docs/images/pull-request-create.png)
+
+
+
+# Déploiement
+
+Pour l'instant seul le service client peut être déployé.
+
+```
+# il faut se placer à la racine
+cd client
+
+# pour pouvoir lancer la transpilation ensuite
+npm install 
+
+# pour créer le dossier dist qui contient les fichiers transpilés du front
+npm run build 
+
+# retour à la racine
+cd .. 
+
+# lancement du service client
+docker compose -f .\deploy\docker-compose.yml up
+```
