@@ -1,0 +1,26 @@
+name: Run tests
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  run_db_tests:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4 # fonction github: same as COPY . . https://github.com/actions/checkout
+    
+    - name: Install Node 24
+      uses: actions/setup-node@v4 # https://github.com/actions/setup-node
+      with:
+        node-version: '24'
+
+    - name: Install dependencies
+      run: npm install --prefix api
+    
+    - name: Run tests
+      run: npm run test --prefix api
