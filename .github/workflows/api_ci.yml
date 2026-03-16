@@ -21,6 +21,10 @@ jobs:
 
     - name: Install dependencies
       run: npm install --prefix api
+
+    # to create the Prisma Client and avoid error : @prisma/client"' has no exported member 'PrismaClient
+    - name: Prisma Generate
+      run: npm run db:generate --prefix api 
     
     - name: Run tests
       run: npm run test --prefix api
