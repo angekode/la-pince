@@ -1,0 +1,7 @@
+services:
+  client:
+    image: nginx:alpine
+    volumes:
+      - ../client/dist:/usr/share/nginx/html
+    ports:
+      - 80:80
