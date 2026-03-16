@@ -16,6 +16,8 @@ npm run dev
 
 ## API
 
+### 1er lancement
+
 Pour lancer le serveur API durant le développement :
 
 - Copier le fichier `api/.env.example` vers `api/.env`.
@@ -25,8 +27,19 @@ cd api # si on est à la racine du dépot
 npm install
 npm run dev
 ```
+### Tests
+
+Pour lancer les tests : 
+
+```
+cd api
+npm run test
+```
+
 
 ## Base de donnée
+
+### 1er lancement
 
 Il faut créer une base de donnée dans PostgreSQL.
 
@@ -43,6 +56,11 @@ ALTER ROLE lapince CREATEDB;
 
 La dernière commande est utile pour prisma qui a besoin des droits pour créer une base de donnée test. Sans cela une erreur `Error: P3014` peut appraitre avec la commande `npx prisma migrate dev`.
 
+- Ensuite pour créer les tables dans la base de données :
+```
+cd api
+npm run db:migrate:dev
+```
 
 
 # Instructions code
