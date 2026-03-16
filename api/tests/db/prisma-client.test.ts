@@ -1,5 +1,5 @@
 import { describe, it } from 'node:test';
-import assert from 'node/assert';
+import assert from 'node:assert';
 import { prisma } from '../../src/db/prisma-client';
 
 
@@ -9,8 +9,18 @@ describe('db connection', () => {
   });
 });
 
-describe('db connection', () => {
-  it('should connect', async () => {
-    await prisma.$connect();
+describe('user table', () => {
+  it('should create user', async () => {
+    // Arrange
+    const newUser = { username: 'alice', email: 'alice@example.com', password: 'password' };
+    // Act 
+    const userCreated = await prisma.user.create({ data: newUser });
+    const findResult = await prisma.user.findUnique({ where : { id: userCreated.id } });
+    // Assert
+    assert.notStrictEqual(findResult, null);
+    assert.strictEqual(findResult!.id, userCreated.id);
+    assert.strictEqual(findResult!.username, newUser.username);
+    assert.strictEqual(findResult!.email, userCreated.email);
+    assert.strictEqual(findResult!.password, userCreated.password);
   });
 });
