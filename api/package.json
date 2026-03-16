@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "tsx --watch src/index.ts",
     "build": "tsc",
-    "start": "node --watch dist/index.js",
-    "db:generate": "prisma generate"
+    "run": "node --watch dist/index.js",
+    "db:generate": "prisma generate",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:seed": "tsx prisma/seed.ts"
   },
   "keywords": [],
   "author": "",
