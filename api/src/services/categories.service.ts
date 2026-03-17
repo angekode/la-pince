@@ -1,5 +1,6 @@
 import { prisma } from "../db/prisma-client.js";
 import type { CreateCategoryInput, UpdateCategoryInput } from "../validations/category.schema.js";
+import { stripUndefined } from "../utils/optional-objects.ts";
 
 // ---------------------------------------------------------
 // SERVICE : RÉCUPÉRER TOUTES LES CATÉGORIES D'UN UTILISATEUR
@@ -36,10 +37,13 @@ export const create = (userId: number, data: CreateCategoryInput) => {
 // SERVICE : METTRE À JOUR UNE CATÉGORIE
 // ---------------------------------------------------------
 export const update = (id: number, userId: number, data: UpdateCategoryInput) => {
-  return prisma.category.updateMany({
-    where: { id, userId },
-    data,
-  });
+  const cleanedData = stripUndefined(data);
+  if (data.name) {
+    return prisma.category.updateMany({
+      where: { id, userId },
+      data: cleanedData,
+    });
+  }
 };
 
 // ---------------------------------------------------------

@@ -1,0 +1,28 @@
+# Transpilation des fichiers dans le dossier dist
+# ----------------------------------------------------------------------
+FROM node:25-alpine as Building
+
+WORKDIR /app
+
+COPY ../package*.json ./
+
+RUN npm install
+
+COPY ../ ./
+
+RUN npm run db:generate
+
+RUN npm run build
+
+
+# Lancement du serveur express
+# ----------------------------------------------------------------------
+FROM node:25-alpine
+
+WORKDIR /app
+
+COPY --from=Building /app ./
+
+CMD npm run start
+
+
