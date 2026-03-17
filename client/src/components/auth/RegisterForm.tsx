@@ -102,8 +102,8 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
       setIsSubmitting(true);
 
       await registerUser({
-        firstName: form.firstName.trim(),
-        lastName: form.lastName.trim(),
+        firstname: form.firstName.trim(),
+        lastname: form.lastName.trim(),
         email: form.email.trim(),
         password: form.password,
       });
