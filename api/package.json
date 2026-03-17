@@ -10,7 +10,7 @@
     "db:generate": "prisma generate",
     "db:migrate:dev": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
-    "test": " "
+    "test": "tsx --test --env-file=.env.test --import ./tests/setup.ts --test-concurrency=1"
   },
   "keywords": [],
   "author": "",

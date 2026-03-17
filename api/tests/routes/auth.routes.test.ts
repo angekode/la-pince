@@ -29,12 +29,13 @@ describe('server connexion', () => {
 /**
  * POST /auth/register doit renvoyer le status 201 et un objet { username, email }
  */
-describe('POST /auth/register', { skip }, () => {
+describe('POST /auth/register', () => {
 
   it('valid data should return status created 201', async () => {
     // Arrange
     const newUser = {
-      username: 'Bob',
+      firstname: 'Bob',
+      lastname: 'Dupond',
       email: 'bob@mail.com',
       password: 'password'
     };
@@ -45,7 +46,8 @@ describe('POST /auth/register', { skip }, () => {
 
     // Check
     assert.strictEqual(response.status, StatusCodes.CREATED);
-    assert.strictEqual(responseBody.username, newUser.username);
+    assert.strictEqual(responseBody.firstname, newUser.firstname);
+    assert.strictEqual(responseBody.lastname, newUser.lastname);
     assert.strictEqual(responseBody.email, newUser.email);
   });
 
@@ -73,12 +75,13 @@ describe('POST /auth/register', { skip }, () => {
 /**
  * POST /auth/login doit renvoyer un token
  */
-describe('POST /auth/login', { skip }, () => {
+describe('POST /auth/login', () => {
   it('registered user should get a token', async () => {
     // Arrange
     const userToLog = {
-      username: 'Alice',
-      email: 'alice@mail.com',
+      firstname: 'Coralie',
+      lastname: 'Dupond',
+      email: 'coralie@mail.com',
       password: 'password'
     };
     const registerResponse = await postObject(`${apiUrl}/auth/register`, userToLog); // on enregistre l'utilisateur
@@ -113,7 +116,8 @@ describe('POST /auth/login', { skip }, () => {
   it('wrong password should return 401 Unauthorized', async () => {
     // Arrange
     const newUser = {
-      username: 'John',
+      firstname: 'John',
+      lastname: 'Smith',
       email: 'john@mail.com',
       password: 'password'
     }
@@ -136,7 +140,7 @@ describe('POST /auth/login', { skip }, () => {
 /**
  * POST /auth/logout renvoie uniquement 200 pour l'instant
  */
-describe('POST /auth/logout', { skip }, () => {
+describe('POST /auth/logout', () => {
   it('should return status code 200 OK', async () => {
     // Arrange
     const userToLogout = {
@@ -160,7 +164,8 @@ describe('POST /auth/me', { skip }, () => {
   it('should return status code 200 OK', async () => {
     // Arrange
     const user = {
-      username: 'Patrick',
+      firstname: 'Patrick',
+      lastname: 'Perez',
       email: 'patrick@mail.com',
       password: 'password'
     };
@@ -182,7 +187,8 @@ describe('POST /auth/me', { skip }, () => {
 
     // Check 
     assert.strictEqual(responseBody.status, StatusCodes.OK);
-    assert.strictEqual(responseBody.username, user.username);
+    assert.strictEqual(responseBody.firstname, user.firstname);
+    assert.strictEqual(responseBody.lastname, user.lastname);
     assert.strictEqual(responseBody.email, user.email);
   });
 });

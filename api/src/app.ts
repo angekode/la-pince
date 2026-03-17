@@ -11,6 +11,8 @@ app.use(express.json());
 // toutes les routes d'auth commencent par /auth
 app.use("/auth", authRoutes);
 
+app.get('/', (req, res) => res.send('hello'));
+
 // toutes les routes de categories commencent par /categories
 app.use("/categories", categoriesRouter);
 
