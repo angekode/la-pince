@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Home } from 'lucide-react'
 import { useNavigate } from "react-router-dom";
+import crabLogo from "../../assets/crab-svgrepo-com.svg";
 
 
 function LoginPage() {
@@ -43,7 +44,9 @@ function LoginPage() {
   return (
     <div className="auth-page">
       <header className="auth-header">
-        <div className="auth-logo">LOGO</div>
+        <div className="auth-logo">
+          <img src={crabLogo} alt="La Pince logo" />
+        </div>
       </header>
 
       <main className="auth-main">
