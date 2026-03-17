@@ -85,15 +85,19 @@ export async function login(req: Request, res: Response) {
     // Si tout est bon, je génère un token JWT contenant l'id et l'email.
     const token = signToken({ id: user.id, email: user.email });
 
+    res.cookie("token", token, {
+      httpOnly: true, // non accessible via javascript coté client avec document.cookie (attaque XSS)
+      secure: process.env.NODE_ENV !== "production", // secure = true => cookie envoyé uniquement en HTTPS (pour la prod),
+      sameSite: "lax", // cross-site: cookie envoyé en GET mais pas en POST
+      path: "", // coockie envoyé sur toutes les routes
+      maxAge: 24 * 1000 * 60 * 60, // durée de vie de 24h 
+    });
     // Je renvoie l'utilisateur (sans le mot de passe) + le token.
     return res.status(200).json({
-      user: {
         id: user.id,
         email: user.email,
         firstname: user.firstname,
         lastname: user.lastname
-      },
-      token
     });
 
   } catch (error) {

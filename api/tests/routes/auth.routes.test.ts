@@ -90,11 +90,13 @@ describe('POST /auth/login', () => {
     // Act
     const response = await postObject(`${apiUrl}/auth/login`, userToLog); // login de l'utilisateur
     const responseBody = await response.json();
+    const token = extractTokenFromCookie(response);
+    assert.notStrictEqual(token, null);
 
     // Check
     assert.strictEqual(response.status, StatusCodes.OK);
-    assert.strictEqual(typeof responseBody.token, 'string'); // token bien généré
-    assert.strictEqual(responseBody.user.email, userToLog.email); // infos utilisateur 
+    assert.strictEqual(typeof token, 'string'); // token bien généré
+    assert.strictEqual(responseBody.email, userToLog.email); // infos utilisateur 
   });
 
 
@@ -152,15 +154,18 @@ describe('POST /auth/logout', () => {
     const registerResponse = await postObject(`${apiUrl}/auth/register`, userToLogout); // on enregistre l'utilisateur
     assert.strictEqual(registerResponse.status, StatusCodes.CREATED);
     const loginResponse = await postObject(`${apiUrl}/auth/login`, userToLogout); // on récupère le token
-    const loginBody = await loginResponse.json();
-    assert.strictEqual(typeof loginBody.token, 'string');
+    const token = extractTokenFromCookie(loginResponse);
+    assert.notStrictEqual(token, null);
 
     // Act
     const response = await fetch(
       `${apiUrl}/auth/logout`,
       {
         method: 'POST',
-        headers: { 'Cookie' : `token=${loginBody.token}`}
+        headers: { 
+          'Cookie' : `token=${token}`,
+          'Connection' : 'close' // pour que chaque requete parte sur une nouvelle connexion et éviter ECONNRESET
+        }
       }
     );
 
@@ -185,15 +190,18 @@ describe('POST /auth/me', () => {
     const registerResponse = await postObject(`${apiUrl}/auth/register`, user); // on enregistre l'utilisateur
     assert.strictEqual(registerResponse.status, StatusCodes.CREATED);
     const loginResponse = await postObject(`${apiUrl}/auth/login`, user); // on récupère le token
-    const loginBody = await loginResponse.json();
-    assert.strictEqual(typeof loginBody.token, 'string');
+    const token = extractTokenFromCookie(loginResponse);
+    assert.notStrictEqual(token, null);
 
     // Act
     const response = await fetch(
       `${apiUrl}/auth/me`,
       {
         method: 'GET',
-        headers: { 'Cookie' : `token=${loginBody.token}`}
+        headers: { 
+          'Cookie' : `token=${token}`,
+          'Connection' : 'close' // pour que chaque requete parte sur une nouvelle connexion et éviter ECONNRESET
+        }
       }
     );
     const responseBody = await response.json();
@@ -213,8 +221,27 @@ async function postObject(route: string, body: object): Promise<Response> {
     route,
     {
       method: 'POST',
-      headers: { 'Content-Type' : 'application/json' },
-      body: JSON.stringify(body)
+      headers: { 
+        'Content-Type' : 'application/json',
+        'Connection' : 'close' // pour que chaque requete parte sur une nouvelle connexion et éviter ECONNRESET
+      },
+      body: JSON.stringify(body)      
     }
   );
+}
+
+function extractTokenFromCookie(httpResponse: Response): string | null {
+  const cookieArray = httpResponse.headers.getSetCookie();
+  if (cookieArray.length === 0) {
+    return null;
+  }
+  const tokenCookie = cookieArray.find(cookie => cookie.startsWith('token='));
+  if (!tokenCookie) {
+    return null;
+  }
+  const matches = tokenCookie.match(/token=([^;]+)/);
+  if (!matches || matches.length !== 2) {
+    return null;
+  }
+  return matches[1];
 }

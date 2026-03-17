@@ -15,19 +15,8 @@ export interface AuthRequest extends Request {
 
 // Voici mon middleware d'authentification
 export function authMiddleware(req: AuthRequest, res: Response, next: NextFunction) {
-  // Je récupère le header Authorization
-  /*const authHeader = req.headers.authorization;
-
-  // Si pas de header ou pas de Bearer → erreur
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "Token manquant" });
-  }
-
-  // Je récupère le token après "Bearer "
-  const token = authHeader.split(" ")[1];*/
-
+  // Grace au cookie-parser qui inclu le token dans cookies
   const token = req.cookies.token;
-  console.log('auth middleware : ' + token)
 
   // Si jamais token est undefined → erreur propre
   if (!token) {
