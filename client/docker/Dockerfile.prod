@@ -1,0 +1,23 @@
+# Transpilation des fichiers dans le dossier dist
+# ----------------------------------------------------------------------
+FROM node:25-alpine as Building
+
+WORKDIR /app
+
+COPY ../package*.json ./
+
+RUN npm install
+
+COPY ../ ./
+
+ARG API_BASE_URL
+ENV VITE_API_BASE_URL=$API_BASE_URL
+
+RUN npm run build
+
+
+# Copie des fichiers transpilés vers le dossier nginx pour afficher les pages
+# ----------------------------------------------------------------------
+FROM nginx:alpine
+
+COPY --from=Building /app/dist /usr/share/nginx/html
