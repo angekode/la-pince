@@ -151,6 +151,41 @@ describe('POST /auth/logout', () => {
 });
 
 
+/**
+ * POST /auth/me renvoie les infos d'un utilisateur inscrit et connecté
+ */
+describe('POST /auth/me', () => {
+  it('should return status code 200 OK', async () => {
+    // Arrange
+    const user = {
+      username: 'Patrick',
+      email: 'patrick@mail.com',
+      password: 'password'
+    };
+    const registerResponse = await postObject(`${apiUrl}/auth/register`, user); // on enregistre l'utilisateur
+    assert.strictEqual(registerResponse.status, StatusCodes.CREATED);
+    const loginResponse = await postObject(`${apiUrl}/auth/login`, user); // on récupère le token
+    const loginBody = await loginResponse.json();
+    assert.strictEqual(typeof loginBody.token, 'string');
+
+    // Act
+    const response = await fetch(
+      `${apiUrl}/auth/me`,
+      {
+        method: 'GET',
+        headers: { 'Cookie' : `token=${loginBody.token}`}
+      }
+    );
+    const responseBody = await response.json();
+
+    // Check 
+    assert.strictEqual(responseBody.status, StatusCodes.OK);
+    assert.strictEqual(responseBody.username, user.username);
+    assert.strictEqual(responseBody.email, user.email);
+  });
+});
+
+
 
 async function postObject(route: string, body: object): Promise<Response> {
   return await fetch(
