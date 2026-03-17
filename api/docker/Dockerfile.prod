@@ -10,8 +10,11 @@ RUN npm install
 
 COPY ../ ./
 
+# On génère les fichiers ts pour le client prisma avant de transpiler
+# tout le projet en javascript
 RUN npm run db:generate
 
+# On transpile tous les fichiers dans le dossier dist
 RUN npm run build
 
 
@@ -23,6 +26,6 @@ WORKDIR /app
 
 COPY --from=Building /app ./
 
-CMD npm run start
+CMD npm run prodstart
 
 

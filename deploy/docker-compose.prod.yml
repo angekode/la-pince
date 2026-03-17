@@ -13,8 +13,16 @@ services:
       dockerfile: ./docker/Dockerfile.prod
     environment:
       - PORT=3000
-      - DATABASE_URL=postgres://lapince:lapince@localhost:5433/lapince
+      - DATABASE_URL=postgres://lapince:lapince@database:5432/lapince
       - JWT_SECRET=dev-secret
       - SALT_ROUNDS=10
     ports:
       - 3000:3000
+  database:
+    image: postgres:18-alpine
+    environment:
+      - POSTGRES_PASSWORD=lapince
+      - POSTGRES_USER=lapince
+      - POSTGRES_DB=lapince
+    ports:
+      - 5433:5432
