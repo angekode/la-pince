@@ -4,10 +4,8 @@ import { prisma } from './db/prisma-client.ts';
 
 
 // Création de l'application express
-const app = express();
+export const app = express();
 app.get('/', (req, res) => res.send('hello'));
-app.listen(process.env.PORT, () => console.log('serveur à l\'écoute'));
-
-// Test prisma
-await prisma.$connect();
-console.log("DB: connected");
+if (process.env.NODE_ENV !== 'TEST') {
+  app.listen(process.env.PORT, () => console.log('serveur à l\'écoute'));
+}
