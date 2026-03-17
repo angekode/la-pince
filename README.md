@@ -1,7 +1,7 @@
-# Déploiement et installation
+# Installation et développement
 
 Cette partie répertorie l'ensemble des actions à effectuer pour lancer les environnements de 
-développement, de test ou de déploiement.
+développement, de test.
 
 
 ## Client
@@ -16,6 +16,8 @@ npm run dev
 
 ## API
 
+### 1er lancement
+
 Pour lancer le serveur API durant le développement :
 
 - Copier le fichier `api/.env.example` vers `api/.env`.
@@ -25,11 +27,40 @@ cd api # si on est à la racine du dépot
 npm install
 npm run dev
 ```
+### Tests
+
+Pour lancer les tests : 
+
+```
+cd api
+npm run test
+```
+
 
 ## Base de donnée
 
-*A remplir*
+### 1er lancement
 
+Il faut créer une base de donnée dans PostgreSQL.
+
+- Se connecter au client psql avec l'utilsateur `posgres` : 
+```
+psql -U postgres
+```
+- Puis saisir ces commandes dans le client psql :
+```
+CREATE USER lapince PASSWORD 'lapince';
+CREATE DATABASE lapince OWNER lapince;
+ALTER ROLE lapince CREATEDB;
+```
+
+La dernière commande est utile pour prisma qui a besoin des droits pour créer une base de donnée test. Sans cela une erreur `Error: P3014` peut appraitre avec la commande `npx prisma migrate dev`.
+
+- Ensuite pour créer les tables dans la base de données :
+```
+cd api
+npm run db:migrate:dev
+```
 
 
 # Instructions code
@@ -68,3 +99,26 @@ git push -u origin feature/nom-de-la-fonctionnalité
   - Cliquer sur "Create Pull Request"
   
   ![alt text](docs/images/pull-request-create.png)
+
+
+
+# Déploiement
+
+Pour l'instant seul le service client peut être déployé.
+
+```
+# il faut se placer à la racine
+cd client
+
+# pour pouvoir lancer la transpilation ensuite
+npm install 
+
+# pour créer le dossier dist qui contient les fichiers transpilés du front
+npm run build 
+
+# retour à la racine
+cd .. 
+
+# lancement du service client
+docker compose -f .\deploy\docker-compose.yml up
+```
