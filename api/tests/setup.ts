@@ -1,6 +1,6 @@
 import { before, after } from 'node:test';
 import { execSync } from 'node:child_process';
-import { app } from '../src/index';
+import app from '../src/app';
 import { Server } from 'node:net';
 
 let server : Server | undefined;
@@ -24,7 +24,7 @@ before(async () => {
   await waitForDatabaseReady();
 
   // Création des tables
-  execSync(`npx prisma migrate dev`); // utilisera process.env.DATABASE_URL pour trouver la base de données
+  execSync(`npx prisma migrate dev --name test`); // utilisera process.env.DATABASE_URL pour trouver la base de données
   console.log('Migrate command launched')
 
   // Lancement du serveur test
@@ -58,7 +58,7 @@ async function waitForDatabaseReady() {
     } catch (error) { }
   }
   if (!connected) {
-    throw('Failed to connect to database')
+    throw('Failed to connect to database');
   }
 }
 

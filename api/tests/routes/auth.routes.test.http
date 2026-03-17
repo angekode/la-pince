@@ -1,0 +1,23 @@
+### Création compte
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "firstname": "John",
+  "lastname": "Doe",
+  "email": "john.doe@mail.com",
+  "password": "password"
+}
+
+### Connexion
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "john.doe@mail.com",
+  "password": "password"
+}
+
+### Infos utilisateur connecté
+GET http://localhost:3000/auth/me
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJqb2huLmRvZUBtYWlsLmNvbSIsImlhdCI6MTc3Mzc3MzQ0OSwiZXhwIjoxNzc0Mzc4MjQ5fQ.lP1X7S9aj0FFzAByy8JKEwaCwt4aRoqh868s_B2PLAU
