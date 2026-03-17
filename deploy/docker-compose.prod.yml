@@ -1,0 +1,33 @@
+# A utiliser pour dépoloyer sur un site en production
+
+services:
+  client:
+    build:
+      context: ../client
+      dockerfile: ./docker/Dockerfile.prod
+      args:
+      # Attention : l'adresse de l'API est celle visible par le navigateur du client
+      # donc pour un dépoloiement local c'est localhost, si c'est déployé sur internet,
+      # c'est le nom de domaine du site qui héberge l'API.
+        - API_BASE_URL=http://localhost:3000
+    ports:
+      - 80:80
+  api:
+    build:
+      context: ../api
+      dockerfile: ./docker/Dockerfile.prod
+    environment:
+      - PORT=3000
+      - DATABASE_URL=postgres://lapince:lapince@database:5432/lapince
+      - JWT_SECRET=dev-secret
+      - SALT_ROUNDS=10
+    ports:
+      - 3000:3000
+  database:
+    image: postgres:18-alpine
+    environment:
+      - POSTGRES_PASSWORD=lapince
+      - POSTGRES_USER=lapince
+      - POSTGRES_DB=lapince
+    ports:
+      - 5433:5432

@@ -102,7 +102,7 @@ function LoginPage() {
 
         <section>
             
-            <button className="acceuil-button" onClick="window.location.href='https://example.com';"><Home size={18}></Home>Acceuil</button>
+            <button className="acceuil-button" onClick={ () => window.location.href='https://example.com' }><Home size={18}></Home>Acceuil</button>
         
         </section>
         

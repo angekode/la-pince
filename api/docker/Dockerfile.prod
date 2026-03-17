@@ -1,0 +1,32 @@
+# Transpilation des fichiers dans le dossier dist
+# ----------------------------------------------------------------------
+FROM node:25-alpine as Building
+
+WORKDIR /app
+
+COPY ../package*.json ./
+
+RUN npm install
+
+COPY ../ ./
+
+# On génère les fichiers ts pour le client prisma avant de transpiler
+# tout le projet en javascript
+RUN npm run db:generate
+
+# On transpile tous les fichiers dans le dossier dist
+RUN npm run build
+
+
+# Lancement du serveur express
+# ----------------------------------------------------------------------
+FROM node:25-alpine
+
+WORKDIR /app
+
+COPY --from=Building /app ./
+
+# Script prévu pour lancer prisma migrate dev + node ensuite pour express
+CMD npm run prodstart
+
+

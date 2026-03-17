@@ -85,7 +85,7 @@ export const updateCategory = async (req: AuthRequest, res: Response) => {
 
     const result = await update(id, userId, parsed.data);
 
-    if (result.count === 0) {
+    if (result?.count === 0) {
       return res.status(404).json({ error: "Category not found" });
     }
 

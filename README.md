@@ -1,4 +1,6 @@
-# Lancement des services
+# Lancement des services (dev)
+
+Cette partie montre comment lancer séparement chaque service à la main sans Docker.
 
 ## Client
 
@@ -57,6 +59,31 @@ cd api
 npm run db:migrate:dev
 ```
 
+# Lancement des services en production (Docker)
+
+Pour lancer tous les services en même temps (database, api, client) en mode production, il faut se placer à la racine du projet et saisir la commande :
+```
+npm run docker:prod
+```
+
+Pour arrêter tous les services : 
+
+```
+npm run docker:prod:down
+```
+
+# Lancement des services en dev (Docker)
+
+Pour lancer tous les services en même temps (database, api, client) en mode production, il faut se placer à la racine du projet et saisir la commande :
+```
+npm run docker:dev
+```
+
+Pour arrêter tous les services : 
+
+```
+npm run docker:dev:down
+```
 
 # Instructions code
 
