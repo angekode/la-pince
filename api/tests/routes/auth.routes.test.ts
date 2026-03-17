@@ -144,12 +144,25 @@ describe('POST /auth/logout', () => {
   it('should return status code 200 OK', async () => {
     // Arrange
     const userToLogout = {
-      email: 'bob@mail.com',
+      firstname: 'Joseph',
+      lastname: 'Baron',
+      email: 'joseph@mail.com',
       password: 'password'
     };
+    const registerResponse = await postObject(`${apiUrl}/auth/register`, userToLogout); // on enregistre l'utilisateur
+    assert.strictEqual(registerResponse.status, StatusCodes.CREATED);
+    const loginResponse = await postObject(`${apiUrl}/auth/login`, userToLogout); // on récupère le token
+    const loginBody = await loginResponse.json();
+    assert.strictEqual(typeof loginBody.token, 'string');
 
     // Act
-    const response = await postObject(`${apiUrl}/auth/logout`, userToLogout);
+    const response = await fetch(
+      `${apiUrl}/auth/logout`,
+      {
+        method: 'POST',
+        headers: { 'Cookie' : `token=${loginBody.token}`}
+      }
+    );
 
     // Check
     assert.strictEqual(response.status, StatusCodes.OK);
@@ -160,7 +173,7 @@ describe('POST /auth/logout', () => {
 /**
  * POST /auth/me renvoie les infos d'un utilisateur inscrit et connecté
  */
-describe('POST /auth/me', { skip }, () => {
+describe('POST /auth/me', () => {
   it('should return status code 200 OK', async () => {
     // Arrange
     const user = {
@@ -186,7 +199,7 @@ describe('POST /auth/me', { skip }, () => {
     const responseBody = await response.json();
 
     // Check 
-    assert.strictEqual(responseBody.status, StatusCodes.OK);
+    assert.strictEqual(response.status, StatusCodes.OK);
     assert.strictEqual(responseBody.firstname, user.firstname);
     assert.strictEqual(responseBody.lastname, user.lastname);
     assert.strictEqual(responseBody.email, user.email);

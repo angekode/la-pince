@@ -2,11 +2,14 @@
 import express from "express";
 import authRoutes from "./routes/auth.routes.js";
 import categoriesRouter from "./routes/categories.routes.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
 // Je veux pouvoir lire du JSON dans mes requêtes
 app.use(express.json());
+
+app.use(cookieParser());
 
 // toutes les routes d'auth commencent par /auth
 app.use("/auth", authRoutes);

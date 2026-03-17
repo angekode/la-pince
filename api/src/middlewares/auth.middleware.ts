@@ -6,6 +6,7 @@ import type { Request, Response, NextFunction } from "express";
 // Comme on est en ESM, j'ajoute bien l'extension .js
 import { verifyToken } from "../utils/jwt.js";
 
+
 // Je crée un type personnalisé pour ajouter req.user
 // Cela permet à TypeScript de comprendre que req.user existe
 export interface AuthRequest extends Request {
@@ -15,7 +16,7 @@ export interface AuthRequest extends Request {
 // Voici mon middleware d'authentification
 export function authMiddleware(req: AuthRequest, res: Response, next: NextFunction) {
   // Je récupère le header Authorization
-  const authHeader = req.headers.authorization;
+  /*const authHeader = req.headers.authorization;
 
   // Si pas de header ou pas de Bearer → erreur
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -23,7 +24,10 @@ export function authMiddleware(req: AuthRequest, res: Response, next: NextFuncti
   }
 
   // Je récupère le token après "Bearer "
-  const token = authHeader.split(" ")[1];
+  const token = authHeader.split(" ")[1];*/
+
+  const token = req.cookies.token;
+  console.log('auth middleware : ' + token)
 
   // Si jamais token est undefined → erreur propre
   if (!token) {
