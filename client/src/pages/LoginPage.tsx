@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Home } from 'lucide-react'
+import { useNavigate } from "react-router-dom";
+
 
 function LoginPage() {
 
@@ -10,6 +12,8 @@ function LoginPage() {
     const [errorPseudo, setErrorPseudo] = useState('')
     const [errorEmail, setErrorEmail] = useState('')
     const [errorPassword, setErrorPassword] = useState('')
+
+    const navigate = useNavigate();
 
     
 
@@ -48,7 +52,7 @@ function LoginPage() {
             <button className="auth-tab active" type="button">
               Connexion
             </button>
-            <button className="auth-tab" type="button">
+            <button className="auth-tab" type="button" onClick={() => navigate("/register")}>
               Inscription
             </button>
           </div>
@@ -100,11 +104,13 @@ function LoginPage() {
 
         </section>
 
-        <section>
-            
-            <button className="acceuil-button" onClick="window.location.href='https://example.com';"><Home size={18}></Home>Acceuil</button>
         
-        </section>
+        <div className="home-button-wrapper">
+            <button className="acceuil-button" onClick={() => navigate("/home")}><Home size={18}></Home>
+            Acceuil
+            </button>
+        </div>
+        
         
 
       </main>
