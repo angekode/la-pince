@@ -26,6 +26,7 @@ WORKDIR /app
 
 COPY --from=Building /app ./
 
+# Script prévu pour lancer prisma migrate dev + node ensuite pour express
 CMD npm run prodstart
 
 

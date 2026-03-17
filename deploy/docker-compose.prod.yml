@@ -1,9 +1,14 @@
+# A utiliser pour dépoloyer sur un site en production
+
 services:
   client:
     build:
       context: ../client
       dockerfile: ./docker/Dockerfile.prod
       args:
+      # Attention : l'adresse de l'API est celle visible par le navigateur du client
+      # donc pour un dépoloiement local c'est localhost, si c'est déployé sur internet,
+      # c'est le nom de domaine du site qui héberge l'API.
         - API_BASE_URL=http://localhost:3000
     ports:
       - 80:80
