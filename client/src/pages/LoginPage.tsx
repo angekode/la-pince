@@ -6,18 +6,32 @@ function LoginPage() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const [error, setError] = useState(false);
+    const [errorPseudo, setErrorPseudo] = useState('')
+    const [errorEmail, setErrorEmail] = useState('')
+    const [errorPassword, setErrorPassword] = useState('')
+
+    
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         console.log(pseudo, email, password);
 
-        if (!pseudo || !email || !password){
-        setError(true)
-        return
+        setErrorPseudo('')
+        setErrorEmail('')
+        setErrorPassword('')
+
+        if (!pseudo) {
+            setErrorPseudo('Pseudo obligatoire')
         }
 
-        setError(false)
+        if (!email) {
+            setErrorEmail('Email obligatoire')
+        }
+
+        if (!password) {
+            setErrorPassword('Mot de passe obligatoire')
+        }
+
         
     }
 
@@ -49,6 +63,7 @@ function LoginPage() {
                     value={pseudo}
                     onChange={(event) => setPseudo(event.target.value) } 
                 />
+                {errorPseudo && <p className="error-message">{errorPseudo}</p>}
             </div>
 
             <div className="form-group">
@@ -60,6 +75,7 @@ function LoginPage() {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                  />
+                 {errorEmail && <p className="error-message">{errorEmail}</p>}
             </div>
 
             <div className="form-group">
@@ -71,13 +87,14 @@ function LoginPage() {
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                  />
+                 {errorPassword && <p className="error-message">{errorPassword}</p>}
             </div>
 
             <button className="primary-button" type="submit">
               Valider
             </button>
 
-            {error && <p className="error-message">Tous les champs sont obligatoires</p>}
+            
           </form>
 
         </section>
