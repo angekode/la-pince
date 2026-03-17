@@ -8,7 +8,9 @@
   },
   "scripts": {
     "docker:prod": "docker compose -f ./deploy/docker-compose.prod.yml up -d",
-    "docker:prod:down":  "docker compose -f ./deploy/docker-compose.prod.yml down"
+    "docker:prod:down":  "docker compose -f ./deploy/docker-compose.prod.yml down",
+    "docker:dev": "docker compose -f ./deploy/docker-compose.dev.yml up -d",
+    "docker:dev:down":  "docker compose -f ./deploy/docker-compose.dev.yml down"
   },
   "repository": {
     "type": "git",

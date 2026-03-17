@@ -72,6 +72,18 @@ Pour arrêter tous les services :
 npm run docker:prod:down
 ```
 
+# Lancement des services en dev (Docker)
+
+Pour lancer tous les services en même temps (database, api, client) en mode production, il faut se placer à la racine du projet et saisir la commande :
+```
+npm run docker:dev
+```
+
+Pour arrêter tous les services : 
+
+```
+npm run docker:dev:down
+```
 
 # Instructions code
 
