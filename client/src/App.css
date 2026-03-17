@@ -106,7 +106,18 @@
 }
 
 .acceuil-button {
- 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--color-primary);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+
 }
 
 .auth-footer {

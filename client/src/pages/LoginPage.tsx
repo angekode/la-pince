@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Home } from 'lucide-react'
 
 function LoginPage() {
 
@@ -99,9 +100,9 @@ function LoginPage() {
 
         </section>
 
-        <section className="primary-button">
+        <section>
             
-            <button className="acceuil-button" onClick="window.location.href='https://example.com';">Acceuil</button>
+            <button className="acceuil-button" onClick="window.location.href='https://example.com';"><Home size={18}></Home>Acceuil</button>
         
         </section>
         
