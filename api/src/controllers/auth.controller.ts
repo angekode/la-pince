@@ -26,7 +26,7 @@ const SALT_ROUNDS = Number(process.env.SALT_ROUNDS) || 10;
 export async function register(req: Request, res: Response) {
   try {
     // Je récupère les données envoyées par le front dans le body de la requête.
-    const { email, password, firstname, lastname } = req.body;
+    const { email, password, firstName, lastName } = req.body;
 
     // Je vérifie que l'email et le mot de passe sont bien fournis.
     if (!email || !password) {
@@ -44,7 +44,7 @@ export async function register(req: Request, res: Response) {
 
     // Je crée l'utilisateur dans la base avec Prisma.
     const user = await prisma.user.create({
-      data: { email, password: hashedPassword, firstname, lastname },
+      data: { email, password: hashedPassword, firstname : firstName, lastname : lastName },
       // Je sélectionne uniquement les champs que je veux renvoyer (pas le mot de passe).
       select: { id: true, email: true, firstname: true, lastname: true }
     });
