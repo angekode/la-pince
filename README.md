@@ -144,3 +144,9 @@ cd ..
 # lancement du service client
 docker compose -f .\deploy\docker-compose.yml up
 ```
+
+# Documentation API
+
+La documentation est accessible via l'API sur : http://localhost:3000/docs. 
+
+Elle aussi disponible au format json ici : `./api/docs/api-doc.json`.
