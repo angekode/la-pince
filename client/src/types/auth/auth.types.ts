@@ -8,8 +8,8 @@ export interface RegisterFormData {
 }
 
 export interface RegisterPayload {
-  firstname: string;
-  lastname: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
 }
@@ -18,8 +18,8 @@ export interface RegisterResponse {
   message?: string;
   user?: {
     id: number;
-    firstname: string;
-    lastname: string;
+    firstName: string;
+    lastName: string;
     email: string;
   };
 }
