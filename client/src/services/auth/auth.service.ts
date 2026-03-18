@@ -33,3 +33,40 @@ export async function registerUser(
 
   return data;
 }
+
+
+export async function loginUser(payload: { email: string; password: string }) {
+  console.log(`${import.meta.env.VITE_API_BASE_URL}/auth/login`);
+  const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",  //  reception cookie par le navigateur
+    body: JSON.stringify(payload),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Erreur login");
+  }
+
+  return data;
+}
+
+
+export async function getMe() {
+  const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/me`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Non authentifié");
+  }
+
+  return data;
+}

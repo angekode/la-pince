@@ -21,18 +21,24 @@
 }
 
 .auth-logo {
-  font-size: 2rem;
+  font-size:rem;
   font-weight: 700;
   color: var(--color-primary);
+}
+
+.auth-logo img {
+  width: 70px;
+  height: auto;
 }
 
 .auth-main {
   flex: 1;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 24px 16px;
-  flex-wrap: wrap;
+  
 }
 
 .auth-card {
@@ -105,6 +111,15 @@
   text-align: center;
 }
 
+.home-button-wrapper {
+  width: 100%;
+  align-self: stretch;
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+
 .acceuil-button {
   display: flex;
   flex-direction: column;
@@ -117,7 +132,7 @@
   color: white;
   font-weight: 600;
   cursor: pointer;
-
+  margin-top: 40px;
 }
 
 .auth-footer {
@@ -142,6 +157,7 @@
   }
 
   .auth-card {
+    width: 100%;
     max-width: 640px;
     padding: 32px;
   }

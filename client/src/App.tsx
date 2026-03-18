@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import ThemeToggle from "./components/ThemeToggle";
 import Home from "./pages/Home";
-import LoginPage from "./pages/LoginPage";
+import LoginPage from "./pages/auth/LoginPage";
      
 import Register from "./pages/auth/Register";
-import "./styles/theme.css";
+import "./App.css";
 
 export default function App() {
 
