@@ -23,11 +23,11 @@ const router = Router();
  *          application/json:
  *             schema:
  *               type: object
- *               required: [firstname, lastname, email, password]
+ *               required: [firstName, lastName, email, password]
  *               properties:
- *                 firstname:
+ *                 firstName:
  *                   type: string
- *                 lastname:
+ *                 lastName:
  *                   type: string
  *                 email:
  *                   type: string
@@ -43,9 +43,9 @@ const router = Router();
  *               properties:
  *                 id: 
  *                   type: number
- *                 firstname:
+ *                 firstName:
  *                   type: string
- *                 lastname:
+ *                 lastName:
  *                   type: string
  *                 email:
  *                   type: string
@@ -144,9 +144,9 @@ router.post("/logout", authMiddleware, logout);
  *               properties:
  *                 id: 
  *                   type: number
- *                 firstname:
+ *                 firstName:
  *                   type: string
- *                 lastname:
+ *                 lastName:
  *                   type: string
  *                 email:
  *                   type: string
