@@ -95,7 +95,6 @@ describe('GET /categories/:id', { skip }, () => {
 });
 
 
-
 async function postObject(route: string, body: object): Promise<Response> {
   return await fetch(
     route,
