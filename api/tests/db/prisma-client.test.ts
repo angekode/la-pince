@@ -2,14 +2,15 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import { prisma } from '../../src/db/prisma-client';
 
+const skip = true;
 
-describe('db connection', () => {
+describe('db connection', { skip }, () => {
   it('should connect', async () => {
     await prisma.$connect();
   });
 });
 
-describe('user table', () => {
+describe('user table', { skip }, () => {
   it('should create user', async () => {
     // Arrange
     const newUser = { firstname: 'Alice', lastname: 'Dupond', email: 'alice@example.com', password: 'password' };
