@@ -11,6 +11,15 @@ const router = Router();
 
 
 // Je me dis : "quand quelqu'un POST sur /auth/register → j'appelle mon contrôleur register"
+/**
+ * @openapi
+ * /auth/register:
+ *   post:
+ *     summary: Crée un nouveal utilisateur
+ *   responses:
+ *     201:
+ *       description: Utilisateur crée
+ */
 router.post("/register", register);
 
 // Je me dis : "login ne nécessite pas d'être connecté"
