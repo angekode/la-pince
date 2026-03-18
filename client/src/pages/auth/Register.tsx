@@ -1,8 +1,10 @@
 import RegisterForm from "../../components/auth/RegisterForm";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
+  const navigate = useNavigate();
   function handleRegisterSuccess() {
-    window.location.href = "/login";
+    navigate("/login");
   }
 
   return (
