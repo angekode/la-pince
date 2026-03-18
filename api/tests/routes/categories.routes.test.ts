@@ -1,0 +1,198 @@
+import { describe, it } from 'node:test';
+import assert from 'node:assert';
+import { StatusCodes } from 'http-status-codes';
+import { prisma } from '../../src/db/prisma-client';
+
+/**
+ * Il faut que la base de données soit vierge pour réaliser ces tests (à faire dans le setup.js).
+ */
+
+const skip = false; // tant que les routes ne sont pas implémentés
+
+
+const apiUrl = `http://localhost:${process.env.PORT}`;
+
+
+
+/**
+ * GET /categories
+ */
+describe('GET /categories', { skip }, () => {
+
+  it('should return catagories list', async () => {
+    // Arrange
+    const { user, token } = await createNewUser();
+    const categories = await seedCategories(user.id);
+
+    // Act
+    const response = await fetch(`${apiUrl}/categories`, {
+      headers: { 'Cookie' : `token=${token}`}
+    });
+    const responseBody = await response.json();
+
+    // Check
+    assert.strictEqual(response.status, StatusCodes.OK);
+    assert.strictEqual(responseBody.count, categories.length);
+    assert.strictEqual(responseBody.categories.length, responseBody.count);
+    for (const category of responseBody.categories) {
+      // le nom correspond à une catégorie existante ?
+      assert.ok(categories.some(c => c.name === category.name));
+      assert.strictEqual(typeof category.id, 'number');
+    }
+  });
+
+  it('should return 401 UNAUTHORIZED for non connected users', async () => {
+    // Arrange
+    const { user, token } = await createNewUser();
+    const categories = await seedCategories(user.id);
+
+    // Act
+    const response = await fetch(`${apiUrl}/categories`); // pas de token
+
+    // Check
+    assert.strictEqual(response.status, StatusCodes.UNAUTHORIZED);
+  });
+});
+
+
+/**
+ * GET /categories/:id
+ */
+describe('GET /categories/:id', { skip }, () => {
+
+  it('should return one category', async () => {
+    // Arrange
+    const { user, token } = await createNewUser();
+    const categories = await seedCategories(user.id);
+
+    // Act
+    const response = await fetch(`${apiUrl}/categories/${categories[0].id}`, {
+      headers: { 'Cookie' : `token=${token}`}
+    });
+    const responseBody = await response.json();
+
+    // Check
+    assert.strictEqual(response.status, StatusCodes.OK);
+    assert.strictEqual(responseBody.id, categories[0].id);
+    assert.strictEqual(responseBody.name, categories[0].name);
+    assert.strictEqual(responseBody.userId, categories[0].userId);
+  });
+
+  it('should return 404 NOT FOUND for unknown category', async () => {
+    // Arrange
+    const { user, token } = await createNewUser();
+    const categories = await seedCategories(user.id);
+
+    // Act
+    const response = await fetch(`${apiUrl}/categories/45686`, {
+      headers: { 'Cookie' : `token=${token}`}
+    });
+    const responseBody = await response.json();
+
+    // Check
+    assert.strictEqual(response.status, StatusCodes.NOT_FOUND);
+  });
+});
+
+
+
+async function postObject(route: string, body: object): Promise<Response> {
+  return await fetch(
+    route,
+    {
+      method: 'POST',
+      headers: { 
+        'Content-Type' : 'application/json',
+        'Connection' : 'close' // pour que chaque requete parte sur une nouvelle connexion et éviter ECONNRESET
+      },
+      body: JSON.stringify(body)      
+    }
+  );
+}
+
+function extractTokenFromCookie(httpResponse: Response): string | null {
+  const cookieArray = httpResponse.headers.getSetCookie();
+  if (cookieArray.length === 0) {
+    return null;
+  }
+  const tokenCookie = cookieArray.find(cookie => cookie.startsWith('token='));
+  if (!tokenCookie) {
+    return null;
+  }
+  const matches = tokenCookie.match(/token=([^;]+)/);
+  if (!matches || matches.length !== 2) {
+    return null;
+  }
+  return matches[1];
+}
+
+
+
+/**
+ * Pour créer un nouvelle utilisateur authentifié avec un token
+ */
+async function createNewUser(): 
+Promise<{ 
+  user: { 
+    id: number,
+    firstName: string, 
+    lastName: string,
+    email: string
+  }, 
+  token: string
+}> {
+
+      // Arrange
+    const userToLog =  generateRandomUserInfo();
+
+    const registerResponse = await postObject(`${apiUrl}/auth/register`, userToLog); // on enregistre l'utilisateur
+    assert.strictEqual(registerResponse.status, StatusCodes.CREATED);
+    const registerBody = await registerResponse.json();
+
+
+    // Act
+    const response = await postObject(`${apiUrl}/auth/login`, userToLog); // login de l'utilisateur
+    const responseBody = await response.json();
+    const token = extractTokenFromCookie(response);
+    if (!token) {
+      throw new Error('Token non valide');
+    }
+
+    return {
+      user: { id: registerBody.id, ...userToLog },
+      token
+    }
+}
+
+
+/**
+ * Génère un object User avec des noms aléatoires pour éviter les contraintes d'unicité dans les tests
+ */
+function generateRandomUserInfo(): { 
+    firstName: string, 
+    lastName: string,
+    email: string,
+    password: string
+  } {
+    const randomNumber = Math.floor(Math.random()*10000);
+    return {
+      firstName: `Bob${randomNumber}`,
+      lastName: `Smith${randomNumber}`,
+      email: `bob.smith${randomNumber}@mail.com`,
+      password: randomNumber.toString()
+    }
+  }
+
+
+const categoriesToCreate = [
+    { name: 'nourriture', userId: 1 },
+    { name: 'impots', userId: 1 },
+    { name: 'loisirs', userId: 1 }
+];
+
+async function seedCategories(userId: number): Promise<{ id: number, name: string, userId: number }[]> {
+   return await prisma.category.createManyAndReturn(
+    { 
+      data: categoriesToCreate.map(c => ({ name: c.name, userId })) 
+    });
+}
