@@ -34,8 +34,8 @@ describe('POST /auth/register', () => {
   it('valid data should return status created 201', async () => {
     // Arrange
     const newUser = {
-      firstname: 'Bob',
-      lastname: 'Dupond',
+      firstName: 'Bob',
+      lastName: 'Dupond',
       email: 'bob@mail.com',
       password: 'password'
     };
@@ -46,8 +46,8 @@ describe('POST /auth/register', () => {
 
     // Check
     assert.strictEqual(response.status, StatusCodes.CREATED);
-    assert.strictEqual(responseBody.firstname, newUser.firstname);
-    assert.strictEqual(responseBody.lastname, newUser.lastname);
+    assert.strictEqual(responseBody.firstName, newUser.firstName);
+    assert.strictEqual(responseBody.lastName, newUser.lastName);
     assert.strictEqual(responseBody.email, newUser.email);
   });
 
@@ -79,8 +79,8 @@ describe('POST /auth/login', () => {
   it('registered user should get a token', async () => {
     // Arrange
     const userToLog = {
-      firstname: 'Coralie',
-      lastname: 'Dupond',
+      firstName: 'Coralie',
+      lastName: 'Dupond',
       email: 'coralie@mail.com',
       password: 'password'
     };
@@ -118,8 +118,8 @@ describe('POST /auth/login', () => {
   it('wrong password should return 401 Unauthorized', async () => {
     // Arrange
     const newUser = {
-      firstname: 'John',
-      lastname: 'Smith',
+      firstName: 'John',
+      lastName: 'Smith',
       email: 'john@mail.com',
       password: 'password'
     }
@@ -146,8 +146,8 @@ describe('POST /auth/logout', () => {
   it('should return status code 200 OK', async () => {
     // Arrange
     const userToLogout = {
-      firstname: 'Joseph',
-      lastname: 'Baron',
+      firstName: 'Joseph',
+      lastName: 'Baron',
       email: 'joseph@mail.com',
       password: 'password'
     };
@@ -182,8 +182,8 @@ describe('POST /auth/me', () => {
   it('should return status code 200 OK', async () => {
     // Arrange
     const user = {
-      firstname: 'Patrick',
-      lastname: 'Perez',
+      firstName: 'Patrick',
+      lastName: 'Perez',
       email: 'patrick@mail.com',
       password: 'password'
     };
@@ -208,8 +208,8 @@ describe('POST /auth/me', () => {
 
     // Check 
     assert.strictEqual(response.status, StatusCodes.OK);
-    assert.strictEqual(responseBody.firstname, user.firstname);
-    assert.strictEqual(responseBody.lastname, user.lastname);
+    assert.strictEqual(responseBody.firstName, user.firstName);
+    assert.strictEqual(responseBody.lastName, user.lastName);
     assert.strictEqual(responseBody.email, user.email);
   });
 });

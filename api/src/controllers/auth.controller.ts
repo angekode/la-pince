@@ -50,7 +50,12 @@ export async function register(req: Request, res: Response) {
     });
 
     // Je renvoie l'utilisateur créé avec un statut 201 (created).
-    return res.status(201).json(user);
+    return res.status(201).json({ 
+      id: user.id,
+      firstName: user.firstname,
+      lastName: user.lastname,
+      email: user.email
+    });
 
   } catch (error) {
     // Si quelque chose plante, j'affiche l'erreur dans la console pour debug.
@@ -96,8 +101,8 @@ export async function login(req: Request, res: Response) {
     return res.status(200).json({
         id: user.id,
         email: user.email,
-        firstname: user.firstname,
-        lastname: user.lastname
+        firstName: user.firstname,
+        lastName: user.lastname
     });
 
   } catch (error) {
@@ -140,7 +145,12 @@ export async function me(req: AuthRequest, res: Response) {
     }
 
     // Sinon je renvoie ses infos.
-    return res.status(200).json(user);
+    return res.status(200).json({
+      id: user.id,
+      firstName: user.firstname,
+      lastName: user.lastname,
+      email: user.email
+    });
 
   } catch (error) {
     // En cas d'erreur, je log et je renvoie une erreur serveur.
