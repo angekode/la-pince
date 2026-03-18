@@ -8,6 +8,8 @@
 // - je renvoie une réponse propre au client
 
 import type { Request, Response } from "express";
+import { stripUndefined } from "../utils/optional-objects.ts";
+
 
 // ❌ Ancien import direct de Prisma (je le garde en commentaire)
 // import { prisma } from "../db/prisma-client.js";
@@ -26,6 +28,7 @@ import {
   createTransactionSchema,
   updateTransactionSchema
 } from "../validations/transaction.schema.js";
+import { parse } from "node:path";
 
 
 // ---------------------------------------------------------
@@ -146,8 +149,8 @@ export const updateTransaction = async (req: Request, res: Response) => {
     if (!parsed.success) {
       return res.status(400).json(parsed.error);
     }
-
-    const result = await update(id, userId, parsed.data);
+    const cleanedData = stripUndefined(parsed.data);
+    const result = await update(id, userId, cleanedData);
 
     if (result.count === 0) {
       return res.status(404).json({ error: "Transaction not found" });

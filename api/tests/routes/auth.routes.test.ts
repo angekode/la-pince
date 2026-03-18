@@ -29,12 +29,13 @@ describe('server connexion', () => {
 /**
  * POST /auth/register doit renvoyer le status 201 et un objet { username, email }
  */
-describe('POST /auth/register', { skip }, () => {
+describe('POST /auth/register', () => {
 
   it('valid data should return status created 201', async () => {
     // Arrange
     const newUser = {
-      username: 'Bob',
+      firstname: 'Bob',
+      lastname: 'Dupond',
       email: 'bob@mail.com',
       password: 'password'
     };
@@ -45,7 +46,8 @@ describe('POST /auth/register', { skip }, () => {
 
     // Check
     assert.strictEqual(response.status, StatusCodes.CREATED);
-    assert.strictEqual(responseBody.username, newUser.username);
+    assert.strictEqual(responseBody.firstname, newUser.firstname);
+    assert.strictEqual(responseBody.lastname, newUser.lastname);
     assert.strictEqual(responseBody.email, newUser.email);
   });
 
@@ -73,12 +75,13 @@ describe('POST /auth/register', { skip }, () => {
 /**
  * POST /auth/login doit renvoyer un token
  */
-describe('POST /auth/login', { skip }, () => {
+describe('POST /auth/login', () => {
   it('registered user should get a token', async () => {
     // Arrange
     const userToLog = {
-      username: 'Alice',
-      email: 'alice@mail.com',
+      firstname: 'Coralie',
+      lastname: 'Dupond',
+      email: 'coralie@mail.com',
       password: 'password'
     };
     const registerResponse = await postObject(`${apiUrl}/auth/register`, userToLog); // on enregistre l'utilisateur
@@ -87,11 +90,13 @@ describe('POST /auth/login', { skip }, () => {
     // Act
     const response = await postObject(`${apiUrl}/auth/login`, userToLog); // login de l'utilisateur
     const responseBody = await response.json();
+    const token = extractTokenFromCookie(response);
+    assert.notStrictEqual(token, null);
 
     // Check
     assert.strictEqual(response.status, StatusCodes.OK);
-    assert.strictEqual(typeof responseBody.token, 'string'); // token bien généré
-    assert.strictEqual(responseBody.user.email, userToLog.email); // infos utilisateur 
+    assert.strictEqual(typeof token, 'string'); // token bien généré
+    assert.strictEqual(responseBody.email, userToLog.email); // infos utilisateur 
   });
 
 
@@ -113,7 +118,8 @@ describe('POST /auth/login', { skip }, () => {
   it('wrong password should return 401 Unauthorized', async () => {
     // Arrange
     const newUser = {
-      username: 'John',
+      firstname: 'John',
+      lastname: 'Smith',
       email: 'john@mail.com',
       password: 'password'
     }
@@ -136,16 +142,32 @@ describe('POST /auth/login', { skip }, () => {
 /**
  * POST /auth/logout renvoie uniquement 200 pour l'instant
  */
-describe('POST /auth/logout', { skip }, () => {
+describe('POST /auth/logout', () => {
   it('should return status code 200 OK', async () => {
     // Arrange
     const userToLogout = {
-      email: 'bob@mail.com',
+      firstname: 'Joseph',
+      lastname: 'Baron',
+      email: 'joseph@mail.com',
       password: 'password'
     };
+    const registerResponse = await postObject(`${apiUrl}/auth/register`, userToLogout); // on enregistre l'utilisateur
+    assert.strictEqual(registerResponse.status, StatusCodes.CREATED);
+    const loginResponse = await postObject(`${apiUrl}/auth/login`, userToLogout); // on récupère le token
+    const token = extractTokenFromCookie(loginResponse);
+    assert.notStrictEqual(token, null);
 
     // Act
-    const response = await postObject(`${apiUrl}/auth/logout`, userToLogout);
+    const response = await fetch(
+      `${apiUrl}/auth/logout`,
+      {
+        method: 'POST',
+        headers: { 
+          'Cookie' : `token=${token}`,
+          'Connection' : 'close' // pour que chaque requete parte sur une nouvelle connexion et éviter ECONNRESET
+        }
+      }
+    );
 
     // Check
     assert.strictEqual(response.status, StatusCodes.OK);
@@ -156,33 +178,38 @@ describe('POST /auth/logout', { skip }, () => {
 /**
  * POST /auth/me renvoie les infos d'un utilisateur inscrit et connecté
  */
-describe('POST /auth/me', { skip }, () => {
+describe('POST /auth/me', () => {
   it('should return status code 200 OK', async () => {
     // Arrange
     const user = {
-      username: 'Patrick',
+      firstname: 'Patrick',
+      lastname: 'Perez',
       email: 'patrick@mail.com',
       password: 'password'
     };
     const registerResponse = await postObject(`${apiUrl}/auth/register`, user); // on enregistre l'utilisateur
     assert.strictEqual(registerResponse.status, StatusCodes.CREATED);
     const loginResponse = await postObject(`${apiUrl}/auth/login`, user); // on récupère le token
-    const loginBody = await loginResponse.json();
-    assert.strictEqual(typeof loginBody.token, 'string');
+    const token = extractTokenFromCookie(loginResponse);
+    assert.notStrictEqual(token, null);
 
     // Act
     const response = await fetch(
       `${apiUrl}/auth/me`,
       {
         method: 'GET',
-        headers: { 'Cookie' : `token=${loginBody.token}`}
+        headers: { 
+          'Cookie' : `token=${token}`,
+          'Connection' : 'close' // pour que chaque requete parte sur une nouvelle connexion et éviter ECONNRESET
+        }
       }
     );
     const responseBody = await response.json();
 
     // Check 
-    assert.strictEqual(responseBody.status, StatusCodes.OK);
-    assert.strictEqual(responseBody.username, user.username);
+    assert.strictEqual(response.status, StatusCodes.OK);
+    assert.strictEqual(responseBody.firstname, user.firstname);
+    assert.strictEqual(responseBody.lastname, user.lastname);
     assert.strictEqual(responseBody.email, user.email);
   });
 });
@@ -194,8 +221,27 @@ async function postObject(route: string, body: object): Promise<Response> {
     route,
     {
       method: 'POST',
-      headers: { 'Content-Type' : 'application/json' },
-      body: JSON.stringify(body)
+      headers: { 
+        'Content-Type' : 'application/json',
+        'Connection' : 'close' // pour que chaque requete parte sur une nouvelle connexion et éviter ECONNRESET
+      },
+      body: JSON.stringify(body)      
     }
   );
+}
+
+function extractTokenFromCookie(httpResponse: Response): string | null {
+  const cookieArray = httpResponse.headers.getSetCookie();
+  if (cookieArray.length === 0) {
+    return null;
+  }
+  const tokenCookie = cookieArray.find(cookie => cookie.startsWith('token='));
+  if (!tokenCookie) {
+    return null;
+  }
+  const matches = tokenCookie.match(/token=([^;]+)/);
+  if (!matches || matches.length !== 2) {
+    return null;
+  }
+  return matches[1];
 }

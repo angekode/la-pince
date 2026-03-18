@@ -3,12 +3,11 @@ import type {
   RegisterResponse,
 } from "../../types/auth/auth.types";
 
-const API_BASE_URL = "http://localhost:8000";
 
 export async function registerUser(
   payload: RegisterPayload
 ): Promise<RegisterResponse> {
-  const response = await fetch(`${API_BASE_URL}/auth/register`, {
+  const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

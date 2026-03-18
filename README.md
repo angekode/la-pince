@@ -1,47 +1,44 @@
-# Installation et développement
+# Lancement des services (dev)
 
-Cette partie répertorie l'ensemble des actions à effectuer pour lancer les environnements de 
-développement, de test.
-
+Cette partie montre comment lancer séparement chaque service à la main sans Docker.
 
 ## Client
 
-Commande pour lancer l'interface front durant le développement :
+Pour lancer le front pendant le développement :
+
+- Copier le fichier `client/.env.example` vers un nouveau fichier `client/.env`.
+  - Vérifier que l'adresse du serveur API `VITE_API_BASE_URL` corresponde bien au niveau du port avec celui utilisé par l'API dans le fichier `api/.env` avec la variable `PORT`.
+
+- Lancer le serveur front avec : 
 ```
 cd client # si on est à la racine du dépot
 npm install
 npm run dev
 ```
 
+- Penser à bien lancer le service API et la base de données.
+
 
 ## API
 
-### 1er lancement
-
 Pour lancer le serveur API durant le développement :
 
-- Copier le fichier `api/.env.example` vers `api/.env`.
-- Saisir les commandes suivantes :
+- Copier le fichier `api/.env.example` vers `api/.env` (bien faire attention à la variable PORT 
+  qui doit correspondre au port contenu dans VITE_API_BASE_URL du client).
+
+- Lancer le serveur API avec les commandes suivantes :
 ```
 cd api # si on est à la racine du dépot
 npm install
 npm run dev
 ```
-### Tests
 
-Pour lancer les tests : 
-
-```
-cd api
-npm run test
-```
+- Penser à bien lancer la base de données.
 
 
 ## Base de donnée
 
-### 1er lancement
-
-Il faut créer une base de donnée dans PostgreSQL.
+Pour lancer la base de données il faut une base de donnée dans PostgreSQL.
 
 - Se connecter au client psql avec l'utilsateur `posgres` : 
 ```
@@ -62,6 +59,31 @@ cd api
 npm run db:migrate:dev
 ```
 
+# Lancement des services en production (Docker)
+
+Pour lancer tous les services en même temps (database, api, client) en mode production, il faut se placer à la racine du projet et saisir la commande :
+```
+npm run docker:prod
+```
+
+Pour arrêter tous les services : 
+
+```
+npm run docker:prod:down
+```
+
+# Lancement des services en dev (Docker)
+
+Pour lancer tous les services en même temps (database, api, client) en mode production, il faut se placer à la racine du projet et saisir la commande :
+```
+npm run docker:dev
+```
+
+Pour arrêter tous les services : 
+
+```
+npm run docker:dev:down
+```
 
 # Instructions code
 

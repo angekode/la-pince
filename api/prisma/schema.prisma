@@ -19,12 +19,14 @@ datasource db {
 model User {
   id        Int       @id @default(autoincrement())
 
-  username  String
+  firstname  String
+  lastname String
   email     String    @unique
   password  String
 
   // Relations
   expenses  Expense[]
+  categories Category[] // <-- ajoute la back-relation
 
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
@@ -42,8 +44,13 @@ model Category {
   id        Int       @id @default(autoincrement())
   name      String
 
+  // Foreign keys
+  userId      Int
+
   // Relations
   expenses  Expense[]
+
+  user        User      @relation(fields: [userId], references: [id])
 
   @@map("category")
 }

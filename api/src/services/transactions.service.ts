@@ -1,5 +1,7 @@
 // Ici j'importe Prisma pour pouvoir interagir avec ma base de données
+import type { Prisma } from "@prisma/client";
 import { prisma } from "../db/prisma-client.js";
+import { stripUndefined } from "../utils/optional-objects.ts";
 
 /* ---------------------------------------------------------
    SERVICE : findAll
@@ -58,18 +60,13 @@ export const create = (
 export const update = (
   id: number,
   userId: number,
-  data: {
-    amount?: number | undefined;
-    label?: string | undefined;
-    date?: string | undefined;
-    categoryId?: number | undefined;
-}
-
+  data: { amount?: number; label?: string; date?: string; categoryId?: number }
 ) => {
+  const cleanedData = stripUndefined(data);
+
   return prisma.expense.updateMany({
-    // updateMany → évite de modifier une dépense d'un autre utilisateur
     where: { id, userId },
-    data
+    data: cleanedData,
   });
 };
 

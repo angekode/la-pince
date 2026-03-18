@@ -1,15 +1,28 @@
-// ici j'étends le type Request d'Express"
-// pour que TypeScript arrête de me signaler des erreurs quand j'utilise req.user
+// ---------------------------------------------------------
+// EXTENSION DU TYPE Request D'EXPRESS
+// ---------------------------------------------------------
+// Ce fichier permet d'ajouter la propriété "user" à req.user
+// afin que TypeScript ne signale plus d'erreur dans les controllers.
+// Cette propriété est ajoutée par le middleware d'authentification.
+//
+// NOTE : On garde volontairement ce fichier séparé pour éviter
+// d'éparpiller les types dans le projet.
+// ---------------------------------------------------------
 
-import type { User } from "../db/prisma-client"; // si je veux typer plus tard
+// Optionnel : si tu veux typer plus tard avec Prisma
+// import type { User } from "../db/prisma-client";
 
 declare global {
   namespace Express {
     interface Request {
-      user?: {      // ← rendre optionnel
+      user?: {    // ← rendre optionnel
         id: number;
         email?: string;
       };
     }
   }
 }
+
+export {};
+
+

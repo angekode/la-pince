@@ -1,0 +1,27 @@
+{
+  "name": "lapince",
+  "version": "1.0.0",
+  "description": "Pour lancer le front pendant le développement :",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "docker:prod": "docker compose -f ./deploy/docker-compose.prod.yml build && docker compose -f ./deploy/docker-compose.prod.yml up -d",
+    "docker:prod:down":  "docker compose -f ./deploy/docker-compose.prod.yml down",
+    "docker:dev": "docker compose -f ./deploy/docker-compose.dev.yml build && docker compose -f ./deploy/docker-compose.dev.yml up -d",
+    "docker:dev:down":  "docker compose -f ./deploy/docker-compose.dev.yml down"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/O-clock-Francfort/la-pince.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/O-clock-Francfort/la-pince/issues"
+  },
+  "homepage": "https://github.com/O-clock-Francfort/la-pince#readme"
+}
