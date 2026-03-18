@@ -16,16 +16,16 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "firstname",
-                  "lastname",
+                  "firstName",
+                  "lastName",
                   "email",
                   "password"
                 ],
                 "properties": {
-                  "firstname": {
+                  "firstName": {
                     "type": "string"
                   },
-                  "lastname": {
+                  "lastName": {
                     "type": "string"
                   },
                   "email": {
@@ -50,10 +50,10 @@
                     "id": {
                       "type": "number"
                     },
-                    "firstname": {
+                    "firstName": {
                       "type": "string"
                     },
-                    "lastname": {
+                    "lastName": {
                       "type": "string"
                     },
                     "email": {
@@ -182,10 +182,10 @@
                     "id": {
                       "type": "number"
                     },
-                    "firstname": {
+                    "firstName": {
                       "type": "string"
                     },
-                    "lastname": {
+                    "lastName": {
                       "type": "string"
                     },
                     "email": {

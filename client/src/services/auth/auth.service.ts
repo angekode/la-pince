@@ -19,6 +19,7 @@ export async function registerUser(
 
   try {
     data = await response.json();
+    console.log('iciii', data);
   } catch {
     data = {};
   }
