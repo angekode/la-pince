@@ -2,15 +2,16 @@ import { useState } from 'react';
 import { Home } from 'lucide-react'
 import { useNavigate } from "react-router-dom";
 import crabLogo from "../../assets/crab-svgrepo-com.svg";
+import { loginUser , getMe} from "../../services/auth/auth.service";
 
 
 function LoginPage() {
 
-    const [pseudo, setPseudo] = useState('')
+   // const [pseudo, setPseudo] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const [errorPseudo, setErrorPseudo] = useState('')
+   // const [errorPseudo, setErrorPseudo] = useState('')
     const [errorEmail, setErrorEmail] = useState('')
     const [errorPassword, setErrorPassword] = useState('')
 
@@ -18,17 +19,17 @@ function LoginPage() {
 
     
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        console.log(pseudo, email, password);
+        console.log(/*pseudo,*/ email, password);
 
-        setErrorPseudo('')
+        //setErrorPseudo('')
         setErrorEmail('')
         setErrorPassword('')
 
-        if (!pseudo) {
+        /*if (!pseudo) {
             setErrorPseudo('Pseudo obligatoire')
-        }
+        }*/
 
         if (!email) {
             setErrorEmail('Email obligatoire')
@@ -38,8 +39,25 @@ function LoginPage() {
             setErrorPassword('Mot de passe obligatoire')
         }
 
+        if (!email || !password) return;
+
+        try {
+          const user = await loginUser({ email, password });
+
+          console.log("Connecté :", user);
+
+          const me = await getMe();
+          console.log("Utilisateur connecté :", me);
+
+          navigate("/"); //navigate("/dashboard");
+        } catch (error: any) {
+          setErrorPassword(error.message);
+        }
+
         
     }
+
+    
 
   return (
     <div className="auth-page">
@@ -62,7 +80,7 @@ function LoginPage() {
 
 
           <form className="auth-form" onSubmit={handleSubmit}>
-            <div className="form-group">
+            {/*<div className="form-group">
                 <label htmlFor="pseudo">Pseudonyme</label>
                 <input 
                     id="pseudo"
@@ -72,7 +90,7 @@ function LoginPage() {
                     onChange={(event) => setPseudo(event.target.value) } 
                 />
                 {errorPseudo && <p className="error-message">{errorPseudo}</p>}
-            </div>
+            </div>*/}
 
             <div className="form-group">
               <label htmlFor="email">Adresse mail</label>

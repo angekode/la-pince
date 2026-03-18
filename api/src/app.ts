@@ -15,7 +15,11 @@ app.use(cookieParser());
 
 // Autorise toutes les origines (notamment le front qui a une autre origine à cause du port qui est
 // différent (équivalent à faire un header Access-Control-Allow-Origin: *)
-app.use(cors()); 
+//app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
 
 // toutes les routes d'auth commencent par /auth
 app.use("/auth", authRoutes);

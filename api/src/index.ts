@@ -7,26 +7,7 @@ import app from "./app.js";
 // Je récupère Prisma pour tester la connexion à la base
 import { prisma } from "./db/prisma-client.js";
 
-// ------------------------------
-// Ancienne version du serveur
-// ------------------------------
 
-// import express from 'express';
-// import config from 'dotenv/config';
-// import { prisma } from './db/prisma-client.ts';
-
-// // Création de l'application express
-// const app = express();
-// app.get('/', (req, res) => res.send('hello'));
-// app.listen(process.env.PORT, () => console.log('serveur à l\'écoute'));
-
-// // Test prisma
-// await prisma.$connect();
-// console.log("DB: connected");
-
-// ------------------------------
-// Nouvelle version propre
-// ------------------------------
 
 async function start() {
   try {
