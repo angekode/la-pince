@@ -89,11 +89,13 @@ export async function login(req: Request, res: Response) {
 
     // Si tout est bon, je génère un token JWT contenant l'id et l'email.
     const token = signToken({ id: user.id, email: user.email });
-
+    const isProd = process.env.NODE_ENV === "production";
     res.cookie("token", token, {
       httpOnly: true, // non accessible via javascript coté client avec document.cookie (attaque XSS)
-      secure: process.env.NODE_ENV !== "production", // secure = true => cookie envoyé uniquement en HTTPS (pour la prod),
-      sameSite: "lax", // cross-site: cookie envoyé en GET mais pas en POST
+      secure: isProd, // secure = true => cookie envoyé uniquement en HTTPS (pour la prod)
+      // sameSite = "none" => site cross-site: cookie envoyé par le client quand même
+      // sameSite = "lax" => site cross-site => cookie pas envoyé par le client
+      sameSite: isProd ? "none" : "lax", 
       path: "", // coockie envoyé sur toutes les routes
       maxAge: 24 * 1000 * 60 * 60, // durée de vie de 24h 
     });
