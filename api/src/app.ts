@@ -5,8 +5,8 @@ import authRoutes from "./routes/auth.routes.js";
 import categoriesRouter from "./routes/categories.routes.js";
 import transactionsRouter from "./routes/transactions.routes.ts";
 import cookieParser from "cookie-parser";
-import swaggerUi from 'swagger-ui-express';
-import { openapiSpec } from './swagger/generate-api-doc.ts';
+
+
 
 const app = express();
 
@@ -25,9 +25,13 @@ app.use(express.json());
 // Intègre le contenu des cookies dans req.cookies et facilite la manipulation des valeurs
 app.use(cookieParser());
 
-
-
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiSpec));
+// On installe la documentation Swagger uniquement pour le dévelopement
+// Swagger est installé en dev dependancies, donc le build est cassé si utilisé en prod
+if (process.env.NODE_ENV === 'development') {
+  const swaggerUi = await import('swagger-ui-express');
+  const { openapiSpec } = await import('./swagger/generate-api-doc.ts');
+  app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiSpec));
+}
 
 // toutes les routes d'auth commencent par /auth
 app.use("/auth", authRoutes);
