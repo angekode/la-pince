@@ -2,12 +2,19 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import { StatusCodes } from 'http-status-codes';
 
+import { 
+  postObject,
+  createNewUser, 
+  generateRandomUserInfo, 
+  seedCategories,
+  extractTokenFromCookie
+} from '../tools';
 
 /**
  * Il faut que la base de données soit vierge pour réaliser ces tests (à faire dans le setup.js).
  */
 
-const skip = true; // tant que les routes ne sont pas implémentés
+const skip = false; // tant que les routes ne sont pas implémentés
 
 
 const apiUrl = `http://localhost:${process.env.PORT}`;
@@ -213,35 +220,3 @@ describe('POST /auth/me', { skip }, () => {
     assert.strictEqual(responseBody.email, user.email);
   });
 });
-
-
-
-async function postObject(route: string, body: object): Promise<Response> {
-  return await fetch(
-    route,
-    {
-      method: 'POST',
-      headers: { 
-        'Content-Type' : 'application/json',
-        'Connection' : 'close' // pour que chaque requete parte sur une nouvelle connexion et éviter ECONNRESET
-      },
-      body: JSON.stringify(body)      
-    }
-  );
-}
-
-function extractTokenFromCookie(httpResponse: Response): string | null {
-  const cookieArray = httpResponse.headers.getSetCookie();
-  if (cookieArray.length === 0) {
-    return null;
-  }
-  const tokenCookie = cookieArray.find(cookie => cookie.startsWith('token='));
-  if (!tokenCookie) {
-    return null;
-  }
-  const matches = tokenCookie.match(/token=([^;]+)/);
-  if (!matches || matches.length !== 2) {
-    return null;
-  }
-  return matches[1];
-}
