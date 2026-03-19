@@ -46,8 +46,8 @@ function LoginPage() {
 
           console.log("Connecté :", user);
 
-          const me = await getMe();
-          console.log("Utilisateur connecté :", me);
+          //const me = await getMe();
+          //console.log("Utilisateur connecté :", me);
 
           navigate("/"); //navigate("/dashboard");
         } catch (error: any) {
