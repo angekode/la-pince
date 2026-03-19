@@ -3,7 +3,6 @@ import { Home } from 'lucide-react'
 import { useNavigate } from "react-router-dom";
 import crabLogo from "../../assets/crab-svgrepo-com.svg";
 import { loginUser , getMe} from "../../services/auth/auth.service";
-import RegisterForm from "../../components/auth/RegisterForm";
 
 
 function LoginPage() {
