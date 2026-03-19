@@ -1,8 +1,32 @@
-# Lancement des services (dev)
+---
+# Sommaire
+---
+
+### 1) Lancement des sevices
+- [Lancement des services (dev)](#lancement-des-services-dev)
+- [Lancement des services (prod)](#lancement-des-services-en-production-docker)
+- [Lancement des services (dev docker)](#lancement-des-services-en-dev-docker)
+
+### 2) Instructions code
+- [Instructions code](#2-instructions-code)
+
+### 2) Déploiement
+- [Déploiement Render.com](#render)
+
+### 3) Documentation
+- [Documentation API](#documentation-api)
+
+
+
+---
+# 1) Lancement des services 
+---
+
+## Lancement des services (dev)
 
 Cette partie montre comment lancer séparement chaque service à la main sans Docker.
 
-## Client
+### Client
 
 Pour lancer le front pendant le développement :
 
@@ -19,7 +43,7 @@ npm run dev
 - Penser à bien lancer le service API et la base de données.
 
 
-## API
+### API
 
 Pour lancer le serveur API durant le développement :
 
@@ -36,7 +60,7 @@ npm run dev
 - Penser à bien lancer la base de données.
 
 
-## Base de donnée
+### Base de donnée
 
 Pour lancer la base de données il faut une base de donnée dans PostgreSQL.
 
@@ -59,7 +83,7 @@ cd api
 npm run db:migrate:dev
 ```
 
-# Lancement des services en production (Docker)
+## Lancement des services en production (Docker)
 
 Pour lancer tous les services en même temps (database, api, client) en mode production, il faut se placer à la racine du projet et saisir la commande :
 ```
@@ -72,7 +96,7 @@ Pour arrêter tous les services :
 npm run docker:prod:down
 ```
 
-# Lancement des services en dev (Docker)
+## Lancement des services en dev (Docker)
 
 Pour lancer tous les services en même temps (database, api, client) en mode production, il faut se placer à la racine du projet et saisir la commande :
 ```
@@ -85,8 +109,9 @@ Pour arrêter tous les services :
 npm run docker:dev:down
 ```
 
-# Instructions code
-
+---
+# 2) Instructions code
+---
 
 Pour chaque création de nouvelle fonctionnalité le code doit être écrit dans une nouvelle branche
 au format suivant : `feature/nom-de-la-fonctionnalité`. 
@@ -123,8 +148,9 @@ git push -u origin feature/nom-de-la-fonctionnalité
   ![alt text](docs/images/pull-request-create.png)
 
 
-
-# Déploiement
+---
+# 3) Déploiement
+---
 
 ## Render
 
@@ -145,11 +171,45 @@ git push --mirror git@github.com:TON-USERNAME/nom-du-repo.git
 ```
 ### Sur Render
 
-A compléter
+Il faut créer 3 services (database, api, client).
+
+#### Database
+
+Il faut créer un service Postgres sur Render. Noter l'url pour les variabels d'environnement du service API.
+
+#### API
+
+- Créer un nouveau service :
+
+![alt text](docs/images/render-new-service.png)
 
 
-# Documentation API
+- Choisir le runtime Docker :
 
+![alt text](docs/images/render-docker-choice.png)
+
+- Choisir la branche à déployer :
+
+![alt text](docs/images/render-branch-choice.png)
+
+- Choisir le dossier racine correspondant au dossier `api` :
+
+![alt text](docs/images/render-directories-api.png)
+
+- Indiquer la valeur des variables d'environnement. Attention il faut mettre l'url du service de la base de donnée sur render :
+
+![alt text](docs/images/render-env-var-api.png)
+
+#### Client 
+
+Même chose que pour l'API en indiquant les chemins vers le répertoire `client` et le fichier Dockerfile.prod du dossier `client/docker`. Il faut également donne en variable d'environnement l'url du service API. 
+
+Attention render met toujours le port 80 pour tous les services, même si on lui demande un autre port sur le service API.
+
+
+---
+# 4) Documentation API
+---
 La documentation est accessible via l'API sur : http://localhost:3000/docs. 
 
 Elle aussi disponible au format json ici : `./api/docs/api-doc.json`.
