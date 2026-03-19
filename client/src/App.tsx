@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import LoginPage from "./pages/auth/LoginPage";
      
 import Register from "./pages/auth/Register";
-import "./App.css";
+import "./styles/theme.css";
 
 export default function App() {
 

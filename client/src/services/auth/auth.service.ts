@@ -34,6 +34,17 @@ export async function registerUser(
   return data;
 }
 
+export async function logoutUser(): Promise<void> {
+  const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Erreur lors de la déconnexion");
+  }
+}
+
 
 export async function loginUser(payload: { email: string; password: string }) {
   console.log(`${import.meta.env.VITE_API_BASE_URL}/auth/login`);

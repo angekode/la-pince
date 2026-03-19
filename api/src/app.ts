@@ -12,7 +12,7 @@ const app = express();
 //CORS (OBLIGATOIRE pour frontend React)
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+    origin: true,
     credentials: true
   })
 );
@@ -24,13 +24,7 @@ app.use(express.json());
 // Intègre le contenu des cookies dans req.cookies et facilite la manipulation des valeurs
 app.use(cookieParser());
 
-// Autorise toutes les origines (notamment le front qui a une autre origine à cause du port qui est
-// différent (équivalent à faire un header Access-Control-Allow-Origin: *)
-//app.use(cors());
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true
-}));
+
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiSpec));
 
