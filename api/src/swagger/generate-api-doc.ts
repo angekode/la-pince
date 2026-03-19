@@ -1,6 +1,8 @@
-import swaggerJSDoc from 'swagger-jsdoc';
 import fs from 'node:fs';
 import path from 'node:path';
+
+import swaggerJSDoc from 'swagger-jsdoc';
+
 
 const options = {
   definition: {

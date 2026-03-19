@@ -1,0 +1,151 @@
+@startuml
+left to right direction
+
+' ======================
+' ACTEURS
+' ======================
+actor "Visiteur" as Visiteur
+actor "Membre" as Membre
+
+' ======================
+' FONCTIONNALITÉS VISITEUR
+' ======================
+rectangle "Fonctionnalités Visiteur" {
+  usecase "Consulter page d'accueil" as UC01
+  usecase "Créer un compte" as UC02
+  usecase "Se connecter" as UC03
+}
+
+Visiteur --> UC01
+UC01 --> UC02
+UC01 --> UC03
+
+' Passage visiteur → membre via login ou création
+UC02 ..> Membre : <<extend>>
+UC03 ..> Membre : <<extend>>
+
+
+' ======================
+' GESTION DU COMPTE
+' ======================
+rectangle "Gestion du compte" {
+  usecase "Modifier mes informations" as UC05
+  usecase "Se déconnecter" as UC04
+}
+
+' Ces actions ne sont possibles que si on est connecté
+UC05 ..> UC03 : <<extend>>
+UC04 ..> UC03 : <<extend>>
+
+' ======================
+' CATÉGORIES (pré‑définies)
+' ======================
+rectangle "Catégories (pré‑définies)" {
+  usecase "Consulter catégories" as UC09
+}
+Membre --> UC09
+
+' ======================
+' GESTION DES DÉPENSES
+' ======================
+
+usecase "Gestion des dépenses" as UC_GD
+Membre --> UC_GD
+
+rectangle "Fonctionnalités dépenses" {
+
+  usecase "Consulter historique" as UC10
+
+    usecase "Supprimer une dépense" as UC08
+    usecase "Modifier une dépense" as UC07
+   usecase "Ajouter une dépense" as UC06 
+  
+    usecase "Filtrer par catégorie" as UC11
+    usecase "Filtrer par période" as UC12
+    usecase "Filtrer par montant" as UC13
+  usecase "Filtrer" as UC_FILTRE
+  
+  
+}
+' Ajouter une dépense inclut consulter catégories
+UC09 <-- UC06 : <<include>>
+
+' Modifier / supprimer héritent de Ajouter
+UC06 <.. UC07 : <<extend>>
+UC06 <.. UC08 : <<extend>>
+
+' Filtrer par X hérite de Filtrer
+UC_FILTRE <.. UC11 : <<extend>>
+UC_FILTRE <.. UC12 : <<extend>>
+UC_FILTRE <.. UC13 : <<extend>>
+
+' Le membre accède au bloc
+UC_GD --> UC_FILTRE
+UC_GD --> UC06
+UC_GD --> UC10
+
+
+' ======================
+' DASHBOARD
+' ======================
+usecase "Accéder au dashboard" as UC19
+Membre --> UC19
+
+rectangle "Fonctionnalités Dashboard" {
+  
+  usecase "Voir graphiques (camembert/histogramme)" as UC19C
+  usecase "Voir alertes" as UC19D
+  usecase "Accès rapide " as UCGF
+  usecase "Ajouter dépense" as UC19E
+  usecase "Gérer budgets" as UC19F
+  usecase "Voir totaux " as UCGG
+  usecase "par catégorie" as UC19B
+  usecase "globaux" as UC19A
+}
+
+UC19 --> UCGG : <<include>>
+UCGG --> UC19A : <<include>>
+UCGG --> UC19B : <<include>>
+UC19 --> UC19C : <<include>>
+UC19 --> UC19D : <<include>>
+UC19 --> UCGF : <<include>>
+UCGF --> UC19E : <<include>>
+UCGF --> UC19F : <<include>>
+
+
+
+
+' ======================
+' BUDGETS & ALERTES
+' ======================
+usecase "Gestion budget & alertes" as UCGE
+Membre --> UCGE
+
+
+rectangle "Budgets & alertes" {
+  
+  usecase "Consulter budgets" as UC20
+  usecase "Activer/Désactiver alertes" as UC16
+  usecase "Définir une limite par catégorie" as UC14
+ 
+  usecase "Modifier une limite" as UC15
+
+  usecase "Alerte 80%" as UC17
+  usecase "Alerte 100%" as UC18
+  
+}
+
+UC14 <-- UCGE
+UC16 <-- UCGE
+UC20 <-- UCGE
+UC14 <-- UCGE
+
+' Définir une limite inclut consulter budgets
+UC14 --> UC20 : <<include>>
+
+' Alertes gérées par le front → EXTEND
+UC17 ..> UC14 : <<extend>>
+UC18 ..> UC14 : <<extend>>
+
+
+@enduml

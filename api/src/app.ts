@@ -3,16 +3,17 @@ import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
 import categoriesRouter from "./routes/categories.routes.js";
+import transactionsRouter from "./routes/transactions.routes.ts";
 import cookieParser from "cookie-parser";
-import swaggerUi from 'swagger-ui-express';
-import { openapiSpec } from './swagger/generate-api-doc.ts';
+
+
 
 const app = express();
 
 //CORS (OBLIGATOIRE pour frontend React)
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+    origin: true,
     credentials: true
   })
 );
@@ -24,15 +25,13 @@ app.use(express.json());
 // Intègre le contenu des cookies dans req.cookies et facilite la manipulation des valeurs
 app.use(cookieParser());
 
-// Autorise toutes les origines (notamment le front qui a une autre origine à cause du port qui est
-// différent (équivalent à faire un header Access-Control-Allow-Origin: *)
-//app.use(cors());
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true
-}));
-
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiSpec));
+// On installe la documentation Swagger uniquement pour le dévelopement
+// Swagger est installé en dev dependancies, donc le build est cassé si utilisé en prod
+if (process.env.NODE_ENV === 'development') {
+  const swaggerUi = await import('swagger-ui-express');
+  const { openapiSpec } = await import('./swagger/generate-api-doc.ts');
+  app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiSpec));
+}
 
 // toutes les routes d'auth commencent par /auth
 app.use("/auth", authRoutes);
@@ -41,6 +40,9 @@ app.get('/', (req, res) => res.send('hello'));
 
 // toutes les routes de categories commencent par /categories
 app.use("/categories", categoriesRouter);
+
+// toutes les routes de transactions commencent par /transactions
+app.use("/transactions", transactionsRouter);
 
 
 export default app;
