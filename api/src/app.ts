@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
 import categoriesRouter from "./routes/categories.routes.js";
+import transactionsRouter from "./routes/transactions.routes.ts";
 import cookieParser from "cookie-parser";
 import swaggerUi from 'swagger-ui-express';
 import { openapiSpec } from './swagger/generate-api-doc.ts';
@@ -35,6 +36,9 @@ app.get('/', (req, res) => res.send('hello'));
 
 // toutes les routes de categories commencent par /categories
 app.use("/categories", categoriesRouter);
+
+// toutes les routes de transactions commencent par /transactions
+app.use("/transactions", transactionsRouter);
 
 
 export default app;
