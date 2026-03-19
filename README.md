@@ -126,24 +126,27 @@ git push -u origin feature/nom-de-la-fonctionnalité
 
 # Déploiement
 
-Pour l'instant seul le service client peut être déployé.
+## Render
 
+Pour déployer le site sur Render, on doit lui donner l'adresse d'un dépot publique. Le dépot de la pince est privé. Il faut créer un clone du dépot sur notre propre compte Github et le mettre en publique.
+
+### Cloner de dépot
+
+- Créer un mirroir du dépot sur l'ordinateur localement :
 ```
-# il faut se placer à la racine
-cd client
-
-# pour pouvoir lancer la transpilation ensuite
-npm install 
-
-# pour créer le dossier dist qui contient les fichiers transpilés du front
-npm run build 
-
-# retour à la racine
-cd .. 
-
-# lancement du service client
-docker compose -f .\deploy\docker-compose.yml up
+git clone --mirror git@github.com:O-clock-Francfort/la-pince.git
 ```
+
+- Créer un nouveau dépot sur notre propre compte Github.
+
+- Envoyer la copie créer sur l'ordinateur en local vers le nouveau dépot Github :
+```
+git push --mirror git@github.com:TON-USERNAME/nom-du-repo.git
+```
+### Sur Render
+
+A compléter
+
 
 # Documentation API
 
