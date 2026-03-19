@@ -119,6 +119,12 @@ export async function login(req: Request, res: Response) {
 // -----------------------------
 export async function logout(req: AuthRequest, res: Response) {
   // Le logout est géré côté front (on supprime le token).
+   res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV !== "production",
+    sameSite: "lax",
+    path: "",
+  });
   // Ici je renvoie juste un message de confirmation.
   return res.status(200).json({ message: "Déconnecté" });
 }
