@@ -5,6 +5,7 @@ import { stripUndefined } from "../utils/optional-objects.ts";
 // ---------------------------------------------------------
 // SERVICE : RÉCUPÉRER TOUTES LES CATÉGORIES D'UN UTILISATEUR
 // ---------------------------------------------------------
+
 export const findAll = (userId: number) => {
   return prisma.category.findMany({
     where: { userId },
@@ -13,8 +14,9 @@ export const findAll = (userId: number) => {
 };
 
 // ---------------------------------------------------------
-// SERVICE : RÉCUPÉRER UNE CATÉGORIE PAR ID
+// SERVICE : RÉCUPÉRER UNE CATÉGORIE PAR ID (sécurisé par userId)
 // ---------------------------------------------------------
+
 export const findById = (id: number, userId: number) => {
   return prisma.category.findFirst({
     where: { id, userId },

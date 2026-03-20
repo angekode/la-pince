@@ -1,32 +1,48 @@
+# ------------------------------------------------------------
+# Étape 1 : Build — transpilation TypeScript → JavaScript
 # Transpilation des fichiers dans le dossier dist
-# ----------------------------------------------------------------------
-FROM node:25-alpine as Building
+# ------------------------------------------------------------
 
-WORKDIR /app
+# Image légère Node.js pour construire le projet
+FROM node:25-alpine as Building     
 
+# Définit le dossier de travail dans l'image
+WORKDIR /app                        
+
+# On copie uniquement les fichiers package.json et package-lock.json
+# Cela permet d'utiliser le cache Docker pour npm install
 COPY ../package*.json ./
 
-RUN npm install
+# Installe les dépendances du projet
+RUN npm install                     
 
-COPY ../ ./
+# Copie de tout le projet dans l'image
+COPY ../ ./                         
 
-# On génère les fichiers ts pour le client prisma avant de transpiler
+# Prisma : on génère les fichiers ts pour le client (prisma) avant de transpiler
 # tout le projet en javascript
 RUN npm run db:generate
 
+# Transpilation TypeScript → JavaScript dans /dist
 # On transpile tous les fichiers dans le dossier dist
 RUN npm run build
 
-
+# ------------------------------------------------------------
+# Étape 2 : Runtime — image finale pour exécuter Express
 # Lancement du serveur express
-# ----------------------------------------------------------------------
-FROM node:25-alpine
+# ------------------------------------------------------------
 
-WORKDIR /app
+# Image légère Node.js pour exécuter le projet
+FROM node:25-alpine                 
 
+# Définit le dossier de travail dans l'image
+WORKDIR /app                        
+
+# On copie uniquement le résultat du build depuis l’étape précédente
 COPY --from=Building /app ./
 
-# Script prévu pour lancer prisma migrate dev + node ensuite pour express
+# Lancement du serveur en mode production
+# Script prévu pour lancer Prisma migrate dev + Node ensuite pour Express
 CMD npm run prodstart
 
 

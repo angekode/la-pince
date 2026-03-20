@@ -4,27 +4,28 @@ import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../../src/db/prisma-client';
 
 /**
- * Il faut que la base de données soit vierge pour réaliser ces tests (à faire dans le setup.js).
+ * Il faut que la base de données soit vierge (vide) pour réaliser ces tests (à faire dans le setup.js).
+ * Ces tests sont des tests d'intégration : ils appellent la vraie API.
  */
 
-const skip = false; // tant que les routes ne sont pas implémentés
-
+const skip = false; // tant que les routes ne sont pas implémentés - Les tests sont activés
 
 const apiUrl = `http://localhost:${process.env.PORT}`;
 
-
-
 /**
- * GET /categories
+ * ---------------------------------------------------------
+ * TEST : GET /categories
+ * ---------------------------------------------------------
  */
+
 describe('GET /categories', { skip }, () => {
 
   it('should return catagories list', async () => {
-    // Arrange
+    // Arrange: création d’un utilisateur + token + quelques catégories pour cet utilisateur
     const { user, token } = await createNewUser();
     const categories = await seedCategories(user.id);
 
-    // Act
+    // Act : appel de l’API (la route) pour récupérer les catégories
     const response = await fetch(`${apiUrl}/categories`, {
       headers: { 'Cookie' : `token=${token}`}
     });
@@ -34,6 +35,8 @@ describe('GET /categories', { skip }, () => {
     assert.strictEqual(response.status, StatusCodes.OK);
     assert.strictEqual(responseBody.count, categories.length);
     assert.strictEqual(responseBody.categories.length, responseBody.count);
+
+    // Vérification que chaque catégorie renvoyée existe bien et appartient à l'utilisateur
     for (const category of responseBody.categories) {
       // le nom correspond à une catégorie existante ?
       assert.ok(categories.some(c => c.name === category.name));
@@ -54,9 +57,10 @@ describe('GET /categories', { skip }, () => {
   });
 });
 
-
 /**
+ * ---------------------------------------------------------
  * GET /categories/:id
+ * ---------------------------------------------------------
  */
 describe('GET /categories/:id', { skip }, () => {
 
@@ -128,7 +132,11 @@ function extractTokenFromCookie(httpResponse: Response): string | null {
 
 
 /**
- * Pour créer un nouvelle utilisateur authentifié avec un token
+ * 
+ * /**
+ * Crée un utilisateur aléatoire + récupère un token JWT
+ * Utile pour les tests : on a besoin d’un utilisateur et d’un token pour tester les routes protégées
+ * @returns un objet avec les infos de l’utilisateur créé et son token JWT
  */
 async function createNewUser(): 
 Promise<{ 
@@ -144,12 +152,13 @@ Promise<{
       // Arrange
     const userToLog =  generateRandomUserInfo();
 
+    // Enregistrement de l'utilisateur et récupération du token
     const registerResponse = await postObject(`${apiUrl}/auth/register`, userToLog); // on enregistre l'utilisateur
     assert.strictEqual(registerResponse.status, StatusCodes.CREATED);
     const registerBody = await registerResponse.json();
 
 
-    // Act
+    // Connexion de l'utilisateur pour récupérer le token
     const response = await postObject(`${apiUrl}/auth/login`, userToLog); // login de l'utilisateur
     const responseBody = await response.json();
     const token = extractTokenFromCookie(response);
@@ -165,7 +174,9 @@ Promise<{
 
 
 /**
+ * Génère un utilisateur aléatoire pour éviter les collisions email dans les tests (contraintes d'unicité)
  * Génère un object User avec des noms aléatoires pour éviter les contraintes d'unicité dans les tests
+ * @return un objet avec les champs firstName, lastName, email et password
  */
 function generateRandomUserInfo(): { 
     firstName: string, 
@@ -182,13 +193,15 @@ function generateRandomUserInfo(): {
     }
   }
 
-
+// Catégories de test
 const categoriesToCreate = [
     { name: 'nourriture', userId: 1 },
     { name: 'impots', userId: 1 },
     { name: 'loisirs', userId: 1 }
 ];
-
+/**
+ * Insère plusieurs catégories pour un utilisateur
+ */
 async function seedCategories(userId: number): Promise<{ id: number, name: string, userId: number }[]> {
    return await prisma.category.createManyAndReturn(
     { 

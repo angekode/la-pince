@@ -17,5 +17,6 @@ export const updateCategorySchema = z.object({
   name: z.string().min(2).max(50).optional(),
 });
 
+// Types dérivés automatiquement des schémas Zod
 export type CreateCategoryInput = z.infer<typeof createCategorySchema>;
 export type UpdateCategoryInput = z.infer<typeof updateCategorySchema>;

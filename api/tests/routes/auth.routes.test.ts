@@ -5,6 +5,9 @@ import { StatusCodes } from 'http-status-codes';
 
 /**
  * Il faut que la base de données soit vierge pour réaliser ces tests (à faire dans le setup.js).
+ * NOTE : La base doit être vide avant les tests, mais les tests ne font pas de nettoyage après eux.
+ * → Si on veut faire des tests plus poussés (ex: vérifier que les données sont bien enregistrées),
+ *  il faudra faire du setup/teardown dans chaque test pour créer et supprimer les données de test.
  */
 
 const skip = true; // tant que les routes ne sont pas implémentés
@@ -13,9 +16,10 @@ const skip = true; // tant que les routes ne sont pas implémentés
 const apiUrl = `http://localhost:${process.env.PORT}`;
 
 
-/**
- * Teste uniquement si le server test répond
- */
+// ---------------------------------------------------------
+// TEST : Le serveur répond
+// ---------------------------------------------------------
+
 describe('server connexion', { skip }, () => {
   it('/ should respond', async () => {
     // Act
@@ -25,10 +29,11 @@ describe('server connexion', { skip }, () => {
   });
 });
 
+// ---------------------------------------------------------
+// TEST : POST /auth/register
+// doit renvoyer le status 201 et un objet { username, email }
+// ---------------------------------------------------------
 
-/**
- * POST /auth/register doit renvoyer le status 201 et un objet { username, email }
- */
 describe('POST /auth/register', { skip }, () => {
 
   it('valid data should return status created 201', async () => {
@@ -69,12 +74,11 @@ describe('POST /auth/register', { skip }, () => {
   });
 });
 
+// ---------------------------------------------------------
+// TEST : POST /auth/login
+// doit renvoyer un token dans les cookies et les infos de l'utilisateur
+// ---------------------------------------------------------
 
-
-
-/**
- * POST /auth/login doit renvoyer un token
- */
 describe('POST /auth/login', { skip }, () => {
   it('registered user should get a token', async () => {
     // Arrange
@@ -88,15 +92,15 @@ describe('POST /auth/login', { skip }, () => {
     assert.strictEqual(registerResponse.status, StatusCodes.CREATED);
 
     // Act
-    const response = await postObject(`${apiUrl}/auth/login`, userToLog); // login de l'utilisateur
+    const response = await postObject(`${apiUrl}/auth/login`, userToLog);            // login de l'utilisateur
     const responseBody = await response.json();
     const token = extractTokenFromCookie(response);
     assert.notStrictEqual(token, null);
 
     // Check
     assert.strictEqual(response.status, StatusCodes.OK);
-    assert.strictEqual(typeof token, 'string'); // token bien généré
-    assert.strictEqual(responseBody.email, userToLog.email); // infos utilisateur 
+    assert.strictEqual(typeof token, 'string');                                     // token bien généré
+    assert.strictEqual(responseBody.email, userToLog.email);                        // infos utilisateur 
   });
 
 
@@ -138,10 +142,11 @@ describe('POST /auth/login', { skip }, () => {
   });
 });
 
+// ---------------------------------------------------------
+// TEST : POST /auth/logout
+// doit renvoyer le status 200 et supprimer le token côté client
+// ---------------------------------------------------------
 
-/**
- * POST /auth/logout renvoie uniquement 200 pour l'instant
- */
 describe('POST /auth/logout', { skip }, () => {
   it('should return status code 200 OK', async () => {
     // Arrange
@@ -153,14 +158,13 @@ describe('POST /auth/logout', { skip }, () => {
     };
     const registerResponse = await postObject(`${apiUrl}/auth/register`, userToLogout); // on enregistre l'utilisateur
     assert.strictEqual(registerResponse.status, StatusCodes.CREATED);
-    const loginResponse = await postObject(`${apiUrl}/auth/login`, userToLogout); // on récupère le token
+
+    const loginResponse = await postObject(`${apiUrl}/auth/login`, userToLogout);        // on récupère le token
     const token = extractTokenFromCookie(loginResponse);
     assert.notStrictEqual(token, null);
 
     // Act
-    const response = await fetch(
-      `${apiUrl}/auth/logout`,
-      {
+    const response = await fetch(`${apiUrl}/auth/logout`, {
         method: 'POST',
         headers: { 
           'Cookie' : `token=${token}`,
@@ -169,15 +173,17 @@ describe('POST /auth/logout', { skip }, () => {
       }
     );
 
+   
     // Check
     assert.strictEqual(response.status, StatusCodes.OK);
   });
 });
 
+// ---------------------------------------------------------
+// TEST : GET /auth/me
+// doit renvoyer les infos de l'utilisateur connecté
+// ---------------------------------------------------------
 
-/**
- * POST /auth/me renvoie les infos d'un utilisateur inscrit et connecté
- */
 describe('POST /auth/me', { skip }, () => {
   it('should return status code 200 OK', async () => {
     // Arrange
@@ -189,7 +195,8 @@ describe('POST /auth/me', { skip }, () => {
     };
     const registerResponse = await postObject(`${apiUrl}/auth/register`, user); // on enregistre l'utilisateur
     assert.strictEqual(registerResponse.status, StatusCodes.CREATED);
-    const loginResponse = await postObject(`${apiUrl}/auth/login`, user); // on récupère le token
+
+    const loginResponse = await postObject(`${apiUrl}/auth/login`, user);       // on récupère le token
     const token = extractTokenFromCookie(loginResponse);
     assert.notStrictEqual(token, null);
 
@@ -200,7 +207,7 @@ describe('POST /auth/me', { skip }, () => {
         method: 'GET',
         headers: { 
           'Cookie' : `token=${token}`,
-          'Connection' : 'close' // pour que chaque requete parte sur une nouvelle connexion et éviter ECONNRESET
+          'Connection' : 'close'        // pour que chaque requete parte sur une nouvelle connexion et éviter ECONNRESET
         }
       }
     );
@@ -214,7 +221,9 @@ describe('POST /auth/me', { skip }, () => {
   });
 });
 
-
+// ---------------------------------------------------------
+// Fonctions utilitaires pour les tests
+// ---------------------------------------------------------
 
 async function postObject(route: string, body: object): Promise<Response> {
   return await fetch(

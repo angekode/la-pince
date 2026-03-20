@@ -1,6 +1,9 @@
 import { Router } from "express";
+
+// Middleware d'authentification : toutes les routes sont protégées
 import { authMiddleware } from "../middlewares/auth.middleware.js";
 
+// Import des contrôleurs de catégories
 import {
   getAllCategories,
   getCategoryById,
@@ -11,10 +14,12 @@ import {
 
 const router = Router();
 
-// Toutes les routes nécessitent l'authentification
+// Toutes les routes de ce router nécessitent d'être authentifiées (avoir un token JWT valide en cookie)
 router.use(authMiddleware);
 
 /**
+ * Swagger : GET /categories
+ * Renvoie toutes les catégories de l'utilisateur connecté
  * @openapi
  * /categories:
  *   get:
@@ -53,6 +58,8 @@ router.get("/", getAllCategories);
 
 
 /**
+ * Swagger : GET /categories/:id
+ * Renvoie les informations d'une catégorie spécifique de l'utilisateur connecté
  * @openapi
  * /categories/{id}:
  *   get:
@@ -91,6 +98,8 @@ router.get("/", getAllCategories);
 router.get("/:id", getCategoryById);
 
 /**
+ * Swagger : POST /categories
+ * Crée une nouvelle catégorie pour l'utilisateur connecté
  * @openapi
  * /categories:
  *   post:
@@ -133,6 +142,8 @@ router.post("/", createCategory);
 
 
 /**
+ * Swagger : PATCH /categories/:id
+ * Met à jour une catégorie existante de l'utilisateur connecté
  * @openapi
  * /categories/{id}:
  *   patch:
@@ -184,6 +195,8 @@ router.patch("/:id", updateCategory);
 
 
 /**
+ * Swagger : DELETE /categories/:id
+ * Supprime une catégorie existante de l'utilisateur connecté
  * @openapi
  * /categories/{id}:
  *   delete:

@@ -1,6 +1,7 @@
 import type { Response } from "express";
 import type { AuthRequest } from "../middlewares/auth.middleware.js";
 
+// Fonctions du service CategoryService pour faire le lien entre les routes et la logique métier (CRUD)
 import {
   findAll,
   findById,
@@ -9,6 +10,7 @@ import {
   remove,
 } from "../services/categories.service.js";
 
+// Schémas de validation Zod pour valider les données reçues dans les requêtes
 import {
   createCategorySchema,
   updateCategorySchema,
@@ -17,6 +19,7 @@ import {
 // ---------------------------------------------------------
 // GET /categories
 // ---------------------------------------------------------
+
 export const getAllCategories = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user!.id;
@@ -34,6 +37,7 @@ export const getAllCategories = async (req: AuthRequest, res: Response) => {
 // ---------------------------------------------------------
 // GET /categories/:id
 // ---------------------------------------------------------
+
 export const getCategoryById = async (req: AuthRequest, res: Response) => {
   try {
     const id = Number(req.params.id);
@@ -54,6 +58,7 @@ export const getCategoryById = async (req: AuthRequest, res: Response) => {
 // ---------------------------------------------------------
 // POST /categories
 // ---------------------------------------------------------
+
 export const createCategory = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user!.id;
@@ -73,6 +78,7 @@ export const createCategory = async (req: AuthRequest, res: Response) => {
 // ---------------------------------------------------------
 // PATCH /categories/:id
 // ---------------------------------------------------------
+
 export const updateCategory = async (req: AuthRequest, res: Response) => {
   try {
     const id = Number(req.params.id);
@@ -85,7 +91,7 @@ export const updateCategory = async (req: AuthRequest, res: Response) => {
 
     const result = await update(id, userId, parsed.data);
 
-    if (result?.count === 0) {
+    if (result.count === 0) {
       return res.status(404).json({ error: "Category not found" });
     }
 
@@ -98,6 +104,7 @@ export const updateCategory = async (req: AuthRequest, res: Response) => {
 // ---------------------------------------------------------
 // DELETE /categories/:id
 // ---------------------------------------------------------
+
 export const deleteCategory = async (req: AuthRequest, res: Response) => {
   try {
     const id = Number(req.params.id);

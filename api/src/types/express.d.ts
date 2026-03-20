@@ -9,12 +9,14 @@
 // d'éparpiller les types dans le projet.
 // ---------------------------------------------------------
 
-// Optionnel : si tu veux typer plus tard avec Prisma
+// Optionnel : si on veux typer plus tard avec Prisma
 // import type { User } from "../db/prisma-client";
 
 declare global {
   namespace Express {
     interface Request {
+       // On ajoute une propriété user optionnelle à Request, qui contient au minimum un id (le userId extrait du token).
+       // On peut aussi ajouter d'autres champs comme email, role, etc. selon les besoins.
       user?: {    // ← rendre optionnel
         id: number;
         email?: string;
@@ -22,7 +24,7 @@ declare global {
     }
   }
 }
-
+// Obligatoire pour que TypeScript traite ce fichier comme un module et applique les déclarations globales.
 export {};
 
 
