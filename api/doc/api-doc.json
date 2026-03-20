@@ -163,7 +163,7 @@
       }
     },
     "/auth/me": {
-      "post": {
+      "get": {
         "summary": "Renvoie les informations d'un utilisateur connecté",
         "description": "Le client doit envoyer le token généré à partir de la route /auth/login en tant que cookie",
         "security": [

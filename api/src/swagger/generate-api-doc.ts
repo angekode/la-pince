@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import swaggerJSDoc from 'swagger-jsdoc';
 
 // Options de génération OpenAPI
 const options = {

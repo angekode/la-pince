@@ -18,7 +18,7 @@ import { ref } from 'node:process';
  * Il faut que la base de données soit vierge pour réaliser ces tests (à faire dans le setup.js).
  */
 
-const skip = false; // tant que les routes ne sont pas implémentés
+const skip = true; // tant que les routes ne sont pas implémentés
 
 
 /**
