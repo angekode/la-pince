@@ -1,10 +1,10 @@
-// Je crée un router Express pour regrouper toutes mes routes d'auth
+// Router Express pour regrouper toutes les routes d'authentification
 import { Router } from "express";
 
-// J'importe tous mes contrôleurs d'authentification
+// Import des contrôleurs d'authentification
 import { register, login, logout, me } from "../controllers/auth.controller.js";
 
-// J'importe mon middleware d'auth pour protéger certaines routes
+// Middleware d'authentification pour protéger certaines routes
 import { authMiddleware } from "../middlewares/auth.middleware.js";
 
 const router = Router();
@@ -12,6 +12,11 @@ const router = Router();
 
 
 /**
+ * Documentation Swagger pour /auth/register
+ * Cette route permet de créer un nouvel utilisateur
+ * Le client doit envoyer un JSON avec les champs firstName, lastName, email et password
+ * En cas de succès, renvoie un JSON avec les informations de l'utilisateur créé (sans le mot de passe)
+ * En cas d'erreur (ex: email déjà utilisé), renvoie un message d'erreur    
  * @openapi
  * /auth/register:
  *   post:
@@ -50,11 +55,14 @@ const router = Router();
  *                 email:
  *                   type: string
  */
-// Je me dis : "quand quelqu'un POST sur /auth/register → j'appelle mon contrôleur register"
+// "quand quelqu'un POST sur /auth/register → appel le contrôleur register"
 router.post("/register", register);
 
 
 /**
+ * Documentation Swagger pour /auth/login
+ * Cette route permet de connecter un utilisateur existant et de générer un cookie JWT
+ * Le client doit envoyer un JSON avec les champs email et password 
  * @openapi
  * /auth/login:
  *   post:
@@ -92,11 +100,16 @@ router.post("/register", register);
  *                 password:
  *                   type: string
  */
-// Je me dis : "login ne nécessite pas d'être connecté"
+// "login ne nécessite pas d'être connecté"
 router.post("/login", login);
 
 
 /**
+ * Documentation Swagger pour /auth/logout
+ * Cette route permet de déconnecter un utilisateur en supprimant le cookie JWT -> middleware d'auth obligatoire
+ * Le client doit envoyer le token généré à partir de la route /auth/login en tant que cookie
+ * En cas de succès, renvoie un message de confirmation
+ * En cas d'erreur (ex: token manquant ou invalide), renvoie un message d'erreur
  * @openapi
  * /auth/logout:
  *   post:
@@ -122,14 +135,17 @@ router.post("/login", login);
  *                 password:
  *                   type: string
  */
-// Je me dis : "logout nécessite d'être connecté → j'ajoute authMiddleware"
+// "logout nécessite d'être connecté → ajoute de authMiddleware"
 router.post("/logout", authMiddleware, logout);
 
 
 /**
+ * Documentation Swagger pour /auth/me
+ * Cette route permet de récupérer les informations de l'utilisateur connecté à partir du token JWT
+ * Le client doit envoyer le token généré à partir de la route /auth/login en tant que cookie
  * @openapi
  * /auth/me:
- *   post:
+ *   get:
  *     summary: Renvoie les informations d'un utilisateur connecté
  *     description: Le client doit envoyer le token généré à partir de la route /auth/login en tant que cookie
  *     security:
@@ -153,7 +169,7 @@ router.post("/logout", authMiddleware, logout);
  *                 password:
  *                   type: string
  */
-// Je me dis : "la route /me renvoie les infos de l'utilisateur connecté"
+// "la route /me renvoie les infos de l'utilisateur connecté"
 router.get("/me", authMiddleware, me);
 
 export default router;

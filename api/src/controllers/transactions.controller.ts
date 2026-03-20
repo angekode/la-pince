@@ -2,19 +2,20 @@
 // CONTROLLER DES TRANSACTIONS
 // ---------------------------------------------------------
 // Ici je gère toute la logique "HTTP" :
-// - je récupère les données de la requête
-// - je valide (Zod)
-// - j'appelle les services (qui parlent à la DB)
-// - je renvoie une réponse propre au client
+// - lecture des données envoyées par le client / récupèration des données de la requête
+// - validation via Zod
+// - appel des services (qui interagissent avec la DB)
+// - renvoie d'une réponse propre au client
 
 import type { Request, Response } from "express";
-import { stripUndefined } from "../utils/optional-objects.ts";
 
+// Fonction utilitaire pour retirer les champs undefined (utile pour PATCH)
+import { stripUndefined } from "../utils/optional-objects.ts";
 
 // ❌ Ancien import direct de Prisma (je le garde en commentaire)
 // import { prisma } from "../db/prisma-client.js";
 
-// ✔️ J'importe maintenant TOUS mes services CRUD
+// ✔️ Import de toutes les fonctions CRUD du services transactions.service (findAll, findById, create, update, remove)
 import {
   findAll,
   findById,
@@ -23,26 +24,26 @@ import {
   remove
 } from "../services/transactions.service.js";
 
-// ✔️ J'importe mes schémas Zod pour valider les données
+// ✔️ Import des schémas Zod pour valider les données reçues dans les requêtes (createTransactionSchema, updateTransactionSchema)
 import {
   createTransactionSchema,
   updateTransactionSchema
 } from "../validations/transaction.schema.js";
 import { parse } from "node:path";
 
-
 // ---------------------------------------------------------
 // GET /transactions
 // ---------------------------------------------------------
+
 export const getAllTransactions = async (req: Request, res: Response) => {
   try {
-    // le middleware Auth a mis req.user.id
+    // Le middleware Auth a injecté req.user.id
     const userId = req.user!.id;
 
-    // J'appelle mon service pour récupérer toutes les transactions
+    // Récupération de toutes les transactions de l'utilisateur via mon service
     const transactions = await findAll(userId);
 
-    // Je renvoie une réponse propre, avec un count
+    // Réponse structurée : renvoie d'une réponse propre, avec un count
     return res.status(200).json({
       count: transactions.length,
       transactions
@@ -54,11 +55,11 @@ export const getAllTransactions = async (req: Request, res: Response) => {
   }
 };
 
-
 // ---------------------------------------------------------
 // GET /transactions/:id
 // ---------------------------------------------------------
-// Ancienne version (je la garde en commentaire)
+
+// Ancienne version 
 /*
 export const getTransactionById = async (req: Request, res: Response) => {
   try {
@@ -87,11 +88,10 @@ export const getTransactionById = async (req: Request, res: Response) => {
   }
 };
 
-
 // ---------------------------------------------------------
 // POST /transactions
 // ---------------------------------------------------------
-// Ancienne version (je la garde en commentaire)
+// Ancienne version 
 /*
 export const createTransaction = async (req: Request, res: Response) => {
   try {
@@ -106,14 +106,14 @@ export const createTransaction = async (req: Request, res: Response) => {
   try {
     const userId = req.user!.id;
 
-    // Je valide les données envoyées par le client
+    // Validation des données envoyées par le client
     const parsed = createTransactionSchema.safeParse(req.body);
 
     if (!parsed.success) {
       return res.status(400).json(parsed.error);
     }
 
-    // Je crée la transaction via mon service
+    // Création de la transaction via le service
     const newTransaction = await create(userId, parsed.data);
 
     return res.status(201).json(newTransaction);
@@ -123,11 +123,11 @@ export const createTransaction = async (req: Request, res: Response) => {
   }
 };
 
-
 // ---------------------------------------------------------
 // PATCH /transactions/:id
 // ---------------------------------------------------------
-// Ancienne version (je la garde en commentaire)
+
+// Ancienne version 
 /*
 export const updateTransaction = async (req: Request, res: Response) => {
   try {
@@ -143,12 +143,13 @@ export const updateTransaction = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     const userId = req.user!.id;
 
-    // Je valide les données partiellement (PATCH)
+    // Validation des données partiellement (PATCH)
     const parsed = updateTransactionSchema.safeParse(req.body);
 
     if (!parsed.success) {
       return res.status(400).json(parsed.error);
     }
+    // Supprimer les champs undefined pour ne pas écraser les données existantes
     const cleanedData = stripUndefined(parsed.data);
     const result = await update(id, userId, cleanedData);
 
@@ -163,11 +164,11 @@ export const updateTransaction = async (req: Request, res: Response) => {
   }
 };
 
-
 // ---------------------------------------------------------
 // DELETE /transactions/:id
 // ---------------------------------------------------------
-// Ancienne version (je la garde en commentaire)
+
+// Ancienne version 
 /*
 export const deleteTransaction = async (req: Request, res: Response) => {
   try {

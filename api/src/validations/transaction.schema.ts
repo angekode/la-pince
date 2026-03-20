@@ -3,7 +3,7 @@ import { z } from "zod";
 
 /* ---------------------------------------------------------
    SCHEMA : createTransactionSchema
-   → Je définis ce qu'une transaction valide DOIT contenir
+   → Definir ce qu'une transaction valide DOIT contenir
 --------------------------------------------------------- */
 export const createTransactionSchema = z.object({
   amount: z.number().positive(),         // Le montant doit être un nombre positif

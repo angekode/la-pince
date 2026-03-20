@@ -1,13 +1,19 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+// Fichier principal de configuration Prisma.
+// Il définit :
+// - le générateur du client
+// - la connexion à la base
+// - les modèles (tables) et leurs relations
+
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client-js"                 // Génère le client Prisma en JavaScript
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "postgresql"                       // Type de base de données
+  url      = env("DATABASE_URL")                // URL de connexion
 }
 
 //
@@ -17,21 +23,21 @@ datasource db {
 //
 
 model User {
-  id        Int       @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())       // Clé primaire auto-incrémentée
 
   firstname  String
   lastname String
-  email     String    @unique
+  email     String    @unique                             // Email unique
   password  String
 
   // Relations
-  expenses  Expense[]
-  categories Category[] // <-- ajoute la back-relation
+  expenses  Expense[]                                     // Un utilisateur a plusieurs dépenses
+  categories Category[] // <-- ajoute la back-relation    // Un utilisateur a plusieurs catégories
 
-  createdAt DateTime  @default(now()) @map("created_at")
+  createdAt DateTime  @default(now()) @map("created_at")  // Nom de colonne personnalisé  
   updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
 
-  @@map("user")
+  @@map("user")                                           // Nom réel de la table en DB
 }
 
 //
@@ -45,10 +51,10 @@ model Category {
   name      String
 
   // Foreign keys
-  userId      Int
+  userId      Int                                           // FK vers User
 
   // Relations
-  expenses  Expense[]
+  expenses  Expense[]                                       // Une catégorie contient plusieurs dépenses
 
   user        User      @relation(fields: [userId], references: [id])
 
