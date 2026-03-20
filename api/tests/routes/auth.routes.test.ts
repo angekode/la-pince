@@ -2,6 +2,13 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import { StatusCodes } from 'http-status-codes';
 
+import { 
+  postObject,
+  createNewUser, 
+  generateRandomUserInfo, 
+  seedCategories,
+  extractTokenFromCookie
+} from '../tools';
 
 /**
  * Il faut que la base de données soit vierge pour réaliser ces tests (à faire dans le setup.js).
@@ -10,7 +17,7 @@ import { StatusCodes } from 'http-status-codes';
  *  il faudra faire du setup/teardown dans chaque test pour créer et supprimer les données de test.
  */
 
-const skip = true; // tant que les routes ne sont pas implémentés
+const skip = false; // tant que les routes ne sont pas implémentés
 
 
 const apiUrl = `http://localhost:${process.env.PORT}`;

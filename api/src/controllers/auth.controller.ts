@@ -119,11 +119,12 @@ export async function login(req: Request, res: Response) {
 
 export async function logout(req: AuthRequest, res: Response) {
   // Le logout est géré côté front (on supprime le token).
+  const isProd = process.env.NODE_ENV === "production";
    res.clearCookie("token", {
     httpOnly: true,
-    secure: process.env.NODE_ENV !== "production",
-    sameSite: "lax",
-    path: "",
+    secure: isProd,
+    sameSite: isProd ? "none" : "lax", 
+    path: "/",
   });
   // Ici renvoie d'un message de confirmation.
   return res.status(200).json({ message: "Déconnecté" });

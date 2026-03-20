@@ -45,4 +45,4 @@ COPY --from=Building /app ./
 # Script prévu pour lancer Prisma migrate dev + Node ensuite pour Express
 CMD npm run prodstart
 
-
+EXPOSE 3000

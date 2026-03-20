@@ -3,6 +3,14 @@ import assert from 'node:assert';
 import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../../src/db/prisma-client';
 
+import { 
+  postObject,
+  createNewUser, 
+  generateRandomUserInfo, 
+  seedCategories 
+} from '../tools';
+
+
 /**
  * Il faut que la base de données soit vierge (vide) pour réaliser ces tests (à faire dans le setup.js).
  * Ces tests sont des tests d'intégration : ils appellent la vraie API.
