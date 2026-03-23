@@ -11,7 +11,6 @@ function DashboardPage() {
 
   return (
     <>
-      <header>Header</header>
       <main className="dashboard__main">
         <section className="dashboard__indicators-section">
           <ul>
@@ -31,7 +30,6 @@ function DashboardPage() {
           </div>
         </section>
       </main>
-      <footer>Footer</footer>
     </>
   );
 }

@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import ThemeToggle from "./components/ThemeToggle";
+
+import DashboardPage from "./pages/DashboardPage";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
 import Home from "./pages/Home";
 import LoginPage from "./pages/auth/LoginPage";
-import DashboardPage from "./pages/DashboardPage";
+import ThemeToggle from "./components/ThemeToggle";
 import Register from "./pages/auth/Register";
+
 import "./styles/index.css";
+
 
 export default function App() {
 
@@ -22,6 +27,7 @@ export default function App() {
 
   return (
     <>
+      <Header/>
       <ThemeToggle theme={theme} onToggle={toggleTheme} />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -29,6 +35,7 @@ export default function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
       </Routes>
+      <Footer/>
     </>
   );
 }
