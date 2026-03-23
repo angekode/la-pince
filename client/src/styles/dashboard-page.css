@@ -1,0 +1,86 @@
+/* Chaque section est affichée dans une carte */
+section {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  margin: 1rem;
+}
+
+
+/* 
+ ---------------------------------------------------------------------------------------------------
+ Section indicateurs
+ ---------------------------------------------------------------------------------------------------
+*/
+
+.dashboard__indicators-section ul {
+
+  /* Affiche une barre de navigation horizontale */
+  display: flex;
+  justify-content: space-around;
+  list-style: none;
+
+  /* Carrées indicateurs */
+  li {
+    padding: 1rem;
+    font-size: large;
+    font-weight: 600;
+    color: var(--color-primary-dark);
+
+    /* Valeur à afficher */
+    span {
+      display: block;
+      margin: 1rem;
+      font-size:xx-large;
+      color: var(--text-main);
+    }
+
+    /* Texte des alertes à afficher */
+    em {
+      display: block;
+      margin: 1rem;
+      font-size: small;
+      color: var(--color-error);
+    }
+  }
+}
+
+
+/* 
+ ---------------------------------------------------------------------------------------------------
+ Section graphiques
+ ---------------------------------------------------------------------------------------------------
+*/
+.dashboard__graphs-section {
+  /* On affiche la barre de navigation au dessus des graphs */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+
+  /* Boutons de navigation */
+  nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    button {
+      width: fit-content;
+      padding: 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
+      background: var(--bg-card);
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.dashboard__graph-view img {
+  width: 100%;
+}

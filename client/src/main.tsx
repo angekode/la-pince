@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import "./styles/theme.css";
+import "./styles/index.css";
 import App from "./App";
 
 document.body.classList.add("dark");
