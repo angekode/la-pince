@@ -231,33 +231,5 @@ describe('POST /auth/me', { skip }, () => {
 // ---------------------------------------------------------
 // Fonctions utilitaires pour les tests
 // ---------------------------------------------------------
-
-async function postObject(route: string, body: object): Promise<Response> {
-  return await fetch(
-    route,
-    {
-      method: 'POST',
-      headers: { 
-        'Content-Type' : 'application/json',
-        'Connection' : 'close' // pour que chaque requete parte sur une nouvelle connexion et éviter ECONNRESET
-      },
-      body: JSON.stringify(body)      
-    }
-  );
-}
-
-function extractTokenFromCookie(httpResponse: Response): string | null {
-  const cookieArray = httpResponse.headers.getSetCookie();
-  if (cookieArray.length === 0) {
-    return null;
-  }
-  const tokenCookie = cookieArray.find(cookie => cookie.startsWith('token='));
-  if (!tokenCookie) {
-    return null;
-  }
-  const matches = tokenCookie.match(/token=([^;]+)/);
-  if (!matches || matches.length !== 2) {
-    return null;
-  }
-  return matches[1];
-}
+// Les fonctions postObject et extractTokenFromCookie sont désormais importées depuis ../tools.
+// Les définitions locales ont été supprimées pour éviter les conflits de nom et centraliser les utilitaires.

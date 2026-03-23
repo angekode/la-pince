@@ -89,12 +89,24 @@ export const updateCategory = async (req: AuthRequest, res: Response) => {
       return res.status(400).json(parsed.error);
     }
 
-    const result = await update(id, userId, parsed.data);
+    // const result = await update(id, userId, parsed.data);
 
-    if (result.count === 0) {
-      return res.status(404).json({ error: "Category not found" });
+    // if (result.count === 0) {
+    //   return res.status(404).json({ error: "Category not found" });
+    // }
+
+    // TypeScript indique que `remove()` peut potentiellement retourner `undefined`.
+    // On vérifie donc `!result` avant d'accéder à `result.count` pour éviter une erreur
+    // et gérer correctement le cas où aucune catégorie n'est trouvée.
+
+
+    const result = await remove(id, userId);
+
+    if (!result || result.count === 0) {
+    return res.status(404).json({ error: "Category not found" });
     }
 
+     
     return res.status(200).json({ message: "Category updated" });
   } catch (error) {
     return res.status(500).json({ error: "Server error" });
