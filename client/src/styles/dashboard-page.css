@@ -1,0 +1,62 @@
+section {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  margin: 1rem;
+}
+
+
+.dashboard__indicators-section ul {
+  list-style: none;
+  display: flex;
+  justify-content: space-around;
+
+
+
+  li {
+
+    background-color: ;
+    
+    padding: 1rem;
+    font-size: large;
+    color: var(--color-primary-dark);
+    font-weight: 600;
+    span {
+      display: block;
+      font-size:xx-large;
+      color: var(--text-main);
+      margin: 1rem;
+    }
+
+    em {
+      display: block;
+      margin: 1rem;
+      font-size: small;
+      color: var(--color-error);
+    }
+  }
+}
+
+.dashboard__graphs-section {
+  display: flex;
+  flex-direction: column;
+
+  nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    a {
+      width: fit-content;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+    }
+  }
+}
+
+.dashboard__graph-view img {
+  width: 100%;
+}

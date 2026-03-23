@@ -15,6 +15,12 @@ export default function Home() {
       >
         Register
       </button>
+      <button
+        onClick={() => navigate("/dashboard")}
+        style={{ padding: "12px 20px", fontSize: "16px" }}
+      >
+        Dashboard
+      </button>
 
     </div>
   );
