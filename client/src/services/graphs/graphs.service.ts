@@ -85,3 +85,9 @@ export async function getAllTransactions(): Promise<ApiTransaction[]> {
   const parsedBody = apiTransactionBodyScheme.parse(responseBody); // le format de l'API est ok ?
   return parsedBody.transactions;
 }
+
+
+export async function getSolde(): Promise<number> {
+  const transactions = await getAllTransactions();
+  return transactions.reduce((total, transaction) => total += transaction.amount, 0);
+}
