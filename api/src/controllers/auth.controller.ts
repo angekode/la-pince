@@ -2,7 +2,8 @@
 import type { Request, Response } from "express";
 
 // Importer bcrypt pour pouvoir hasher les mots de passe et comparer les hash.
-import bcrypt from "bcrypt";
+//import bcrypt from "bcrypt";
+import argon2 from "argon2";
 
 // Importer PrismaClient pour interagir avec la base de données via Prisma.
 import { PrismaClient } from "@prisma/client";
@@ -17,7 +18,7 @@ import type { AuthRequest } from "../middlewares/auth.middleware.js";
 const prisma = new PrismaClient();
 
 // Nombre de rounds pour bcrypt (plus c'est haut, plus c'est sécurisé mais lent - sécurité du hash).
-const SALT_ROUNDS = Number(process.env.SALT_ROUNDS) || 10;
+// const SALT_ROUNDS = Number(process.env.SALT_ROUNDS) || 10;
 
 
 // -----------------------------
@@ -41,7 +42,9 @@ export async function register(req: Request, res: Response) {
     }
 
     // Hash du mot de passe avant de le stocker en base (jamais stocker un mot de passe en clair).
-    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+    //const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+    const hashedPassword = await argon2.hash(password);
+
 
     // Création de l'utilisateur dans la base avec Prisma.
     const user = await prisma.user.create({
@@ -82,7 +85,8 @@ export async function login(req: Request, res: Response) {
     }
 
     // Comparaison du mot de passe envoyé avec le hash stocké en base. --> Vérification de l'authentification
-    const isValid = await bcrypt.compare(password, user.password);
+    //const isValid = await bcrypt.compare(password, user.password);
+    const isValid = await argon2.verify(user.password, password);
     if (!isValid) {
       return res.status(401).json({ message: "Identifiants invalides" });
     }
