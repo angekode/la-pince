@@ -97,3 +97,35 @@ export async function getSolde(): Promise<number> {
   const transactions = await getAllTransactions();
   return transactions.reduce((total, transaction) => total += transaction.amount, 0);
 }
+
+
+/**
+ * Renvoie une liste qui associe le montant total de chaque catégorie
+ */
+type CategoryTotals = {
+  category: string;
+  total: number;
+};
+
+export async function getCategoryTotals(): Promise<CategoryTotals[]> {
+  const transactions = await getAllTransactions();
+  const categories = await getAllCategories();
+
+  const rawTotals : { category: string, total: number }[] = []; // contiendra le total à retravailler
+
+  // A chaque tour de boucle, ajoute à rawTotals un élément de type : { category: 'ma catégorie', total: 545 } 
+  for (const category of categories) {
+    rawTotals.push({
+      category: category.name,
+      total: transactions
+        .filter(transaction => transaction.categoryId === category.id) // uniquement les transactions pour la catégorie en cours
+        .reduce((total, transaction) => total  += transaction.amount, 0) //calcul du total des transactions
+    });
+  }
+
+  // rawTotal contient des valeurs négatives pour les dépenses et des valeurs positives
+  // On garde uniquement les dépenses et on les passe en positif
+  return rawTotals
+    .filter(categoryTotal => categoryTotal.total < 0)
+    .map(categoryTotal => ({ ...categoryTotal, total: categoryTotal.total *= -1 }));
+}
