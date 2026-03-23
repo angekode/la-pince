@@ -11,3 +11,13 @@
 .pie-label-value {
   color: var(--text-secondary);
 }
+
+.bar-axis-label {
+  color: var(--text-main);
+  font-size: medium;
+}
+
+.bar-label-value {
+  font-size: medium;
+  color: var(--text-secondary);
+}

@@ -45,6 +45,15 @@ function PieGraph() {
         borderWidth: 2,
         borderRadius: 6,
         depth: 35 // indispensable pour voir la 3D
+      },
+      series: {
+                shadow: {
+          color: "rgba(0, 0, 0, 1)",
+          offsetX: 0,
+          offsetY: 6,
+          opacity: 0.05,
+          width: 10
+        }
       }
     },
   };
