@@ -16,3 +16,21 @@ header h1 {
 p {
   margin: 1rem;
 }
+
+nav {
+  flex: 1; /* Pour prendre toute la place restante */
+  display: flex;
+  justify-content: space-around;
+
+  a {
+    color: var(--text-main);
+  }
+
+  .active {
+    
+  }
+
+  .pending {
+    text-decoration: none;
+  }
+}
