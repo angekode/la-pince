@@ -1,4 +1,14 @@
+import { useState } from "react";
+
+import PieGraph from "../components/dashboard/PieGraph";
+import BarGraph from "../components/dashboard/BarGraph";
+
+
 function DashboardPage() {
+
+  const [activeGraph, setActiveGraph] = useState<'pie' | 'bar'>('pie');
+
+
   return (
     <>
       <header>Header</header>
@@ -12,12 +22,12 @@ function DashboardPage() {
         </section>
         <section className="dashboard__graphs-section">
           <nav>
-            <a href="">Visuel 1</a>
-            <a href="">Visuel 2</a>
-            <a href="">Visuel 3</a>
+            <button onClick={() => setActiveGraph('pie')}>Camembert</button>
+            <button onClick={() => setActiveGraph('bar')}>Barres</button>
           </nav>
           <div className="dashboard__graph-view">
-            <img src="graph-pie.png"></img>
+            { activeGraph === 'pie' && <PieGraph />}
+            { activeGraph === 'bar' && <BarGraph />}
           </div>
         </section>
       </main>
