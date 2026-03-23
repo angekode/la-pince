@@ -1,5 +1,8 @@
-import zod, { includes } from "zod";
+import zod from "zod";
 
+/**
+ * Toutes les fonctions utilisés pour les calculs sur les transactions et les graphs
+ */
 
 
 /**
@@ -87,6 +90,9 @@ export async function getAllTransactions(): Promise<ApiTransaction[]> {
 }
 
 
+/**
+ * Renvoie le total du solde calculé en faisant la somme de toutes les transactions
+ */
 export async function getSolde(): Promise<number> {
   const transactions = await getAllTransactions();
   return transactions.reduce((total, transaction) => total += transaction.amount, 0);
