@@ -10,7 +10,7 @@
     "prodstart": "cross-env NODE_ENV=production prisma migrate dev --name prod && cross-env NODE_ENV=production node --watch dist/index.js",
     "db:generate": "prisma generate",
     "db:migrate:dev": "prisma migrate dev --name dev",
-    "db:seed": "tsx prisma/seed.ts",
+    "db:seed": "prisma migrate reset -f && tsx prisma/seeding/seed.ts",
     "test": "tsx --test --env-file=.env.test --import ./tests/setup.ts --test-concurrency=1"
   },
   "keywords": [],
