@@ -11,6 +11,13 @@ import usersData from "./data/users.json" with { type: 'json' };
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
 export const prisma = new PrismaClient({ adapter });
 
+/**
+ * On utilise les données brutes des fichiers au format json du dossier "data", pour insérer les
+ * données dans la base de données avec createManyAndReturn. Attention l'ordre est important:
+ * - On crée les utilisateurs pour récupérer leurs id.
+ * - On crée les catégories en ajoutant l'id d'un utilisateur.
+ * - On crée les dépenses en ajoutant l'id d'un utilisateur et celui de la catégorie.
+ */
 
 const users = await prisma.user.createManyAndReturn({
   data: usersData
@@ -22,10 +29,12 @@ const categories = await prisma.category.createManyAndReturn({
 
 const expenses = await prisma.expense.createManyAndReturn({
   data: expensesData.map(expense => {
-    const { category, ...rest } = expense;
+    // On récupère tout dans "rest" sauf category qui est une string (nous on veut l'id)
+    const { category, ...rest } = expense; 
     return {
       ...rest,
-      categoryId: categories.find(c => c.name === expense.category)?.id ?? 0 
+      categoryId: categories.find(c => c.name === expense.category)?.id ?? 0,
+      userId: users[0]?.id ?? 0
     };
   })
 });
