@@ -76,6 +76,7 @@ section {
 
       &:hover {
         cursor: pointer;
+        background-color: color-mix(in srgb, var(--bg-card) 95%, white);
       }
     }
   }

@@ -1,0 +1,23 @@
+.pie-label-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.pie-label-name {
+  color: var(--text-main);
+  font-size: large
+}
+
+.pie-label-value {
+  color: var(--text-secondary);
+}
+
+.bar-axis-label {
+  color: var(--text-main);
+  font-size: medium;
+}
+
+.bar-label-value {
+  font-size: medium;
+  color: var(--text-secondary);
+}
