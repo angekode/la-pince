@@ -102,7 +102,7 @@ export async function getSolde(): Promise<number> {
 /**
  * Renvoie une liste qui associe le montant total de chaque catégorie
  */
-type CategoryTotals = {
+export type CategoryTotals = {
   category: string;
   total: number;
 };

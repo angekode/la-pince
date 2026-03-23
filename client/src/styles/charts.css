@@ -1,0 +1,13 @@
+.pie-label-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.pie-label-name {
+  color: var(--text-main);
+  font-size: large
+}
+
+.pie-label-value {
+  color: var(--text-secondary);
+}
