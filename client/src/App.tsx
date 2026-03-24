@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import LoginPage from "./pages/auth/LoginPage";
 import ThemeToggle from "./components/ThemeToggle";
 import Register from "./pages/auth/Register";
+import ExpensePage from "./pages/ExpensePage";
 
 import "./styles/index.css";
 import "./services/graphs/graphs-data.service"
@@ -33,6 +34,7 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/transactions" element={<ExpensePage />} />
       </Routes>
       <Footer/>
     </>
