@@ -9,6 +9,7 @@
 @import url("dashboard-page.css");         /* Styles du dashboard */
 @import url("header.css");                 /* Styles du header */
 @import url("footer.css");                 /* Styles du footer */
+@import url("charts.css");                 /* Styles des graphiques */
 
 /* -----------------------------------------------------------
    RÉGLAGES GLOBAUX
