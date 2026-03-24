@@ -1,3 +1,10 @@
+/* -----------------------------------------------------------
+   ⚠️ BLOC SUPPRIMÉ : VARIABLES EN DOUBLE
+   Ce bloc dupliquait des variables déjà définies dans theme.css.
+   Il créait des conflits et empêchait l’harmonisation du thème.
+   Toutes les variables doivent être centralisées dans theme.css.
+----------------------------------------------------------- */
+/*
 :root {
   --color-primary: #2d6cdf;
   --color-primary-light: #e8f0ff;
@@ -7,158 +14,204 @@
   --color-border: #dadada;
   --color-error: #e53935;
   --color-white: #ffffff;
-}
+} */
 
+
+/* -----------------------------------------------------------
+   PAGE D'AUTHENTIFICATION
+   Conteneur global des pages Login / Register
+----------------------------------------------------------- */
 .auth-page {
-  min-height: 100vh;
-  display: flex;
+  min-height: 100vh;                       /* Occupe toute la hauteur de l'écran */
+  display: flex;                           /* Organisation verticale */
   flex-direction: column;
-  background-color: var(--color-bg);
+  background-color: var(--bg-page);        /* Fond global */
 }
 
+/* -----------------------------------------------------------
+   HEADER DE LA PAGE D'AUTH
+----------------------------------------------------------- */
 .auth-header {
-  padding: 24px 16px 0;
+  padding: 24px 16px 0;                    /* Espacement interne */
 }
 
+/* Logo textuel */
 .auth-logo {
-  font-size:rem;
-  font-weight: 700;
-  color: var(--color-primary);
+  font-size: 1rem;                         /* Taille du texte du logo */
+  font-weight: 700;                        /* Met en avant le titre/logo */
+  color: var(--color-primary);             /* Couleur principale */
 }
 
 .auth-logo img {
-  width: 70px;
-  height: auto;
+  width: 70px;                             /* Taille standard du logo */
+  height: auto;                            /* Préserve les proportions */
 }
 
+/* -----------------------------------------------------------
+   CONTENU PRINCIPAL
+----------------------------------------------------------- */
 .auth-main {
-  flex: 1;
+  flex: 1;                                 /* Prend tout l'espace disponible */
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 24px 16px;
-  
+  justify-content: center;                 /* Centre verticalement */
+  align-items: center;                     /* Centre horizontalement */
+  padding: 24px 16px;                      /* Espacement interne */
 }
 
+/* -----------------------------------------------------------
+   CARTE D'AUTHENTIFICATION
+----------------------------------------------------------- */
 .auth-card {
   width: 100%;
-  max-width: 420px;
-  background-color: var(--color-primary-light);
-  border-radius: 10px;
-  padding: 24px 16px;
+  max-width: 420px;                        /* Largeur maximale */
+  background-color: var(--bg-card);        /* Fond de carte */
+  border-radius: var(--radius-md);         /* Coins arrondis */
+  padding: 24px 16px;                      /* Espacement interne */
+    box-shadow: var(--shadow-card);         /* Ombre standard */
 }
 
+/* -----------------------------------------------------------
+   ONGLET LOGIN / REGISTER 
+----------------------------------------------------------- */
 .auth-tabs {
-  display: flex;
-  margin-bottom: 24px;
+  display: flex;                           /* Affiche les onglets côte à côte */
+  margin-bottom: 24px;                     /* Espacement sous les onglets */
 }
 
 .auth-tab {
-  flex: 1;
-  border: none;
-  background: transparent;
-  padding: 12px;
-  font-weight: 600;
-  color: var(--color-primary);
-  cursor: pointer;
+  flex: 1;                                 /* Chaque onglet prend la même largeur */
+  border: none;                            /* Pas de bordure */
+  background: transparent;                 /* Fond transparent */
+  padding: 12px;                           /* Zone cliquable confortable */
+  font-weight: 600;                        /* Met en avant le texte */
+  color: var(--color-primary);             /* Couleur principale */
+  cursor: pointer;                         /* Indique que c'est cliquable */
 }
 
 .auth-tab.active {
-  border-bottom: 2px solid var(--color-primary);
+  border-bottom: 2px solid var(--color-primary); /* Souligne l’onglet actif */
 }
 
+/* -----------------------------------------------------------
+   FORMULAIRE
+----------------------------------------------------------- */
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 16px;                               /* Espacement entre les champs */
 }
 
+/* Groupe label + input */
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  text-align: center;
+  gap: 8px;                                /* Espacement entre label et input */
+  text-align: center;                      /* Centre le texte */
 }
 
+/* Label du champ */
 .form-group label {
-  font-weight: 600;
-  color: var(--color-text);
+  font-weight: 600;                        /* Met en avant le label */
+  color: var(--text-main);                 /* Couleur principale du texte */
 }
 
+/* Champ de saisie */
 .form-group input {
-  height: 44px;
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  padding: 0 12px;
-  background-color: var(--color-white);
-  text-align: center;
+  height: 44px;                            /* Hauteur standard */
+  border: 1px solid var(--border-color);   /* Bordure légère */
+  border-radius: var(--radius-sm);         /* Coins arrondis */
+  padding: 0 12px;                         /* Espacement interne horizontal */
+  background-color: var(--color-white);    /* Fond blanc */
+  text-align: center;                      /* Centre le texte dans le champ */
+}
+/* Placeholder */
+.form-group input::placeholder {
+  color: var(--text-secondary);            /* Couleur du placeholder */
 }
 
+/* -----------------------------------------------------------
+   BOUTON PRINCIPAL
+----------------------------------------------------------- */
 .primary-button {
-  height: 48px;
+  height: 48px;                            /* Hauteur standard */
   border: none;
-  border-radius: 8px;
-  background-color: var(--color-primary);
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
+  border-radius: var(--radius-md);         /* Coins arrondis */                  
+  background-color: var(--color-primary);  /* Couleur principale */
+  color: white;                          /* Texte blanc */
+  font-weight: 600;                        /* Met en avant le bouton */
+  cursor: pointer;                         /* Indique que c'est cliquable */
+}
+/* Hover du bouton principal */
+.primary-button:hover {
+  background-color: var(--color-primary-dark); /* Accentue la couleur au survol */
 }
 
+/* -----------------------------------------------------------
+   MESSAGES D'ERREUR
+----------------------------------------------------------- */
 .error-message {
   margin: 0;
-  color: var(--color-error);
+  color: var(--color-error);               /* Rouge d'erreur */
   text-align: center;
 }
-
+/* -----------------------------------------------------------
+   BOUTON "ACCUEIL"
+----------------------------------------------------------- */
 .home-button-wrapper {
-  width: 100%;
-  align-self: stretch;
+  width: 100%;                             /* Occupe toute la largeur */
+  align-self: stretch;                     /* S'étend dans le conteneur parent */
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-end;               /* Aligne le bouton à droite */
 }
 
-
-
+/* Bouton d'accueil */
 .acceuil-button {
-  display: flex;
+  display: flex;                           /* Organisation verticale */
   flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  height: 48px;
+  align-items: center;                     /* Centre horizontalement */
+  gap: 8px;                                /* Espacement entre icône et texte */
+  height: 48px;                            /* Hauteur standard */
   border: none;
-  border-radius: 8px;
-  background-color: var(--color-primary);
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 40px;
+  border-radius: 8px;                      /* Coins arrondis */
+  background-color: var(--color-primary);  /* Couleur principale */
+  color: white;                          /* Texte blanc */
+  font-weight: 600;                        /* Met en avant le bouton */
+  cursor: pointer;                         /* Indique que c'est cliquable */
+  margin-top: 40px;                        /* Espacement supérieur */
 }
 
+/* -----------------------------------------------------------
+   FOOTER DE LA PAGE D'AUTH
+----------------------------------------------------------- */
 .auth-footer {
   display: flex;
-  justify-content: center;
-  gap: 24px;
-  padding: 16px;
+  justify-content: center;                 /* Centre les liens */
+  gap: 24px;                               /* Espacement entre les liens */
+  padding: 16px;                           /* Espacement interne */
 }
 
+/* Liens du footer */
 .auth-footer a {
-  color: var(--color-text-secondary);
-  text-decoration: none;
+  color: var(--color-text-secondary);      /* Couleur secondaire */
+  text-decoration: none;                   /* Pas de soulignement */
 }
 
+/* -----------------------------------------------------------
+   RESPONSIVE (TABLETTES ET +)
+----------------------------------------------------------- */
 @media (min-width: 768px) {
   .auth-header {
-    padding: 32px 48px 0;
+    padding: 32px 48px 0;                  /* Plus d'espace sur grands écrans */
   }
 
   .auth-main {
-    padding: 32px;
+    padding: 32px;                         /* Plus d'espace interne */
   }
 
   .auth-card {
     width: 100%;
-    max-width: 640px;
-    padding: 32px;
+    max-width: 640px;                      /* Carte plus large */
+    padding: 32px;                         /* Padding plus généreux */
   }
 }

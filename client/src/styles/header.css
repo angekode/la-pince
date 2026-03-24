@@ -1,38 +1,86 @@
-.header__logo {
-  width: 120px;
-  margin: 1rem;
-}
-
+/* -----------------------------------------------------------
+   HEADER GLOBAL
+   Conteneur principal du header : logo + titre + navigation
+----------------------------------------------------------- */
 header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex;                                 /* Place les éléments sur une seule ligne */
+  align-items: center;                           /* Centre verticalement logo, titre et nav */
+  justify-content: space-between;                /* Espace entre logo et navigation */
+  padding: 1rem;                                 /* Espacement interne pour aérer le header */
+  background: var(--bg-page);                    /* Fond cohérent avec le reste de l'application */
+  border-bottom: 1px solid var(--border-color);  /* Ligne discrète pour séparer du contenu */
 }
 
+/* -----------------------------------------------------------
+   LOGO
+----------------------------------------------------------- */
+.header__logo {
+  width: 120px;                                  /* Taille standard du logo */
+  margin: 1rem;                                  /* Espacement autour pour éviter qu'il colle au bord */
+}
+
+/* -----------------------------------------------------------
+   TITRE DU HEADER
+----------------------------------------------------------- */
 header h1 {
-  color: var(--color-primary-dark);
+  margin: 0;                               /* Supprime le margin par défaut */
+  font-size: 1.5rem;                       /* Taille de titre lisible */
+  font-weight: 600;                        /* Poids intermédiaire pour un rendu moderne */
+  color: var(--color-primary-dark);        /* Couleur d'accent utilisée dans ton thème */
 }
 
+/* -----------------------------------------------------------
+   UTILISATEUR CONNECTÉ (affiché à droite du header)
+   Affiche le nom de l'utilisateur connecté, ou un message de bienvenue.
+----------------------------------------------------------- */
 .header__user {
-  margin: 1rem;
-  font-size: smaller;
-  font-style: italic;
+  margin: 1rem;                                  /* Espacement */
+  font-size: smaller;                            /* Taille réduite */
+  font-style: italic;                            /* Style informatif */
+  color: var(--text-secondary);                  /* Couleur discrète */
 }
 
+/* Paragraphe éventuel dans le header */
+p {
+  margin: 1rem;                                  /* Espacement standard */
+}
+
+/* -----------------------------------------------------------
+   NAVIGATION PRINCIPALE
+----------------------------------------------------------- */
 nav {
-  flex: 1; /* Pour prendre toute la place restante */
-  display: flex;
-  justify-content: space-around;
+  flex: 1;                                 /* Prend tout l’espace horizontal disponible */
+  display: flex;                           /* Affiche les liens sur une ligne */
+  justify-content: space-around;           /* Répartit les liens uniformément */
+}
 
-  a {
-    color: var(--text-main);
-  }
+/* Liens de navigation */
+nav a {
+  color: var(--text-main);                 /* Couleur de texte principale */
+  text-decoration: none;                   /* Supprime le soulignement par défaut */
+  font-weight: 500;                        /* Poids intermédiaire pour une meilleure lisibilité */
+  padding: 0.5rem 1rem;                    /* Zone cliquable plus confortable */
+  border-radius: var(--radius-sm);         /* Coins légèrement arrondis */
+  transition: background 0.2s ease;        /* Animation douce au survol */
+}
 
-  .active {
-    
-  }
+ /* Effet visuel au survol */
+nav a:hover {
+  background: var(--bg-card);              /* Fond léger pour indiquer l'interaction */
+} 
 
-  .pending {
-    text-decoration: none;
-  }
+/* -----------------------------------------------------------
+   ÉTAT : lien actif (page courante)
+----------------------------------------------------------- */
+nav .active {
+  color: var(--color-primary-dark);        /* Met en avant la page active */
+  font-weight: 700;                        /* Accentue visuellement */
+}
+
+/* -----------------------------------------------------------
+   ÉTAT : lien en attente (React Router)
+----------------------------------------------------------- */
+nav  .pending {
+  opacity: 0.6;                            /* Indique un état transitoire */
+  text-decoration: none;                   /* Pas de soulignement */
 }

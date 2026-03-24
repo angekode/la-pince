@@ -1,0 +1,88 @@
+/* -----------------------------------------------------------
+   RESET CSS PERSONNALISÉ POUR LA PINCE
+   Objectif : harmoniser les styles par défaut des navigateurs
+   sans casser le design existant ni les composants.
+----------------------------------------------------------- */
+
+/* -----------------------------------------------------------
+   1. Suppression des marges et paddings par défaut
+----------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Cohérence du calcul des tailles */
+}
+
+/* -----------------------------------------------------------
+   2. Typographie
+   On ne définit PAS la police ici car elle est déjà gérée
+   dans theme.css pour respecter le thème clair/sombre.
+----------------------------------------------------------- */
+html {
+  line-height: 1.5; /* Améliore la lisibilité globale */
+  -webkit-text-size-adjust: 100%; /* Empêche le zoom auto sur mobile */
+}
+
+/* -----------------------------------------------------------
+   3. Liens
+----------------------------------------------------------- */
+a {
+  color: inherit; /* Hérite de la couleur du parent */
+  text-decoration: none; /* On laisse theme.css gérer les styles */
+}
+
+/* -----------------------------------------------------------
+   4. Listes
+----------------------------------------------------------- */
+ul,
+ol {
+  list-style: none; /* Supprime les puces par défaut */
+}
+
+/* -----------------------------------------------------------
+   5. Images
+----------------------------------------------------------- */
+img,
+picture {
+  max-width: 100%; /* Empêche les débordements */
+  display: block;  /* Supprime l’espace blanc sous les images */
+}
+
+/* -----------------------------------------------------------
+   6. Boutons
+----------------------------------------------------------- */
+button {
+  border: none;
+  background: none;
+  font: inherit; /* Hérite de la police */
+  cursor: pointer;
+}
+
+/* -----------------------------------------------------------
+   7. Inputs & Textareas
+----------------------------------------------------------- */
+input,
+textarea,
+select {
+  font: inherit; /* Hérite de la police */
+  border-radius: 0; /* Neutralise les arrondis par défaut */
+  outline: none; /* Géré dans theme.css */
+}
+
+/* -----------------------------------------------------------
+   8. Tables
+----------------------------------------------------------- */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+/* -----------------------------------------------------------
+   9. Body
+   Le fond et la couleur du texte sont gérés dans theme.css
+----------------------------------------------------------- */
+body {
+  min-height: 100vh;
+}
