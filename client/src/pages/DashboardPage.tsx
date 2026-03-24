@@ -1,5 +1,8 @@
+import { useState, useEffect } from "react";
+
 import PieGraph from "../components/dashboard/PieGraph";
 import BarGraph from "../components/dashboard/BarGraph";
+import CurveGraph from "../components/dashboard/CurveGraph";
 
 
 import { useState, useEffect } from "react";
@@ -30,7 +33,7 @@ function DashboardPage() {
   // Infos sur l'utilisateurs disponibles uniquement si connecté sinon undefined
   const [user, setUser] = useState<UserInfo | undefined>(undefined);
   const [solde, setSolde] = useState(0);
-  const [activeGraph, setActiveGraph] = useState<'pie' | 'bar'>('pie');
+  const [activeGraph, setActiveGraph] = useState<'pie' | 'bar' | 'curve'>('pie');
 
   // Fonctions 
   // ------

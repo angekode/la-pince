@@ -1,15 +1,22 @@
+/**
+ * Affiche une graphique sous forme de de barres qui montre la somme dépensée dans chaque catégorie.
+ * A améliorer en ajoutant le niveau de budget maximum par catégorie.
+ */
+
 import { useState, useEffect } from "react";
+
 import { Chart } from '@highcharts/react';
 import type { HighchartsOptionsType } from '@highcharts/react';
 import 'highcharts/esm/highcharts-3d.src.js';
 
-import { getCategoryTotals, type CategoryTotals } from "../../services/graphs/graphs.service";
+import { getCategoryTotalsForPieGraphData, type CategoryTotalsData } from "../../services/graphs/graphs-data.service";
 
 
 function PieGraph() {
 
-  const [graphData, setGraphData] = useState<CategoryTotals[]>();
+  const [graphData, setGraphData] = useState<CategoryTotalsData[]>();
 
+  // On configure tout le graphique ici (Données, apparance)
   const chartOptions : HighchartsOptionsType = {
     chart: {
       type: "pie",
@@ -30,7 +37,7 @@ function PieGraph() {
     plotOptions: {
       pie: {
         dataLabels: {
-          useHTML: true,
+          useHTML: true, // Pour autoriser l'utilisation des class définie en dessous à partir du css (chart.css)
           enabled: true,
           formatter: function () {
             return `
@@ -57,8 +64,9 @@ function PieGraph() {
       }
     },
   };
-  
-  useEffect(() => { getCategoryTotals().then(setGraphData) }, []);
+
+  // Lance l'acquisition des données une fois au montage du composant (car tableau des dépendances vide)
+  useEffect(() => { getCategoryTotalsForPieGraphData().then(setGraphData) }, []);
 
   return (
     <Chart options={chartOptions} />

@@ -10,7 +10,7 @@ import ThemeToggle from "./components/ThemeToggle";
 import Register from "./pages/auth/Register";
 
 import "./styles/index.css";
-import "./services/graphs/graphs.service"
+import "./services/graphs/graphs-data.service"
 
 export default function App() {
 
@@ -39,11 +39,4 @@ export default function App() {
       <Footer/>
     </>
   );
-}
-
-import { getAllCategories } from "./services/graphs/graphs.service";
-
-async function test() {
-  const cat = await getAllCategories();
-  console.log(cat)
 }
