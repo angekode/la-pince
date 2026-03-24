@@ -1,16 +1,24 @@
+/**
+ * Affiche une graphique sous forme de de barres qui montre la somme dépensée dans chaque catégorie.
+ * A améliorer en ajoutant le niveau de budget maximum par catégorie.
+ */
+
 import { useState, useEffect } from "react";
+
 import { Chart } from '@highcharts/react';
 import type { HighchartsOptionsType } from '@highcharts/react';
 import 'highcharts/esm/highcharts-3d.src.js';
 
-import { getCategoryTotals, type CategoryTotals } from "../../services/graphs/graphs.service";
+import { getCategoryTotalsForPieGraphData, type CategoryTotalsData } from "../../services/graphs/graphs-data.service";
 
 
 function BarGraph() {
 
-  const [graphData, setGraphData] = useState<CategoryTotals[]>();
+  const [graphData, setGraphData] = useState<CategoryTotalsData[]>();
 
+  // On configure tout le graphique ici (Données, apparance)
   const chartOptions : HighchartsOptionsType = {
+
     chart: {
       type: "bar",
       backgroundColor: "transparent",
@@ -20,25 +28,29 @@ function BarGraph() {
         alpha: 20,
         beta: 5
       },
-                shadow: {
-            color: "rgba(0, 0, 0, 1)",
-            offsetX: 0,
-            offsetY: 6,
-            opacity: 1,
-            width: 10
-          }
+      shadow: {
+        color: "rgba(0, 0, 0, 1)",
+        offsetX: 0,
+        offsetY: 6,
+        opacity: 1,
+        width: 10
+      }
     },
+
+    // Apparence de l'axe des catégories
     xAxis: {
-      categories: graphData?.map(item => item.category),
+      categories: graphData?.map(item => item.category), // liste des catégories
       gridLineWidth: 0,
       labels: {
-        useHTML: true,
+        useHTML: true, // Pour autoriser l'utilisation des class définie en dessous à partir du css (chart.css)
         formatter: function () {
           return `<span class="bar-axis-label">${this.value}</span>`;
         },
-        x: -10
+        x: -10 // pour l'éloigner de l'axe
       }
     },
+
+    // Apparence 
     yAxis: {
       title: {
         text: "Montant (€)"
@@ -77,7 +89,8 @@ function BarGraph() {
     }
   };
   
-  useEffect(() => { getCategoryTotals().then(setGraphData) }, []);
+  // Lance l'acquisition des données une fois au montage du composant (car tableau des dépendances vide) 
+  useEffect(() => { getCategoryTotalsForPieGraphData().then(setGraphData) }, []);
 
   return (
     <Chart options={chartOptions} />

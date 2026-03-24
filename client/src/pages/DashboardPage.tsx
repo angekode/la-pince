@@ -5,7 +5,7 @@ import BarGraph from "../components/dashboard/BarGraph";
 import CurveGraph from "../components/dashboard/CurveGraph";
 
 import { getMe } from "../services/auth/auth.service";
-import { getSolde } from "../services/graphs/graphs.service";
+import { getSolde } from "../services/graphs/graphs-data.service";
 
 
 type UserInfo = {
