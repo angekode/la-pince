@@ -1,122 +1,176 @@
+/* -----------------------------------------------------------
+   VARIABLES GLOBALES (communes aux thèmes clair et sombre)
+   Ces variables définissent les couleurs principales, les ombres
+   et les rayons de bordure utilisés dans toute l'application.
+----------------------------------------------------------- */
 :root {
-  --color-primary-light: #2d6cdf;
-  --color-primary-light-hover: #1f5bd0;
+  /* Couleurs principales (mode clair par défaut) */
+  --color-primary-light: #2d6cdf;            /* Bleu principal utilisé en mode clair */
+  --color-primary-light-hover: #1f5bd0;      /* Variation plus sombre pour le hover */
 
-  --color-primary-dark: #d4af37;
-  --color-primary-dark-hover: #b8962e;
+  /* Couleurs principales (mode sombre) */
+  --color-primary-dark: #d4af37;             /* Doré utilisé en mode sombre */
+  --color-primary-dark-hover: #b8962e;       /* Variation plus sombre pour le hover */
 
-  --color-success: #4caf50;
-  --color-error: #e53935;
+  /* Couleurs fonctionnelles */
+  --color-success: #4caf50;                  /* Vert pour les validations */
+  --color-error: #e53935;                    /* Rouge pour les erreurs */
 
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
+  /* Rayons de bordure */
+  --radius-sm: 6px;                          /* Petits arrondis */
+  --radius-md: 8px;                          /* Arrondis moyens */
+  --radius-lg: 16px;                         /* Grands arrondis */
 
-  --shadow-card: 0 16px 40px rgba(0, 0, 0, 0.12);
-  --shadow-button: 0 2px 8px rgba(0, 0, 0, 0.12);
+  /* Ombres */
+  --shadow-card: 0 16px 40px rgba(0, 0, 0, 0.12);   /* Ombre standard des cartes */
+  --shadow-button: 0 2px 8px rgba(0, 0, 0, 0.12);   /* Ombre légère des boutons */
 }
 
+/* -----------------------------------------------------------
+   THÈME CLAIR
+   Toutes les variables spécifiques au mode clair.
+   Elles écrasent celles définies dans :root.
+----------------------------------------------------------- */
 body.light {
-  --bg-page: #f7f9fc;
-  --bg-card: #ffffff;
-  --bg-input: #ffffff;
-  --border-color: #d9deea;
+  /* Fonds */
+  --bg-page: #f7f9fc;                        /* Fond global de la page */
+  --bg-card: #ffffff;                        /* Fond des cartes */
+  --bg-input: #ffffff;                       /* Fond des champs de saisie */
+  --border-color: #d9deea;                   /* Bordures légères */
 
-  --text-main: #1e1e1e;
-  --text-secondary: #6b6b6b;
+  /* Texte */
+  --text-main: #1e1e1e;                      /* Texte principal */
+  --text-secondary: #6b6b6b;                 /* Texte secondaire */
 
-  --button-primary: var(--color-primary-light);
+  /* Boutons */
+  --button-primary: var(--color-primary-light);        /* Couleur du bouton principal */
   --button-primary-hover: var(--color-primary-light-hover);
 
-  --link-color: #2d6cdf;
-  --alert-error-bg: rgba(229, 57, 53, 0.08);
-  --alert-success-bg: rgba(76, 175, 80, 0.08);
+  /* Liens */
+  --link-color: #2d6cdf;                     /* Couleur des liens */
 
-  --rule-default: #7a7f8c;
-  --rule-valid: #4caf50;
-  --rule-invalid: #e53935;
+  /* Alertes */
+  --alert-error-bg: rgba(229, 57, 53, 0.08); /* Fond des alertes d'erreur */
+  --alert-success-bg: rgba(76, 175, 80, 0.08); /* Fond des alertes de succès */
+
+  /* Règles de validation (ex : mot de passe) */
+  --rule-default: #7a7f8c;                   /* Couleur par défaut */
+  --rule-valid: #4caf50;                     /* Règle valide */
+  --rule-invalid: #e53935;                   /* Règle invalide */
 }
 
+/* -----------------------------------------------------------
+   THÈME SOMBRE
+   Toutes les variables spécifiques au mode sombre.
+----------------------------------------------------------- */
 body.dark {
-  --bg-page: #0f1115;
-  --bg-card: #171a21;
-  --bg-input: #11141a;
-  --border-color: #2b3140;
+  /* Fonds */
+  --bg-page: #0f1115;                        /* Fond global sombre */
+  --bg-card: #171a21;                        /* Fond des cartes */
+  --bg-input: #11141a;                       /* Fond des champs */
+  --border-color: #2b3140;                   /* Bordures sombres */
 
-  --text-main: #ffffff;
-  --text-secondary: #b8c0d4;
+  /* Texte */
+  --text-main: #ffffff;                      /* Texte principal */
+  --text-secondary: #b8c0d4;                 /* Texte secondaire */
 
-  --button-primary: var(--color-primary-dark);
+  /* Boutons */
+  --button-primary: var(--color-primary-dark);         /* Couleur du bouton principal */
   --button-primary-hover: var(--color-primary-dark-hover);
 
-  --link-color: #ffffff;
-  --alert-error-bg: rgba(229, 57, 53, 0.15);
-  --alert-success-bg: rgba(76, 175, 80, 0.15);
+  /* Liens */
+  --link-color: #ffffff;                     /* Liens en blanc */
 
+  /* Alertes */
+  --alert-error-bg: rgba(229, 57, 53, 0.15); /* Fond des alertes d'erreur */
+  --alert-success-bg: rgba(76, 175, 80, 0.15); /* Fond des alertes de succès */
+
+  /* Règles de validation */
   --rule-default: #9ca6bf;
   --rule-valid: #4caf50;
   --rule-invalid: #ff7b72;
 }
 
+/* -----------------------------------------------------------
+   RÉGLAGES GLOBAUX
+   S'appliquent à tous les thèmes.
+----------------------------------------------------------- */
 * {
-  box-sizing: border-box;
+  box-sizing: border-box;                    /* Calcul cohérent des tailles */
 }
 
 html,
 body,
 #root {
-  min-height: 100%;
-  margin: 0;
+  min-height: 100%;                          /* S'assure que la page occupe toute la hauteur */
+  margin: 0;                                 /* Supprime les marges par défaut */
 }
 
+/* -----------------------------------------------------------
+   STYLE GLOBAL DU BODY
+----------------------------------------------------------- */
 body {
-  font-family: Inter, Arial, sans-serif;
-  background: var(--bg-page);
-  color: var(--text-main);
+  font-family: Inter, Arial, sans-serif;     /* Police globale */
+  background: var(--bg-page);                /* Fond dépendant du thème */
+  color: var(--text-main);                   /* Couleur du texte dépendant du thème */
 }
 
+/* -----------------------------------------------------------
+   STYLE GLOBAL DES LIENS
+----------------------------------------------------------- */
 a {
-  text-decoration: underline;
+  text-decoration: underline;                /* Style par défaut */
 }
 
+/* -----------------------------------------------------------
+   CONTENEUR DE PAGE (utilisé dans Register)
+----------------------------------------------------------- */
 .page-container {
-  min-height: 100vh;
+  min-height: 100vh;                         /* Occupe toute la hauteur */
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 88px 16px 32px;
+  align-items: center;                       /* Centre horizontalement */
+  justify-content: center;                   /* Centre verticalement */
+  padding: 88px 16px 32px;                   /* Espacement interne */
 }
 
+/* -----------------------------------------------------------
+   CARTE D'AUTHENTIFICATION (Register)
+----------------------------------------------------------- */
 .auth-card {
   width: 100%;
-  max-width: 520px;
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card);
-  padding: 32px 28px;
+  max-width: 520px;                          /* Largeur maximale */
+  background: var(--bg-card);                /* Fond dépendant du thème */
+  border-radius: var(--radius-lg);           /* Coins arrondis */
+  box-shadow: var(--shadow-card);            /* Ombre standard */
+  padding: 32px 28px;                        /* Espacement interne */
 }
 
+/* -----------------------------------------------------------
+   FORMULAIRE D'INSCRIPTION
+----------------------------------------------------------- */
 .register-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 16px;                                 /* Espacement entre les champs */
 }
 
+/* -----------------------------------------------------------
+   BLOC MARQUE (logo + titre)
+----------------------------------------------------------- */
 .brand-block {
-  text-align: center;
-  margin-bottom: 8px;
+  text-align: center;                        /* Centre le contenu */
+  margin-bottom: 8px;                        /* Espacement inférieur */
 }
 
 .brand-logo {
   width: 100px;
   height: 100px;
-  margin: 0 auto 14px auto;
+  margin: 0 auto 14px auto;                  /* Centre horizontalement */
   display: flex;
   align-items: center;
   justify-content: center;
-
-  border-radius: 20px;
+  border-radius: 20px;                       /* Coins arrondis */
 }
 
 .brand-logo img {
@@ -124,6 +178,9 @@ a {
   height: auto;
 }
 
+/* -----------------------------------------------------------
+   TITRES ET SOUS-TITRES
+----------------------------------------------------------- */
 .register-title {
   margin: 0;
   font-size: 2rem;
@@ -142,6 +199,9 @@ a {
   font-weight: 600;
 }
 
+/* -----------------------------------------------------------
+   FORM GROUP (Register)
+----------------------------------------------------------- */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -174,7 +234,9 @@ a {
   border-color: var(--button-primary);
   box-shadow: 0 0 0 3px rgba(45, 108, 223, 0.12);
 }
-
+/* -----------------------------------------------------------
+   MOT DE PASSE : règles + bouton afficher/masquer
+----------------------------------------------------------- */
 .password-input-wrapper {
   display: flex;
   gap: 8px;
@@ -216,6 +278,9 @@ a {
   color: var(--rule-invalid);
 }
 
+/* -----------------------------------------------------------
+   CHECKBOX
+----------------------------------------------------------- */
 .checkbox-row {
   display: flex;
   align-items: flex-start;
@@ -228,6 +293,9 @@ a {
   margin-top: 3px;
 }
 
+/* -----------------------------------------------------------
+   BOUTON PRINCIPAL
+----------------------------------------------------------- */
 .primary-button {
   height: 48px;
   width: 100%;
@@ -251,6 +319,9 @@ a {
   cursor: not-allowed;
 }
 
+/* -----------------------------------------------------------
+   BOUTON ACCUEIL
+----------------------------------------------------------- */
 .acceuil-button {
   display: flex;
   flex-direction: column;
@@ -259,13 +330,16 @@ a {
   height: 48px;
   border: none;
   border-radius: 8px;
-  background-color: var(--color-primary);
+  background-color: var(--color-primary-light);
   color: white;
   font-weight: 600;
   cursor: pointer;
   margin-top: 40px;
 }
 
+/* -----------------------------------------------------------
+   ALERTES
+----------------------------------------------------------- */
 .alert {
   padding: 12px 14px;
   border-radius: var(--radius-sm);
@@ -285,6 +359,9 @@ a {
   border: 1px solid rgba(76, 175, 80, 0.28);
 }
 
+/* -----------------------------------------------------------
+   BOUTON DE CHANGEMENT DE THÈME
+----------------------------------------------------------- */
 .theme-toggle-wrapper {
   position: fixed;
   top: 18px;
@@ -296,12 +373,31 @@ a {
   border: 1px solid var(--border-color);
   background: var(--bg-card);
   color: var(--text-main);
-  border-radius: 999px;
+  border-radius: 999px;                     /* Forme de pilule */
   height: 42px;
   padding: 0 14px;
   cursor: pointer;
   box-shadow: var(--shadow-button);
   font-weight: 600;
+}
+
+/* -----------------------------------------------------------
+   RESPONSIVE (GRANDS ÉCRANS)
+----------------------------------------------------------- */
+@media (min-width: 1024px) {
+  .auth-header {
+    padding: 32px 48px 0;
+  }
+
+  .auth-main {
+    padding: 32px;
+  }
+
+  .auth-card {
+    width: 100%;
+    max-width: 800px;
+    padding: 32px;
+  }
 }
 
 /*@media (max-width: 600px) {
@@ -327,18 +423,3 @@ a {
   }
 }*/
 
-@media (min-width: 1024px) {
-  .auth-header {
-    padding: 32px 48px 0;
-  }
-
-  .auth-main {
-    padding: 32px;
-  }
-
-  .auth-card {
-    width: 100%;
-    max-width: 800px;
-    padding: 32px;
-  }
-}
