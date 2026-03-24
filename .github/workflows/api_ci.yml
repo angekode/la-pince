@@ -2,12 +2,11 @@ name: Run tests
 
 env:
   NODE_ENV: test
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 on:
   pull_request:
     branches:
-      - develop
+      - master
 
 jobs:
   run_db_tests:

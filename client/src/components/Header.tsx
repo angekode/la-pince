@@ -1,8 +1,29 @@
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import crabLogo from "../assets/crab-svgrepo-com.svg";
 
+import crabLogo from "../assets/crab-svgrepo-com.svg";
+import { getMe } from "../services/auth/auth.service";
+
+
+type UserInfo = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+};
 
 function Header() {
+
+  // undefined => utilisateur déconnecté, sinon contient les infos de l'utilisateur
+  const [user, setUser] = useState<UserInfo | undefined>(undefined);
+
+  // Se lance une fois au montage du composant pour récupérer les infos de l'utilisateur.
+  // Si connecté => affiche le nom
+  // Sinon affiche déconnecté
+  useEffect(() => {
+    getMe().then(value => setUser(value));
+  },[]);
+
   return (
     <header>
       <img className="header__logo" src={crabLogo} />
@@ -11,7 +32,7 @@ function Header() {
         <NavLink to="/transactions" className={({ isActive }) => isActive ? "active" : "pending" }>Dépenses</NavLink>
         <NavLink to="/" className={({ isActive }) => isActive ? "active" : "pending" }>Home</NavLink>
       </nav>
-      <p>Connecté</p>
+      <p className="header__user">{user ? `${user.firstName} ${user.lastName} connecté 🟢` : 'Déconnecté ⚪'}</p>
     </header>
   );
 }

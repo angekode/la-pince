@@ -76,6 +76,10 @@ section {
   cursor: pointer;                         /* Indique que c’est cliquable */
 }
 
+/* Hover */
+.dashboard__graphs-section nav button:hover {
+  background-color: color-mix(in srgb, var(--bg-card) 95%, white);
+}
 /*
 .dashboard__graphs-section nav button:hover {
    Pas de changement de couleur défini dans l'existant 

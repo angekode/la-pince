@@ -29,6 +29,17 @@ header h1 {
   color: var(--color-primary-dark);        /* Couleur d'accent utilisée dans ton thème */
 }
 
+/* -----------------------------------------------------------
+   UTILISATEUR CONNECTÉ (affiché à droite du header)
+   Affiche le nom de l'utilisateur connecté, ou un message de bienvenue.
+----------------------------------------------------------- */
+.header__user {
+  margin: 1rem;                                  /* Espacement */
+  font-size: smaller;                            /* Taille réduite */
+  font-style: italic;                            /* Style informatif */
+  color: var(--text-secondary);                  /* Couleur discrète */
+}
+
 /* Paragraphe éventuel dans le header */
 p {
   margin: 1rem;                                  /* Espacement standard */
