@@ -1,93 +1,175 @@
-/* -----------------------------------------------------------
-   STYLE GLOBAL DES SECTIONS DU DASHBOARD
-   Chaque section est affichée sous forme de carte visuelle.
------------------------------------------------------------ */
-section {
-  background: var(--bg-card);                 /* Fond blanc ou sombre selon le thème */
-  border-radius: var(--radius-lg);            /* Coins arrondis pour une apparence moderne et cohérente */
-  box-shadow: var(--shadow-card);             /* Ombre légère pour donner de la profondeur - ombre standard utilisée partout */
-  border: 1px solid var(--border-color);      /* Bordure légère pour délimiter la carte */
-   margin: 1rem;                               /* Espacement externe entre les sections */
-  padding: 1rem;                              /* Espacement interne pour aérer le contenu */
+/**************************************************************
+ * Styles du dashboard
+ * Ce fichier gère :
+ *  - la mise en page des 3 blocs
+ *  - l'affichage des alertes
+ *  - la visibilité des icônes
+ *  - la lisibilité du filtre catégorie
+ **************************************************************/
+
+
+/**************************************************************
+ * BLOC 1 — INDICATEURS GLOBAUX
+ **************************************************************/
+
+.dashboard__indicators-section {
+  background: var(--bg-card);          /* Fond du bloc */
+  border-radius: var(--radius-lg);     /* Coins arrondis */
+  border: 1px solid var(--border-color); /* Bordure légère */
+  box-shadow: var(--shadow-card);      /* Ombre douce */
+  padding: 10px;                       /* Bloc plus compact */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;                           /* Espacement interne réduit */
 }
 
-/* -----------------------------------------------------------
-   SECTION : INDICATEURS (revenus, dépenses, solde, etc.)
------------------------------------------------------------ */
-.dashboard__indicators-section ul {
-  display: flex;                            /* Affiche les indicateurs côte à côte */
-  justify-content: space-around;            /* Répartit les éléments uniformément */
-  list-style: none;                         /* Supprime les puces de la liste */
-  padding: 0;                               /* Supprime le padding par défaut */
+.dashboard__indicators-row {
+  display: flex;
+  justify-content: space-between;      /* Répartition horizontale */
+  gap: 12px;                           /* Espacement entre indicateurs */
 }
 
- /* Bloc d’un indicateur */
-.dashboard__indicators-section  li {
-  padding: 1rem;                           /* Espacement interne pour aérer chaque bloc */    
-  font-size: large;                        /* Taille de texte plus visible */
-  font-weight: 600;                        /* Texte en gras pour mettre en valeur les indicateurs */ 
-  color: var(--color-primary-dark);        /* Couleur du texte pour les indicateurs, plus sombre que le thème principal pour les faire ressortir (couleur d’accent (doré) pour les titres)*/
-  text-align: center;                      /* Centre le contenu dans chaque bloc */
-
-}
-  /* Valeur principale de l’indicateur à afficher*/
-.dashboard__indicators-section li span {
-  display: block;                          /* Force un retour à la ligne */
-  margin: 1rem;                            /* Espacement autour de la valeur */
-  font-size: xx-large;                     /* Met en avant la valeur principale */
-  color: var(--text-main);                 /* Couleur de texte principale */
+.dashboard__indicator p {
+  font-size: 1.1rem;                   /* Taille de texte réduite */
 }
 
-/* Texte secondaire (alerte, variation, etc.) */
-.dashboard__indicators-section li em {
-  display: block;                          /* Retour à la ligne pour le texte secondaire */
-  margin: 1rem;                            /* Espacement autour du texte */
-  font-size: small;                        /* Texte plus discret */
-  color: var(--color-error);               /* Rouge pour les alertes (ex : dépenses élevées) */
+
+/**************************************************************
+ * RECTANGLE D’ALERTE GLOBAL (visible)
+ **************************************************************/
+
+.dashboard__alert-bar {
+  height: 32px;                        /* Hauteur suffisante pour le texte */
+  line-height: 32px;                   /* Centre verticalement le texte */
+  border-radius: var(--radius-sm);     /* Coins arrondis */
+  text-align: center;                  /* Texte centré */
+  font-size: 1rem;                     /* Taille lisible */
+  font-weight: 600;                    /* Texte mis en valeur */
+  padding: 0;                          /* Pas de padding pour éviter l’écrasement */
+  color: white;                        /* Texte toujours lisible */
 }
 
-/* -----------------------------------------------------------
-   SECTION : GRAPHIQUES
-   Contient les boutons de navigation + les images des graphs
------------------------------------------------------------ */
-.dashboard__graphs-section {
-  /* On affiche la barre de navigation au dessus des graphs */
-  display: flex;                           /* Organisation verticale */
-  flex-direction: column;                  /* Empile les éléments */
-  gap: 0.5rem;                             /* Espacement entre les éléments */
-  padding: 0.5rem;                         /* Padding interne */
+
+/**************************************************************
+ * BLOC 2 — BLOC PRINCIPAL (compact)
+ **************************************************************/
+
+.dashboard__main-block {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-card);
+  padding: 12px;                       /* Réduction du padding */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;                           /* Réduction du gap */
+  width: 100%;
 }
 
-/* Barre de navigation des graphiques */
-.dashboard__graphs-section nav {
-  display: flex;                           /* Affiche les boutons côte à côte */
-  flex-direction: row;
-  justify-content: space-around;           /* Répartition uniforme */
+
+/**************************************************************
+ * Ligne : Catégorie + Select + Icônes
+ **************************************************************/
+
+.dashboard__category-row {
+  display: flex;
+  align-items: center;                 /* Alignement vertical */
+  justify-content: space-between;      /* Répartition horizontale */
+  width: 100%;
 }
 
-/* Boutons de navigation */
-.dashboard__graphs-section nav button {
-  width: fit-content;
-  padding: 1rem;                           /* Taille confortable pour le clic */
-  border: 1px solid var(--border-color);   /* Bordure légère */
-  border-radius: var(--radius-sm);         /* Coins arrondis */
-  color: var(--text-main);                 /* Couleur de texte standard */
-  background: var(--bg-card);              /* Fond identique aux cartes */
-  cursor: pointer;                         /* Indique que c’est cliquable */
+/* Filtre catégorie aligné et lisible en dark mode */
+.dashboard__category-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;                            /* Espace entre label et select */
 }
 
-/* Hover */
-.dashboard__graphs-section nav button:hover {
-  background-color: color-mix(in srgb, var(--bg-card) 95%, white);
+.dashboard__category-select label {
+  margin: 0;
+  font-weight: 600;
 }
-/*
-.dashboard__graphs-section nav button:hover {
-   Pas de changement de couleur défini dans l'existant 
-   Possibilité d'amélioration : ajouter un hover plus visible (ex : changement de fond ou de bordure) 
-} */  
-/* Image du graphique */        
-.dashboard__graph-view img {
-  width: 100%;                             /* L’image occupe toute la largeur disponible */
-    display: block;                        /* Supprime les espaces blancs sous l’image */
 
+.dashboard__category-select select {
+  padding: 6px 10px;                   /* Taille compacte */
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-input);
+  color: var(--text-light);            /* Lisible en dark mode */
 }
+
+
+/**************************************************************
+ * Icônes graphiques (visibles)
+ **************************************************************/
+
+.dashboard__graph-icons {
+  display: flex;
+  gap: 16px;                           /* Espacement entre icônes */
+}
+
+.dashboard__graph-icons img {
+  width: 40px;                         /* Taille suffisante */
+  height: 40px;
+  cursor: pointer;
+  background: transparent !important;  /* Supprime le fond gris */
+  object-fit: contain;                 /* Affiche correctement le SVG */
+  opacity: 0.9;                        /* Légère transparence */
+  filter: drop-shadow(0 0 3px rgba(0,0,0,0.4)); /* Ombre pour contraste */
+  transition: 0.2s ease;               /* Animation fluide */
+}
+
+.dashboard__graph-icons img:hover,
+.dashboard__graph-icons img.active {
+  opacity: 1;                          /* Icône plus visible */
+  transform: scale(1.15);              /* Zoom léger */
+}
+
+
+/**************************************************************
+ * Indicateurs catégorie
+ **************************************************************/
+
+.dashboard__category-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 12px;                           /* Espacement réduit */
+}
+
+
+/**************************************************************
+ * Rectangle d’alerte catégorie (visible)
+ **************************************************************/
+
+.dashboard__alert-block .dashboard__alert-bar {
+  height: 32px;                        /* Hauteur suffisante */
+  line-height: 32px;                   /* Centre verticalement */
+  padding: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+}
+
+
+/**************************************************************
+ * BLOC 3 — GRAPHIQUE (plus grand)
+ **************************************************************/
+
+.dashboard__graph-section {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-card);
+  padding: 16px;
+  height: 75vh;                        /* Bloc 3 encore plus grand */
+  width: 100%;
+}
+
+.dashboard__graph-section canvas,
+.dashboard__graph-section svg {
+  width: 100%;
+  height: 100%;                        /* Le graphique occupe tout l’espace */
+}
+
+
+

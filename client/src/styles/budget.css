@@ -1,0 +1,141 @@
+/**************************************************************
+ * budget.css
+ * ------------------------------------------------------------
+ * Ce fichier gère l’apparence de la page Dépenses → Budget.
+ * Il contient :
+ *  - Le formulaire de création de budget
+ *  - Le formulaire de mise à jour
+ *  - L’affichage des cartes budget
+ *
+ * Chaque ligne est commentée pour faciliter la compréhension.
+ **************************************************************/
+
+
+
+/**************************************************************
+ * FORMULAIRE DE CRÉATION / MISE À JOUR DE BUDGET
+ **************************************************************/
+
+/* Conteneur principal du formulaire */
+.budget-form {
+  display: flex;                     /* Organisation verticale */
+  flex-direction: column;
+  gap: 16px;                         /* Espacement entre les champs */
+  background: var(--bg-card);        /* Fond cohérent avec la charte */
+  padding: 20px;                     /* Espacement interne */
+  border-radius: var(--radius-lg);   /* Coins arrondis */
+  border: 1px solid var(--border-color); /* Bordure légère */
+  box-shadow: var(--shadow-card);    /* Ombre douce */
+}
+
+/* Label des champs */
+.budget-form label {
+  font-weight: 600;                  /* Mise en valeur */
+  color: var(--text-main);           /* Couleur principale */
+}
+
+/* Champs input et select */
+.budget-form select,
+.budget-form input {
+  padding: 10px 14px;                /* Taille confortable */
+  border-radius: var(--radius-sm);   /* Coins arrondis */
+  border: 1px solid var(--border-color); /* Bordure */
+  background: var(--bg-input);       /* Fond des inputs */
+  color: var(--text-main);           /* Texte */
+  font-size: 1rem;                   /* Taille lisible */
+}
+
+/* Bouton de validation */
+.budget-form button {
+  padding: 12px;                     /* Taille du bouton */
+  border-radius: var(--radius-md);   /* Coins arrondis */
+  background: var(--button-primary); /* Couleur principale */
+  color: white;                      /* Texte blanc */
+  font-weight: 700;                  /* Mise en valeur */
+  border: none;                      /* Pas de bordure */
+  cursor: pointer;                   /* Curseur interactif */
+  box-shadow: var(--shadow-button);  /* Ombre */
+  transition: background 0.2s ease;  /* Animation */
+}
+
+/* Effet hover du bouton */
+.budget-form button:hover {
+  background: var(--button-primary-hover);
+}
+
+
+
+/**************************************************************
+ * SWITCH D’ACTIVATION DE L’ALERTE
+ **************************************************************/
+
+/* Conteneur du switch */
+.budget-switch {
+  display: flex;                     /* Alignement horizontal */
+  align-items: center;
+  gap: 10px;                         /* Espacement entre label et switch */
+}
+
+/* Taille du switch */
+.budget-switch input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+}
+
+
+
+/**************************************************************
+ * CARTE BUDGET (affichage des budgets existants)
+ **************************************************************/
+
+/* Conteneur d’une carte budget */
+.budget-card {
+  background: var(--bg-card);        /* Fond */
+  border-radius: var(--radius-lg);   /* Coins arrondis */
+  border: 1px solid var(--border-color); /* Bordure */
+  box-shadow: var(--shadow-card);    /* Ombre */
+  padding: 20px;                     /* Espacement interne */
+  margin-bottom: 20px;               /* Espacement entre cartes */
+  display: flex;                     /* Organisation verticale */
+  flex-direction: column;
+  gap: 10px;                         /* Espacement interne */
+}
+
+/* Titre de la carte */
+.budget-card h3 {
+  margin: 0;
+  font-size: 1.3rem;                 /* Taille du titre */
+  color: var(--text-main);
+}
+
+/* Texte secondaire */
+.budget-card p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+
+
+/**************************************************************
+ * INDICATEURS DE COULEUR (état du budget)
+ **************************************************************/
+
+/* Budget OK */
+.budget-green {
+  color: #4caf50;
+}
+
+/* Budget presque dépassé */
+.budget-orange {
+  color: #f39c12;
+}
+
+/* Budget dépassé */
+.budget-red {
+  color: #e53935;
+}
+
+
+
+
