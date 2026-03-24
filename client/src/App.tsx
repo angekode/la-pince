@@ -27,8 +27,6 @@ export default function App() {
 
   return (
     <>
-      
-      <button onClick={test}>Test</button>
       <ThemeToggle theme={theme} onToggle={toggleTheme} />
       <Routes>
         <Route path="/" element={<Home />} />

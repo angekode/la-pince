@@ -4,10 +4,8 @@ import PieGraph from "../components/dashboard/PieGraph";
 import BarGraph from "../components/dashboard/BarGraph";
 import CurveGraph from "../components/dashboard/CurveGraph";
 
-
-import { useState, useEffect } from "react";
 import { getMe } from "../services/auth/auth.service";
-import { getSolde } from "../services/graphs/graphs.service";
+import { getSolde } from "../services/graphs/graphs-data.service";
 import Header from "../components/Header";
 
 
@@ -76,6 +74,7 @@ function DashboardPage() {
           <div className="dashboard__graph-view">
             { activeGraph === 'pie' && <PieGraph />}
             { activeGraph === 'bar' && <BarGraph />}
+            { activeGraph === 'curve' && <CurveGraph />}
           </div>
         </section>
       </main>
