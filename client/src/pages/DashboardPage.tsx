@@ -1,9 +1,11 @@
 import PieGraph from "../components/dashboard/PieGraph";
 import BarGraph from "../components/dashboard/BarGraph";
 
+
 import { useState, useEffect } from "react";
 import { getMe } from "../services/auth/auth.service";
 import { getSolde } from "../services/graphs/graphs.service";
+import Header from "../components/Header";
 
 
 type UserInfo = {
@@ -53,25 +55,28 @@ function DashboardPage() {
   // Composant retourné
   // ------
   return (
-    <main className="dashboard__main">
-      <section className="dashboard__indicators-section">
-        <ul>
-          <li>Solde <span>{solde}€</span></li>
-          <li>% Budget <span>88%</span></li>
-          <li>Alertes <em>Budget loisir 120%</em></li>
-        </ul>
-      </section>
-      <section className="dashboard__graphs-section">
-        <nav>
-          <button onClick={() => setActiveGraph('pie')}>Camembert</button>
-          <button onClick={() => setActiveGraph('bar')}>Barres</button>
-        </nav>
-        <div className="dashboard__graph-view">
-          { activeGraph === 'pie' && <PieGraph />}
-          { activeGraph === 'bar' && <BarGraph />}
-        </div>
-      </section>
-    </main>
+    <>
+      <Header/>
+      <main className="dashboard__main">
+        <section className="dashboard__indicators-section">
+          <ul>
+            <li>Solde <span>{solde}€</span></li>
+            <li>% Budget <span>88%</span></li>
+            <li>Alertes <em>Budget loisir 120%</em></li>
+          </ul>
+        </section>
+        <section className="dashboard__graphs-section">
+          <nav>
+            <button onClick={() => setActiveGraph('pie')}>Camembert</button>
+            <button onClick={() => setActiveGraph('bar')}>Barres</button>
+          </nav>
+          <div className="dashboard__graph-view">
+            { activeGraph === 'pie' && <PieGraph />}
+            { activeGraph === 'bar' && <BarGraph />}
+          </div>
+        </section>
+      </main>
+    </>
   );
 }
 
