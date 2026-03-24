@@ -1,64 +1,76 @@
 import { useState, useEffect } from "react";
 import { Chart } from '@highcharts/react';
+import Highcharts from "highcharts";
 import type { HighchartsOptionsType } from '@highcharts/react';
 import 'highcharts/esm/highcharts-3d.src.js';
 
-import { getCategoryTotals, type CategoryTotals } from "../../services/graphs/graphs.service";
+import { getSoldeEvolution, type SoldeEvolution } from "../../services/graphs/graphs.service";
 
+Highcharts.setOptions({
+  lang: {
+    months: [
+      "janvier", "février", "mars", "avril", "mai", "juin",
+      "juillet", "août", "septembre", "octobre", "novembre", "décembre"
+    ],
+    weekdays: [
+      "dimanche", "lundi", "mardi", "mercredi",
+      "jeudi", "vendredi", "samedi"
+    ]
+  }
+});
 
 function CurveGraph() {
 
-  const [graphData, setGraphData] = useState<CategoryTotals[]>();
+  const [graphData, setGraphData] = useState<SoldeEvolution>([]);
 
   const chartOptions : HighchartsOptionsType = {
     chart: {
       type: "spline",
       backgroundColor: "transparent",
-      plotBorderWidth: 0,
-      options3d: {
-        enabled: true,
-        alpha: 45,
-        beta: 0
+      plotBorderWidth: 0
+    },
+    xAxis: {
+      type: "datetime",
+        dateTimeLabelFormats: {
+        month: '%Y'
+      },
+      title: {
+        text: "Date"
+      },
+      labels: {
+        useHTML: true,
+        formatter: function () {
+          return `<span class="curve-xaxis-labels">${Highcharts.dateFormat("%e %B", Number(this.value))}</span>`;
+        }
+      }
+    },
+    yAxis: {
+      title: {
+        text: "Solde (€)",
+      },
+      labels: {
+        useHTML: true,
+        formatter: function () { 
+          return `<span class="curve-yaxis-labels">${this.value.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} €</span>` 
+        } 
       }
     },
     series: [
       {
-        name: 'categories',
-        data: graphData?.map(item => ({ y: item.total, name: item.category }))
+        name: 'solde',
+        data: graphData ?? []
       }
     ],
-    plotOptions: {
-      pie: {
-        dataLabels: {
-          useHTML: true,
-          enabled: true,
-          formatter: function () {
-            return `
-            <div class="pie-label-box">
-              <span class="pie-label-name">${this.point.name}</span> 
-              <span class="pie-label-value">${this.point.y.toFixed(0)} €</span>
-            </div>
-            `;
-          },
-        },
-        borderColor: "#171a21",
-        borderWidth: 2,
-        borderRadius: 6,
-        depth: 35 // indispensable pour voir la 3D
-      },
-      series: {
-                shadow: {
-          color: "rgba(0, 0, 0, 1)",
-          offsetX: 0,
-          offsetY: 6,
-          opacity: 0.05,
-          width: 10
-        }
-      }
+    legend: {
+      enabled: false
     },
+    title: {
+      text: `<span class="curve-title">Evolution du solde</span>`,
+      useHTML: true
+    }
   };
   
-  useEffect(() => { getCategoryTotals().then(setGraphData) }, []);
+  useEffect(() => { getSoldeEvolution().then(setGraphData) }, []);
 
   return (
     <Chart options={chartOptions} />

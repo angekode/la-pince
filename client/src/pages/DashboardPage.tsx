@@ -67,7 +67,7 @@ function DashboardPage() {
         <nav>
           <button onClick={() => setActiveGraph('pie')}>Camembert</button>
           <button onClick={() => setActiveGraph('bar')}>Barres</button>
-          <button onClick={() => setActiveGraph('curve')}>Barres</button>
+          <button onClick={() => setActiveGraph('curve')}>Evolution</button>
         </nav>
         <div className="dashboard__graph-view">
           { activeGraph === 'pie' && <PieGraph />}

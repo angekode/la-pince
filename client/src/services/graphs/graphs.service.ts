@@ -129,3 +129,32 @@ export async function getCategoryTotals(): Promise<CategoryTotals[]> {
     .filter(categoryTotal => categoryTotal.total < 0)
     .map(categoryTotal => ({ ...categoryTotal, total: categoryTotal.total *= -1 }));
 }
+
+
+
+
+// Format attendu par l'option "series.data" de CurveGraph
+export type SoldeEvolution = [number, number][];
+
+/**
+ * Renvoie une évolution du solde dans le temps au format exploitable par CurveGraph
+ */
+export async function getSoldeEvolution(): Promise<SoldeEvolution> {
+  const transactions = await getAllTransactions();
+  const evolution : SoldeEvolution = [];
+  let solde = 0;
+  for (const transaction of transactions) {
+    solde += transaction.amount;
+    evolution.push(
+      [
+        new Date(transaction.date).getTime(), // Connvertion string => Date => number (pour CurveGraph)
+        solde // Cummul des ammounts de chaque transaction
+      ]
+    );
+  }
+
+  // Il faut les ranger dans l'ordre chronologique transaction[0] => la date au format number
+  return evolution.toSorted(
+    (transaction1, transaction2) => transaction1[0] - transaction2[0] 
+  );
+}

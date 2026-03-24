@@ -21,3 +21,15 @@
   font-size: medium;
   color: var(--text-secondary);
 }
+
+.curve-yaxis-labels {
+  color: var(--text-secondary);
+}
+
+.curve-xaxis-labels {
+  color: var(--text-secondary);
+}
+
+.curve-title {
+  color: var(--text-main);
+}
