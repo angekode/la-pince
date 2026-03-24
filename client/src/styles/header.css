@@ -1,0 +1,75 @@
+/* -----------------------------------------------------------
+   HEADER GLOBAL
+   Conteneur principal du header : logo + titre + navigation
+----------------------------------------------------------- */
+header {
+  display: flex;                                 /* Place les éléments sur une seule ligne */
+  align-items: center;                           /* Centre verticalement logo, titre et nav */
+  justify-content: space-between;                /* Espace entre logo et navigation */
+  padding: 1rem;                                 /* Espacement interne pour aérer le header */
+  background: var(--bg-page);                    /* Fond cohérent avec le reste de l'application */
+  border-bottom: 1px solid var(--border-color);  /* Ligne discrète pour séparer du contenu */
+}
+
+/* -----------------------------------------------------------
+   LOGO
+----------------------------------------------------------- */
+.header__logo {
+  width: 120px;                                  /* Taille standard du logo */
+  margin: 1rem;                                  /* Espacement autour pour éviter qu'il colle au bord */
+}
+
+/* -----------------------------------------------------------
+   TITRE DU HEADER
+----------------------------------------------------------- */
+header h1 {
+  margin: 0;                               /* Supprime le margin par défaut */
+  font-size: 1.5rem;                       /* Taille de titre lisible */
+  font-weight: 600;                        /* Poids intermédiaire pour un rendu moderne */
+  color: var(--color-primary-dark);        /* Couleur d'accent utilisée dans ton thème */
+}
+
+/* Paragraphe éventuel dans le header */
+p {
+  margin: 1rem;                                  /* Espacement standard */
+}
+
+/* -----------------------------------------------------------
+   NAVIGATION PRINCIPALE
+----------------------------------------------------------- */
+nav {
+  flex: 1;                                 /* Prend tout l’espace horizontal disponible */
+  display: flex;                           /* Affiche les liens sur une ligne */
+  justify-content: space-around;           /* Répartit les liens uniformément */
+}
+
+/* Liens de navigation */
+nav a {
+  color: var(--text-main);                 /* Couleur de texte principale */
+  text-decoration: none;                   /* Supprime le soulignement par défaut */
+  font-weight: 500;                        /* Poids intermédiaire pour une meilleure lisibilité */
+  padding: 0.5rem 1rem;                    /* Zone cliquable plus confortable */
+  border-radius: var(--radius-sm);         /* Coins légèrement arrondis */
+  transition: background 0.2s ease;        /* Animation douce au survol */
+}
+
+ /* Effet visuel au survol */
+nav a:hover {
+  background: var(--bg-card);              /* Fond léger pour indiquer l'interaction */
+} 
+
+/* -----------------------------------------------------------
+   ÉTAT : lien actif (page courante)
+----------------------------------------------------------- */
+nav .active {
+  color: var(--color-primary-dark);        /* Met en avant la page active */
+  font-weight: 700;                        /* Accentue visuellement */
+}
+
+/* -----------------------------------------------------------
+   ÉTAT : lien en attente (React Router)
+----------------------------------------------------------- */
+nav  .pending {
+  opacity: 0.6;                            /* Indique un état transitoire */
+  text-decoration: none;                   /* Pas de soulignement */
+}

@@ -1,0 +1,425 @@
+/* -----------------------------------------------------------
+   VARIABLES GLOBALES (communes aux thèmes clair et sombre)
+   Ces variables définissent les couleurs principales, les ombres
+   et les rayons de bordure utilisés dans toute l'application.
+----------------------------------------------------------- */
+:root {
+  /* Couleurs principales (mode clair par défaut) */
+  --color-primary-light: #2d6cdf;            /* Bleu principal utilisé en mode clair */
+  --color-primary-light-hover: #1f5bd0;      /* Variation plus sombre pour le hover */
+
+  /* Couleurs principales (mode sombre) */
+  --color-primary-dark: #d4af37;             /* Doré utilisé en mode sombre */
+  --color-primary-dark-hover: #b8962e;       /* Variation plus sombre pour le hover */
+
+  /* Couleurs fonctionnelles */
+  --color-success: #4caf50;                  /* Vert pour les validations */
+  --color-error: #e53935;                    /* Rouge pour les erreurs */
+
+  /* Rayons de bordure */
+  --radius-sm: 6px;                          /* Petits arrondis */
+  --radius-md: 8px;                          /* Arrondis moyens */
+  --radius-lg: 16px;                         /* Grands arrondis */
+
+  /* Ombres */
+  --shadow-card: 0 16px 40px rgba(0, 0, 0, 0.12);   /* Ombre standard des cartes */
+  --shadow-button: 0 2px 8px rgba(0, 0, 0, 0.12);   /* Ombre légère des boutons */
+}
+
+/* -----------------------------------------------------------
+   THÈME CLAIR
+   Toutes les variables spécifiques au mode clair.
+   Elles écrasent celles définies dans :root.
+----------------------------------------------------------- */
+body.light {
+  /* Fonds */
+  --bg-page: #f7f9fc;                        /* Fond global de la page */
+  --bg-card: #ffffff;                        /* Fond des cartes */
+  --bg-input: #ffffff;                       /* Fond des champs de saisie */
+  --border-color: #d9deea;                   /* Bordures légères */
+
+  /* Texte */
+  --text-main: #1e1e1e;                      /* Texte principal */
+  --text-secondary: #6b6b6b;                 /* Texte secondaire */
+
+  /* Boutons */
+  --button-primary: var(--color-primary-light);        /* Couleur du bouton principal */
+  --button-primary-hover: var(--color-primary-light-hover);
+
+  /* Liens */
+  --link-color: #2d6cdf;                     /* Couleur des liens */
+
+  /* Alertes */
+  --alert-error-bg: rgba(229, 57, 53, 0.08); /* Fond des alertes d'erreur */
+  --alert-success-bg: rgba(76, 175, 80, 0.08); /* Fond des alertes de succès */
+
+  /* Règles de validation (ex : mot de passe) */
+  --rule-default: #7a7f8c;                   /* Couleur par défaut */
+  --rule-valid: #4caf50;                     /* Règle valide */
+  --rule-invalid: #e53935;                   /* Règle invalide */
+}
+
+/* -----------------------------------------------------------
+   THÈME SOMBRE
+   Toutes les variables spécifiques au mode sombre.
+----------------------------------------------------------- */
+body.dark {
+  /* Fonds */
+  --bg-page: #0f1115;                        /* Fond global sombre */
+  --bg-card: #171a21;                        /* Fond des cartes */
+  --bg-input: #11141a;                       /* Fond des champs */
+  --border-color: #2b3140;                   /* Bordures sombres */
+
+  /* Texte */
+  --text-main: #ffffff;                      /* Texte principal */
+  --text-secondary: #b8c0d4;                 /* Texte secondaire */
+
+  /* Boutons */
+  --button-primary: var(--color-primary-dark);         /* Couleur du bouton principal */
+  --button-primary-hover: var(--color-primary-dark-hover);
+
+  /* Liens */
+  --link-color: #ffffff;                     /* Liens en blanc */
+
+  /* Alertes */
+  --alert-error-bg: rgba(229, 57, 53, 0.15); /* Fond des alertes d'erreur */
+  --alert-success-bg: rgba(76, 175, 80, 0.15); /* Fond des alertes de succès */
+
+  /* Règles de validation */
+  --rule-default: #9ca6bf;
+  --rule-valid: #4caf50;
+  --rule-invalid: #ff7b72;
+}
+
+/* -----------------------------------------------------------
+   RÉGLAGES GLOBAUX
+   S'appliquent à tous les thèmes.
+----------------------------------------------------------- */
+* {
+  box-sizing: border-box;                    /* Calcul cohérent des tailles */
+}
+
+html,
+body,
+#root {
+  min-height: 100%;                          /* S'assure que la page occupe toute la hauteur */
+  margin: 0;                                 /* Supprime les marges par défaut */
+}
+
+/* -----------------------------------------------------------
+   STYLE GLOBAL DU BODY
+----------------------------------------------------------- */
+body {
+  font-family: Inter, Arial, sans-serif;     /* Police globale */
+  background: var(--bg-page);                /* Fond dépendant du thème */
+  color: var(--text-main);                   /* Couleur du texte dépendant du thème */
+}
+
+/* -----------------------------------------------------------
+   STYLE GLOBAL DES LIENS
+----------------------------------------------------------- */
+a {
+  text-decoration: underline;                /* Style par défaut */
+}
+
+/* -----------------------------------------------------------
+   CONTENEUR DE PAGE (utilisé dans Register)
+----------------------------------------------------------- */
+.page-container {
+  min-height: 100vh;                         /* Occupe toute la hauteur */
+  display: flex;
+  flex-direction: column;
+  align-items: center;                       /* Centre horizontalement */
+  justify-content: center;                   /* Centre verticalement */
+  padding: 88px 16px 32px;                   /* Espacement interne */
+}
+
+/* -----------------------------------------------------------
+   CARTE D'AUTHENTIFICATION (Register)
+----------------------------------------------------------- */
+.auth-card {
+  width: 100%;
+  max-width: 520px;                          /* Largeur maximale */
+  background: var(--bg-card);                /* Fond dépendant du thème */
+  border-radius: var(--radius-lg);           /* Coins arrondis */
+  box-shadow: var(--shadow-card);            /* Ombre standard */
+  padding: 32px 28px;                        /* Espacement interne */
+}
+
+/* -----------------------------------------------------------
+   FORMULAIRE D'INSCRIPTION
+----------------------------------------------------------- */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;                                 /* Espacement entre les champs */
+}
+
+/* -----------------------------------------------------------
+   BLOC MARQUE (logo + titre)
+----------------------------------------------------------- */
+.brand-block {
+  text-align: center;                        /* Centre le contenu */
+  margin-bottom: 8px;                        /* Espacement inférieur */
+}
+
+.brand-logo {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 14px auto;                  /* Centre horizontalement */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;                       /* Coins arrondis */
+}
+
+.brand-logo img {
+  width: 120px;
+  height: auto;
+}
+
+/* -----------------------------------------------------------
+   TITRES ET SOUS-TITRES
+----------------------------------------------------------- */
+.register-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.register-subtitle {
+  margin: 10px 0 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.inline-link {
+  color: var(--link-color);
+  font-weight: 600;
+}
+
+/* -----------------------------------------------------------
+   FORM GROUP (Register)
+----------------------------------------------------------- */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.form-group input {
+  width: 100%;
+  height: 46px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-input);
+  color: var(--text-main);
+  padding: 0 14px;
+  outline: none;
+  font-size: 14px;
+}
+
+.form-group input::placeholder {
+  color: var(--text-secondary);
+}
+
+.form-group input:focus {
+  border-color: var(--button-primary);
+  box-shadow: 0 0 0 3px rgba(45, 108, 223, 0.12);
+}
+/* -----------------------------------------------------------
+   MOT DE PASSE : règles + bouton afficher/masquer
+----------------------------------------------------------- */
+.password-input-wrapper {
+  display: flex;
+  gap: 8px;
+}
+
+.password-toggle {
+  min-width: 96px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-main);
+  cursor: pointer;
+  font-size: 13px;
+  padding: 0 10px;
+}
+
+.rules-wrapper {
+  margin-top: -6px;
+}
+
+.password-rules {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+}
+
+.password-rules li {
+  color: var(--rule-default);
+}
+
+.password-rules li.valid {
+  color: var(--rule-valid);
+}
+
+.password-rules li.invalid {
+  color: var(--rule-invalid);
+}
+
+/* -----------------------------------------------------------
+   CHECKBOX
+----------------------------------------------------------- */
+.checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-main);
+}
+
+.checkbox-row input {
+  margin-top: 3px;
+}
+
+/* -----------------------------------------------------------
+   BOUTON PRINCIPAL
+----------------------------------------------------------- */
+.primary-button {
+  height: 48px;
+  width: 100%;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--button-primary);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-button);
+  transition: background 0.2s ease;
+}
+
+.primary-button:hover {
+  background: var(--button-primary-hover);
+}
+
+.primary-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* -----------------------------------------------------------
+   BOUTON ACCUEIL
+----------------------------------------------------------- */
+.acceuil-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--color-primary-light);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 40px;
+}
+
+/* -----------------------------------------------------------
+   ALERTES
+----------------------------------------------------------- */
+.alert {
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.alert-error {
+  background: var(--alert-error-bg);
+  color: var(--color-error);
+  border: 1px solid rgba(229, 57, 53, 0.28);
+}
+
+.alert-success {
+  background: var(--alert-success-bg);
+  color: var(--color-success);
+  border: 1px solid rgba(76, 175, 80, 0.28);
+}
+
+/* -----------------------------------------------------------
+   BOUTON DE CHANGEMENT DE THÈME
+----------------------------------------------------------- */
+.theme-toggle-wrapper {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 10;
+}
+
+.theme-toggle-button {
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-main);
+  border-radius: 999px;                     /* Forme de pilule */
+  height: 42px;
+  padding: 0 14px;
+  cursor: pointer;
+  box-shadow: var(--shadow-button);
+  font-weight: 600;
+}
+
+/* -----------------------------------------------------------
+   RESPONSIVE (GRANDS ÉCRANS)
+----------------------------------------------------------- */
+@media (min-width: 1024px) {
+  .auth-header {
+    padding: 32px 48px 0;
+  }
+
+  .auth-main {
+    padding: 32px;
+  }
+
+  .auth-card {
+    width: 100%;
+    max-width: 800px;
+    padding: 32px;
+  }
+}
+
+/*@media (max-width: 600px) {
+  .page-container {
+    padding-top: 80px;
+  }
+
+  .auth-card {
+    padding: 24px 18px;
+  }
+
+  .register-title {
+    font-size: 1.6rem;
+  }
+
+  .password-input-wrapper {
+    flex-direction: column;
+  }
+
+  .password-toggle {
+    width: 100%;
+    height: 42px;
+  }
+}*/
+

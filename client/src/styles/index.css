@@ -1,0 +1,43 @@
+/* -----------------------------------------------------------
+   IMPORTS DES FEUILLES DE STYLE
+   On importe ici tous les styles globaux utilisés dans l'app.
+   L'ordre est important : theme.css doit être chargé en premier
+   car il contient toutes les variables utilisées par les autres fichiers.
+----------------------------------------------------------- */
+@import url("reset.css");
+@import url("theme.css");                  /* Variables globales + styles de base */
+@import url("dashboard-page.css");         /* Styles du dashboard */
+@import url("header.css");                 /* Styles du header */
+@import url("footer.css");                 /* Styles du footer */
+
+/* -----------------------------------------------------------
+   RÉGLAGES GLOBAUX
+   Ces règles s'appliquent à toute l'application.
+----------------------------------------------------------- */
+* {
+  box-sizing: border-box;                  /* Garantit un calcul cohérent des tailles */
+}
+
+/* -----------------------------------------------------------
+   STRUCTURE GLOBALE DU DOCUMENT
+   html, body et #root doivent occuper toute la hauteur
+   pour permettre aux pages de s'étendre correctement.
+----------------------------------------------------------- */
+html,
+body,
+#root {
+  min-height: 100%;                        /* S'assure que la page occupe toute la hauteur */
+  margin: 0;                               /* Supprime les marges par défaut */
+  background: var(--bg-page);              /* Fond global de l'application */
+  color: var(--text-main);                 /* Couleur de texte principale */
+  font-family: Inter, Arial, sans-serif;   /* Police globale */
+}
+
+/* -----------------------------------------------------------
+   LIENS GLOBAUX
+   Style par défaut appliqué à tous les <a> de l'application.
+----------------------------------------------------------- */
+a {
+  text-decoration: underline;              /* Style par défaut des liens */
+  color: var(--color-primary-light-hover); /* Couleur d'accent */
+}

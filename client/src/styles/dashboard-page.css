@@ -1,0 +1,89 @@
+/* -----------------------------------------------------------
+   STYLE GLOBAL DES SECTIONS DU DASHBOARD
+   Chaque section est affichée sous forme de carte visuelle.
+----------------------------------------------------------- */
+section {
+  background: var(--bg-card);                 /* Fond blanc ou sombre selon le thème */
+  border-radius: var(--radius-lg);            /* Coins arrondis pour une apparence moderne et cohérente */
+  box-shadow: var(--shadow-card);             /* Ombre légère pour donner de la profondeur - ombre standard utilisée partout */
+  border: 1px solid var(--border-color);      /* Bordure légère pour délimiter la carte */
+   margin: 1rem;                               /* Espacement externe entre les sections */
+  padding: 1rem;                              /* Espacement interne pour aérer le contenu */
+}
+
+/* -----------------------------------------------------------
+   SECTION : INDICATEURS (revenus, dépenses, solde, etc.)
+----------------------------------------------------------- */
+.dashboard__indicators-section ul {
+  display: flex;                            /* Affiche les indicateurs côte à côte */
+  justify-content: space-around;            /* Répartit les éléments uniformément */
+  list-style: none;                         /* Supprime les puces de la liste */
+  padding: 0;                               /* Supprime le padding par défaut */
+}
+
+ /* Bloc d’un indicateur */
+.dashboard__indicators-section  li {
+  padding: 1rem;                           /* Espacement interne pour aérer chaque bloc */    
+  font-size: large;                        /* Taille de texte plus visible */
+  font-weight: 600;                        /* Texte en gras pour mettre en valeur les indicateurs */ 
+  color: var(--color-primary-dark);        /* Couleur du texte pour les indicateurs, plus sombre que le thème principal pour les faire ressortir (couleur d’accent (doré) pour les titres)*/
+  text-align: center;                      /* Centre le contenu dans chaque bloc */
+
+}
+  /* Valeur principale de l’indicateur à afficher*/
+.dashboard__indicators-section li span {
+  display: block;                          /* Force un retour à la ligne */
+  margin: 1rem;                            /* Espacement autour de la valeur */
+  font-size: xx-large;                     /* Met en avant la valeur principale */
+  color: var(--text-main);                 /* Couleur de texte principale */
+}
+
+/* Texte secondaire (alerte, variation, etc.) */
+.dashboard__indicators-section li em {
+  display: block;                          /* Retour à la ligne pour le texte secondaire */
+  margin: 1rem;                            /* Espacement autour du texte */
+  font-size: small;                        /* Texte plus discret */
+  color: var(--color-error);               /* Rouge pour les alertes (ex : dépenses élevées) */
+}
+
+/* -----------------------------------------------------------
+   SECTION : GRAPHIQUES
+   Contient les boutons de navigation + les images des graphs
+----------------------------------------------------------- */
+.dashboard__graphs-section {
+  /* On affiche la barre de navigation au dessus des graphs */
+  display: flex;                           /* Organisation verticale */
+  flex-direction: column;                  /* Empile les éléments */
+  gap: 0.5rem;                             /* Espacement entre les éléments */
+  padding: 0.5rem;                         /* Padding interne */
+}
+
+/* Barre de navigation des graphiques */
+.dashboard__graphs-section nav {
+  display: flex;                           /* Affiche les boutons côte à côte */
+  flex-direction: row;
+  justify-content: space-around;           /* Répartition uniforme */
+}
+
+/* Boutons de navigation */
+.dashboard__graphs-section nav button {
+  width: fit-content;
+  padding: 1rem;                           /* Taille confortable pour le clic */
+  border: 1px solid var(--border-color);   /* Bordure légère */
+  border-radius: var(--radius-sm);         /* Coins arrondis */
+  color: var(--text-main);                 /* Couleur de texte standard */
+  background: var(--bg-card);              /* Fond identique aux cartes */
+  cursor: pointer;                         /* Indique que c’est cliquable */
+}
+
+/*
+.dashboard__graphs-section nav button:hover {
+   Pas de changement de couleur défini dans l'existant 
+   Possibilité d'amélioration : ajouter un hover plus visible (ex : changement de fond ou de bordure) 
+} */  
+/* Image du graphique */        
+.dashboard__graph-view img {
+  width: 100%;                             /* L’image occupe toute la largeur disponible */
+    display: block;                        /* Supprime les espaces blancs sous l’image */
+
+}

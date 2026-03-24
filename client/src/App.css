@@ -1,184 +1,217 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
+/* -----------------------------------------------------------
+   ⚠️ BLOC SUPPRIMÉ : VARIABLES EN DOUBLE
+   Ce bloc dupliquait des variables déjà définies dans theme.css.
+   Il créait des conflits et empêchait l’harmonisation du thème.
+   Toutes les variables doivent être centralisées dans theme.css.
+----------------------------------------------------------- */
+/*
+:root {
+  --color-primary: #2d6cdf;
+  --color-primary-light: #e8f0ff;
+  --color-bg: #f7f9fc;
+  --color-text: #1e1e1e;
+  --color-text-secondary: #6b6b6b;
+  --color-border: #dadada;
+  --color-error: #e53935;
+  --color-white: #ffffff;
+} */
 
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
+
+/* -----------------------------------------------------------
+   PAGE D'AUTHENTIFICATION
+   Conteneur global des pages Login / Register
+----------------------------------------------------------- */
+.auth-page {
+  min-height: 100vh;                       /* Occupe toute la hauteur de l'écran */
+  display: flex;                           /* Organisation verticale */
+  flex-direction: column;
+  background-color: var(--bg-page);        /* Fond global */
 }
 
-.hero {
-  position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
+/* -----------------------------------------------------------
+   HEADER DE LA PAGE D'AUTH
+----------------------------------------------------------- */
+.auth-header {
+  padding: 24px 16px 0;                    /* Espacement interne */
 }
 
-#center {
+/* Logo textuel */
+.auth-logo {
+  font-size: 1rem;                         /* Taille du texte du logo */
+  font-weight: 700;                        /* Met en avant le titre/logo */
+  color: var(--color-primary);             /* Couleur principale */
+}
+
+.auth-logo img {
+  width: 70px;                             /* Taille standard du logo */
+  height: auto;                            /* Préserve les proportions */
+}
+
+/* -----------------------------------------------------------
+   CONTENU PRINCIPAL
+----------------------------------------------------------- */
+.auth-main {
+  flex: 1;                                 /* Prend tout l'espace disponible */
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
+  justify-content: center;                 /* Centre verticalement */
+  align-items: center;                     /* Centre horizontalement */
+  padding: 24px 16px;                      /* Espacement interne */
 }
 
-#next-steps {
-  display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-}
-
-#next-steps ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
-}
-
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
-}
-
-.ticks {
-  position: relative;
+/* -----------------------------------------------------------
+   CARTE D'AUTHENTIFICATION
+----------------------------------------------------------- */
+.auth-card {
   width: 100%;
+  max-width: 420px;                        /* Largeur maximale */
+  background-color: var(--bg-card);        /* Fond de carte */
+  border-radius: var(--radius-md);         /* Coins arrondis */
+  padding: 24px 16px;                      /* Espacement interne */
+    box-shadow: var(--shadow-card);         /* Ombre standard */
+}
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
+/* -----------------------------------------------------------
+   ONGLET LOGIN / REGISTER 
+----------------------------------------------------------- */
+.auth-tabs {
+  display: flex;                           /* Affiche les onglets côte à côte */
+  margin-bottom: 24px;                     /* Espacement sous les onglets */
+}
+
+.auth-tab {
+  flex: 1;                                 /* Chaque onglet prend la même largeur */
+  border: none;                            /* Pas de bordure */
+  background: transparent;                 /* Fond transparent */
+  padding: 12px;                           /* Zone cliquable confortable */
+  font-weight: 600;                        /* Met en avant le texte */
+  color: var(--color-primary);             /* Couleur principale */
+  cursor: pointer;                         /* Indique que c'est cliquable */
+}
+
+.auth-tab.active {
+  border-bottom: 2px solid var(--color-primary); /* Souligne l’onglet actif */
+}
+
+/* -----------------------------------------------------------
+   FORMULAIRE
+----------------------------------------------------------- */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;                               /* Espacement entre les champs */
+}
+
+/* Groupe label + input */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;                                /* Espacement entre label et input */
+  text-align: center;                      /* Centre le texte */
+}
+
+/* Label du champ */
+.form-group label {
+  font-weight: 600;                        /* Met en avant le label */
+  color: var(--text-main);                 /* Couleur principale du texte */
+}
+
+/* Champ de saisie */
+.form-group input {
+  height: 44px;                            /* Hauteur standard */
+  border: 1px solid var(--border-color);   /* Bordure légère */
+  border-radius: var(--radius-sm);         /* Coins arrondis */
+  padding: 0 12px;                         /* Espacement interne horizontal */
+  background-color: var(--color-white);    /* Fond blanc */
+  text-align: center;                      /* Centre le texte dans le champ */
+}
+/* Placeholder */
+.form-group input::placeholder {
+  color: var(--text-secondary);            /* Couleur du placeholder */
+}
+
+/* -----------------------------------------------------------
+   BOUTON PRINCIPAL
+----------------------------------------------------------- */
+.primary-button {
+  height: 48px;                            /* Hauteur standard */
+  border: none;
+  border-radius: var(--radius-md);         /* Coins arrondis */                  
+  background-color: var(--color-primary);  /* Couleur principale */
+  color: white;                          /* Texte blanc */
+  font-weight: 600;                        /* Met en avant le bouton */
+  cursor: pointer;                         /* Indique que c'est cliquable */
+}
+/* Hover du bouton principal */
+.primary-button:hover {
+  background-color: var(--color-primary-dark); /* Accentue la couleur au survol */
+}
+
+/* -----------------------------------------------------------
+   MESSAGES D'ERREUR
+----------------------------------------------------------- */
+.error-message {
+  margin: 0;
+  color: var(--color-error);               /* Rouge d'erreur */
+  text-align: center;
+}
+/* -----------------------------------------------------------
+   BOUTON "ACCUEIL"
+----------------------------------------------------------- */
+.home-button-wrapper {
+  width: 100%;                             /* Occupe toute la largeur */
+  align-self: stretch;                     /* S'étend dans le conteneur parent */
+  display: flex;
+  justify-content: flex-end;               /* Aligne le bouton à droite */
+}
+
+/* Bouton d'accueil */
+.acceuil-button {
+  display: flex;                           /* Organisation verticale */
+  flex-direction: column;
+  align-items: center;                     /* Centre horizontalement */
+  gap: 8px;                                /* Espacement entre icône et texte */
+  height: 48px;                            /* Hauteur standard */
+  border: none;
+  border-radius: 8px;                      /* Coins arrondis */
+  background-color: var(--color-primary);  /* Couleur principale */
+  color: white;                          /* Texte blanc */
+  font-weight: 600;                        /* Met en avant le bouton */
+  cursor: pointer;                         /* Indique que c'est cliquable */
+  margin-top: 40px;                        /* Espacement supérieur */
+}
+
+/* -----------------------------------------------------------
+   FOOTER DE LA PAGE D'AUTH
+----------------------------------------------------------- */
+.auth-footer {
+  display: flex;
+  justify-content: center;                 /* Centre les liens */
+  gap: 24px;                               /* Espacement entre les liens */
+  padding: 16px;                           /* Espacement interne */
+}
+
+/* Liens du footer */
+.auth-footer a {
+  color: var(--color-text-secondary);      /* Couleur secondaire */
+  text-decoration: none;                   /* Pas de soulignement */
+}
+
+/* -----------------------------------------------------------
+   RESPONSIVE (TABLETTES ET +)
+----------------------------------------------------------- */
+@media (min-width: 768px) {
+  .auth-header {
+    padding: 32px 48px 0;                  /* Plus d'espace sur grands écrans */
   }
 
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
+  .auth-main {
+    padding: 32px;                         /* Plus d'espace interne */
   }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
+
+  .auth-card {
+    width: 100%;
+    max-width: 640px;                      /* Carte plus large */
+    padding: 32px;                         /* Padding plus généreux */
   }
 }

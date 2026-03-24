@@ -1,0 +1,10 @@
+[
+  { "name" : "logement" },
+  { "name" : "transport" },
+  { "name" : "nourriture" },
+  { "name" : "loisir" },
+  { "name" : "shopping" },
+  { "name" : "sante" },
+  { "name" : "charges" },
+  { "name" : "salaire" }
+]

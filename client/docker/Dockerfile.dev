@@ -1,0 +1,9 @@
+# Transpilation des fichiers dans le dossier dist
+# ----------------------------------------------------------------------
+FROM node:25-alpine as Building
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install

@@ -1,0 +1,26 @@
+/* -----------------------------------------------------------
+   FOOTER GLOBAL
+   Le footer contient une liste horizontale de liens.
+----------------------------------------------------------- */
+ul {
+  list-style: none;                        /* Supprime les puces par défaut */
+  display: flex;                           /* Affiche les éléments sur une seule ligne */
+  justify-content: space-around;           /* Répartit les liens uniformément */
+  padding: 0;                              /* Supprime le padding par défaut du <ul> */
+  margin: 1rem 0;                          /* Ajoute un espacement vertical autour du footer */
+}
+
+/* -----------------------------------------------------------
+   LIENS DU FOOTER
+----------------------------------------------------------- */
+ul li a {
+  color: var(--text-main);                 /* Couleur de texte principale */
+  text-decoration: none;                   /* Supprime le soulignement */
+  font-size: 0.9rem;                       /* Taille légèrement réduite pour un footer */
+  transition: color 0.2s ease;             /* Animation douce lors du survol */
+}
+
+/* Effet visuel au survol */
+ul li a:hover {
+  color: var(--color-primary-light-hover); /* Accentue le lien au survol */
+}

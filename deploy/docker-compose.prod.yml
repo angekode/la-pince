@@ -1,0 +1,51 @@
+# A utiliser pour dépoloyer sur un site en production
+
+services:
+  client:
+    build:
+      context: ../client
+      dockerfile: ./docker/Dockerfile.prod
+      args:
+      # Attention : l'adresse de l'API est celle visible par le navigateur du client
+      # donc pour un dépoloiement local c'est localhost, si c'est déployé sur internet,
+      # c'est le nom de domaine du site qui héberge l'API.
+        - API_BASE_URL=http://localhost:3000
+    ports:
+      - 80:80
+    depends_on:
+      api:
+        condition: service_healthy
+  api:
+    build:
+      context: ../api
+      dockerfile: ./docker/Dockerfile.prod
+    environment:
+      - PORT=3000
+      - DATABASE_URL=postgres://lapince:lapince@database:5432/lapince
+      - JWT_SECRET=dev-secret
+      - SALT_ROUNDS=10
+    ports:
+      - 3000:3000
+    depends_on:
+      database:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://127.0.0.1:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\""]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 10s
+  database:
+    image: postgres:18-alpine
+    environment:
+      - POSTGRES_PASSWORD=lapince
+      - POSTGRES_USER=lapince
+      - POSTGRES_DB=lapince
+    ports:
+      - 5433:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p 5432 -U lapince -d lapince"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s

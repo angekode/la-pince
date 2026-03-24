@@ -1,0 +1,4 @@
+[
+  { "firstname": "alice", "lastname": "dupont", "email": "alice.dupont@mail.com", "password": "aliceDUPONT123!" },
+  { "firstname": "bob", "lastname": "martin", "email": "bob.martin@mail.com", "password": "bobMARTIN123!" }
+]
