@@ -32,7 +32,7 @@ model User {
 
   // Relations
   expenses  Expense[]                                     // Un utilisateur a plusieurs dépenses
-  categories Category[] // <-- ajoute la back-relation    // Un utilisateur a plusieurs catégories
+  budgets Budget[]                                        // Un utilisateur a plusieurs budgets
 
   createdAt DateTime  @default(now()) @map("created_at")  // Nom de colonne personnalisé  
   updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
@@ -50,13 +50,9 @@ model Category {
   id        Int       @id @default(autoincrement())
   name      String
 
-  // Foreign keys
-  userId      Int                                           // FK vers User
-
   // Relations
   expenses  Expense[]                                       // Une catégorie contient plusieurs dépenses
-
-  user        User      @relation(fields: [userId], references: [id])
+  budgets Budget[]                                          // Une catégorie contient plusieurs budgets
 
   @@map("category")
 }
@@ -86,4 +82,28 @@ model Expense {
   updatedAt   DateTime  @updatedAt
 
   @@map("expense")
+}
+
+//
+// ─────────────────────────────────────────────
+//   MODEL : BUDGET
+// ─────────────────────────────────────────────
+//
+
+model Budget {
+  id          Int       @id @default(autoincrement())
+  limit       Int
+
+  // Foreign keys
+  userId      Int
+  categoryId  Int
+
+  // Relations
+  user        User      @relation(fields: [userId], references: [id])
+  category    Category  @relation(fields: [categoryId], references: [id])
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("budget")
 }
