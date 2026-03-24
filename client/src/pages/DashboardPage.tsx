@@ -1,7 +1,9 @@
+import { useState, useEffect } from "react";
+
 import PieGraph from "../components/dashboard/PieGraph";
 import BarGraph from "../components/dashboard/BarGraph";
+import CurveGraph from "../components/dashboard/CurveGraph";
 
-import { useState, useEffect } from "react";
 import { getMe } from "../services/auth/auth.service";
 import { getSolde } from "../services/graphs/graphs.service";
 
@@ -28,7 +30,7 @@ function DashboardPage() {
   // Infos sur l'utilisateurs disponibles uniquement si connecté sinon undefined
   const [user, setUser] = useState<UserInfo | undefined>(undefined);
   const [solde, setSolde] = useState(0);
-  const [activeGraph, setActiveGraph] = useState<'pie' | 'bar'>('pie');
+  const [activeGraph, setActiveGraph] = useState<'pie' | 'bar' | 'curve'>('pie');
 
   // Fonctions 
   // ------
@@ -65,10 +67,12 @@ function DashboardPage() {
         <nav>
           <button onClick={() => setActiveGraph('pie')}>Camembert</button>
           <button onClick={() => setActiveGraph('bar')}>Barres</button>
+          <button onClick={() => setActiveGraph('curve')}>Barres</button>
         </nav>
         <div className="dashboard__graph-view">
           { activeGraph === 'pie' && <PieGraph />}
           { activeGraph === 'bar' && <BarGraph />}
+          { activeGraph === 'curve' && <CurveGraph />}
         </div>
       </section>
     </main>
