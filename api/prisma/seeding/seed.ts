@@ -4,7 +4,7 @@ import config from "dotenv/config";
 import categoriesData from "./data/categories.json" with { type: 'json' };
 import expensesData from "./data/expenses.json" with { type: 'json' };
 import usersData from "./data/users.json" with { type: 'json' };
-import bcrypt from "bcrypt";
+import argon2 from "argon2";
 
 
 /**
@@ -38,7 +38,7 @@ const usersWithHashedPasswords = await Promise.all(usersData.map(async (user) =>
     const { password, ...rest } = user;
     return {
       ...rest,
-      password: await bcrypt.hash(password, Number(process.env.SALT_ROUNDS) || 10)
+      password: await argon2.hash(password)
     };
 }));
 
