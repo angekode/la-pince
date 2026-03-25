@@ -114,6 +114,8 @@ a {
   padding: 24px;
 }
 
+
+
 .home-section {
   min-height: 500px;
   margin-bottom: 32px;
@@ -121,6 +123,10 @@ a {
   background: var(--bg-card);
   border-radius: 16px;
   scroll-margin-top: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;   
 }
 
 /* -----------------------------------------------------------
