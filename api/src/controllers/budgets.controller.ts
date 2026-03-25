@@ -180,7 +180,7 @@ export async function updateBudget(req: Request, res: Response) {
       throw new Error("budgetPostBody non défini, middleware non appellé");
     }
 
-    // Crée une nouveau budget dans la base et envoie une exception en cas de problèmes
+    // Met à jour le budger dans la base et envoie une exception en cas de problèmes
     const updatedBudgetEntry = await prisma.budget.update({ 
       where : {
         id: budgetId
@@ -189,6 +189,41 @@ export async function updateBudget(req: Request, res: Response) {
     });
 
     return res.status(StatusCodes.OK).json(updatedBudgetEntry);
+
+  // Gestion d'erreurs
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+    } else {
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: String(error) });
+    }
+  }
+}
+
+
+// ---------------------------------------------------------
+// DELETE /budgets/:id
+// ---------------------------------------------------------
+
+// Crée un budget 
+export async function removeBudget(req: Request, res: Response) {
+
+  try {
+
+    // Si req.user est undefined c'est qu'on a oublié d'appeller le authMiddleware
+    if (!req.user) {
+      throw new Error("user undefined, middleware non appellé");
+    }
+
+    const budgetId = Number(req.params.id);
+    if (isNaN(budgetId)) {
+      return res.status(StatusCodes.BAD_REQUEST).json({ error: `Identifiant du budget invalide`});
+    }
+    
+    // Supprime le budget de la base et envoie une exception en cas de problèmes
+    await prisma.budget.delete({ where: { id: budgetId }});
+
+    return res.status(StatusCodes.NO_CONTENT).end();
 
   // Gestion d'erreurs
   } catch (error: unknown) {

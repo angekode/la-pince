@@ -9,7 +9,8 @@ import {
   getAllBudgets,
   getBudgetById,
   createBudget,
-  updateBudget
+  updateBudget,
+  removeBudget
 } from "../controllers/budgets.controller.ts";
 
 const router = Router();
@@ -159,7 +160,7 @@ router.post("/", validatePostBody, createBudget);
  *       - in: path
  *         name: id
  *         required: true
- *         description: Identifiant de la catégorie
+ *         description: Identifiant du budget
  *         schéma:
  *           type: number
  * 
@@ -193,6 +194,36 @@ router.post("/", validatePostBody, createBudget);
  *                   type: string
  */
 router.patch("/:id", validatePatchBody, updateBudget);
+
+
+/**
+ * Swagger : DELETE /budgets/:id
+ * Supprime une catégorie existante de l'utilisateur connecté
+ * @openapi
+ * /budgets/{id}:
+ *   delete:
+ * 
+ *     summary: Supprime le budget
+ *     description: > 
+ *       Seul les utilisateurs avec un token en cookie sont autorisés sur cette route.
+ *       Seulement les catégories appartenant à l'utilisateur peuvent être supprimées.
+ * 
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Identifiant de le budget
+ *         schéma:
+ *           type: number
+ * 
+ *     security:
+ *        - cookieAuth: []
+ * 
+ *     responses:
+ *       204: 
+ *         description: Supprimé avec succès
+ */
+router.delete("/:id", removeBudget);
 
 export default router;
 

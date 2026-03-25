@@ -135,7 +135,7 @@ describe('POST /budgets', () => {
 
 // ---------------------------------------------------------
 // TEST : PATCH /budgets//id
-// Doit renvoyer un status 200 et un object contenant les infos d'un seul budget
+// Doit renvoyer un status 200 et un object contenant les infos mises à jour
 // ---------------------------------------------------------
 
 const patchBudgetBodyResponse = zod.object({
@@ -171,5 +171,33 @@ describe('PATCH /budgets/:id', () => {
     assert.strictEqual(body.limit, budgetToUpdate!.limit);
     assert.strictEqual(body.userId, user.id);
     assert.strictEqual(body.categoryId, refBudget!.categoryId);
+  });
+});
+
+
+// ---------------------------------------------------------
+// TEST : DELETE /budgets//id
+// Supprime un budget et doit renvoyer un status 204
+// ---------------------------------------------------------
+
+describe('PATCH /budgets/:id', () => {
+  it('should delete one budget', async () => {
+    // Arrange 
+    const { user, token } = await createNewUser();
+    const categories = await seedCategories();
+    const budgets = await seedBudgets(categories, user.id);
+    const refBudget = budgets[0];
+
+    // Act
+    const httpResponse = await fetch(
+      `${apiUrl}/budgets/${refBudget.id}`,
+      {
+        method: 'DELETE',
+        headers: { 'Cookie': `token=${token}`}
+      }
+    );
+    
+    // Assert
+    assert.strictEqual(httpResponse.status, StatusCodes.NO_CONTENT);
   });
 });
