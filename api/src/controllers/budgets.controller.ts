@@ -21,16 +21,16 @@ export async function getAllBudgets(req: Request, res: Response) {
       throw new Error("user undefined, middleware non appellé");
     }
 
-    // On filtre les résultats sur l'utilisateur
-    const userId = req.user.id;
-
-    const rawBudgetsFromDatabase = await prisma.budget.findMany({ 
+    const rawBudgetsFromDatabase = await prisma.budget.findMany({
+      where : {
+        userId: req.user.id
+      },
       // On ajoute le nom de la catégorie en clair en plus de categoryId grâce à la liaison avec la
       // table category
       include: { 
         category: {
           select: { name: true } 
-        } 
+        }
       }
     });
 
@@ -80,12 +80,11 @@ export async function getBudgetById(req: Request, res: Response) {
       return res.status(StatusCodes.BAD_REQUEST).json({ error: `L'identifiant du budget est invalide`});
     }
 
-
-    // On filtre les résultats sur l'utilisateur
-    const userId = req.user.id;
-
     const rawBudgetFromDatabase = await prisma.budget.findUnique({ 
-      where: { id: budgetId },
+      where: { 
+        userId: req.user.id,
+        id: budgetId
+      },
       // On ajoute le nom de la catégorie en clair en plus de categoryId grâce à la liaison avec la
       // table category
       include: { 
@@ -191,7 +190,8 @@ export async function updateBudget(req: Request, res: Response) {
     // Met à jour le budger dans la base et envoie une exception en cas de problèmes
     const updatedBudgetEntry = await prisma.budget.update({ 
       where : {
-        id: budgetId
+        id: budgetId,
+        userId: req.user.id
       },
       data: updateData
     });
@@ -209,6 +209,7 @@ export async function updateBudget(req: Request, res: Response) {
         return res.status(StatusCodes.NOT_FOUND).end();
       }
 
+    // Autres erreurs
     } else if (error instanceof Error) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
     } else {
