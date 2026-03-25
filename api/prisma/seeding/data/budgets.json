@@ -1,0 +1,10 @@
+[
+  { "category" : "logement", "limit": 2600 },
+  { "category" : "transport", "limit": 1200 },
+  { "category" : "nourriture", "limit": 800 },
+  { "category" : "loisir", "limit": 500 },
+  { "category" : "shopping", "limit": 600 },
+  { "category" : "sante", "limit": 100 },
+  { "category" : "charges", "limit": 1000 },
+  { "category" : "salaire", "limit": 2000 }
+]

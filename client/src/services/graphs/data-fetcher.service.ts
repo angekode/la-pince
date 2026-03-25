@@ -13,8 +13,7 @@ import zod from "zod";
 // Format d'une ligne category renvoyé par l'API
 const apiCategoryScheme = zod.object({
   id: zod.number(),
-  name: zod.string(),
-  userId: zod.number()
+  name: zod.string()
 });
 export type ApiCategory = zod.infer<typeof apiCategoryScheme>;
 
