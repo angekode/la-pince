@@ -39,8 +39,8 @@
  **************************************************************/
 
 .dashboard__alert-bar {
-  height: 32px;                        /* Hauteur suffisante pour le texte */
-  line-height: 32px;                   /* Centre verticalement le texte */
+  height: 20px;                        /* Hauteur suffisante pour le texte */
+  line-height: 20px;                   /* Centre verticalement le texte */
   border-radius: var(--radius-sm);     /* Coins arrondis */
   text-align: center;                  /* Texte centré */
   font-size: 1rem;                     /* Taille lisible */
@@ -142,13 +142,34 @@
  **************************************************************/
 
 .dashboard__alert-block .dashboard__alert-bar {
-  height: 32px;                        /* Hauteur suffisante */
-  line-height: 32px;                   /* Centre verticalement */
+  height: 24px;                        /* Hauteur suffisante */
+  line-height: 24px;                   /* Centre verticalement */
   padding: 0;
   font-size: 1rem;
   font-weight: 600;
   color: white;
 }
+.dashboard__alert-bar {
+  margin-top: 12px; /* Espace au-dessus de la barre */
+  padding: 8px; /* Hauteur / épaisseur de la barre */
+  border-radius: 6px; /* Coins arrondis */
+  text-align: center; /* Texte centré */
+  font-weight: bold; /* Texte en gras */
+  color: white; /* Texte en blanc */
+}
+
+.alert-green {
+  background: #2ecc71; /* Vert pour OK */
+}
+
+.alert-orange {
+  background: #f39c12; /* Orange pour attention */
+}
+
+.alert-red {
+  background: #e74c3c; /* Rouge pour alerte */
+}
+
 
 
 /**************************************************************
