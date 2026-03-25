@@ -93,7 +93,8 @@ model Expense {
 model Budget {
   id          Int       @id @default(autoincrement())
   limit       Int
-
+  alertEnabled Boolean
+  
   // Foreign keys
   userId      Int
   categoryId  Int

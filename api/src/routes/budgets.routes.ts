@@ -54,6 +54,8 @@ router.use(authMiddleware);
  *                         type: number
  *                       category:
  *                         type: string
+ *                       alertEnabled:
+ *                         type: boolean
  */
 router.get("/", getAllBudgets);
 
@@ -95,6 +97,8 @@ router.get("/", getAllBudgets);
  *                   type: number
  *                 category:
  *                   type: string
+ *                 alertEnabled:
+ *                   type: boolean
  */
 router.get("/:id", getBudgetById);
 
@@ -125,6 +129,8 @@ router.get("/:id", getBudgetById);
  *                   type: number
  *                 limit:
  *                   type: number
+ *                 alertEnabled:
+ *                   type: boolean
  * 
  *     responses:
  *       200: 
@@ -140,6 +146,8 @@ router.get("/:id", getBudgetById);
  *                   type: number
  *                 category:
  *                   type: string
+ *                 alertEnabled:
+ *                   type: boolean
  */
 router.post("/", validatePostBody, createBudget);
 
@@ -177,6 +185,8 @@ router.post("/", validatePostBody, createBudget);
  *               properties:
  *                 limit:
  *                   type: number
+ *                 alertEnabled:
+ *                   type: boolean
  * 
  *     responses:
  *       200: 
@@ -192,6 +202,8 @@ router.post("/", validatePostBody, createBudget);
  *                   type: number
  *                 category:
  *                   type: string
+ *                 alertEnabled:
+ *                   type: boolean
  */
 router.patch("/:id", validatePatchBody, updateBudget);
 

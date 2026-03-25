@@ -4,6 +4,9 @@ import { StatusCodes } from "http-status-codes";
 import { prisma } from "../db/prisma-client.ts";
 import { Prisma } from "@prisma/client";
 
+import { stripUndefined } from "../utils/optional-objects.ts";
+
+
 // ---------------------------------------------------------
 // GET /budgets
 // ---------------------------------------------------------
@@ -38,7 +41,8 @@ export async function getAllBudgets(req: Request, res: Response) {
       id: raw.id,
       limit: raw.limit,
       category: raw.category.name,
-      userId: raw.userId
+      userId: raw.userId,
+      alertEnabled: raw.alertEnabled
     }));
 
     return res.status(StatusCodes.OK).json({
@@ -180,12 +184,16 @@ export async function updateBudget(req: Request, res: Response) {
       throw new Error("budgetPostBody non défini, middleware non appellé");
     }
 
+    // L'objet json dans la requête peut avoir des champs undefined (les valeurs optionnelles)
+    // Mais prisma.model.update() n'aime pas ça, on les élimine
+    const updateData = stripUndefined(req.budgetPatchBody);
+
     // Met à jour le budger dans la base et envoie une exception en cas de problèmes
     const updatedBudgetEntry = await prisma.budget.update({ 
       where : {
         id: budgetId
       },
-      data: req.budgetPatchBody
+      data: updateData
     });
 
     return res.status(StatusCodes.OK).json(updatedBudgetEntry);
