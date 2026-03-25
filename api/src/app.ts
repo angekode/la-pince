@@ -11,6 +11,7 @@ import authRoutes from "./routes/auth.routes.js";
 import categoriesRouter from "./routes/categories.routes.js";
 
 import transactionsRouter from "./routes/transactions.routes.ts";
+import budgetsRouter from "./routes/budgets.routes.ts";
 
 // Lecture des cookies HTTPOnly
 import cookieParser from "cookie-parser";
@@ -53,6 +54,8 @@ app.get('/', (req, res) => res.send('hello'));
 app.use("/categories", categoriesRouter);
 
 app.use("/transactions", transactionsRouter);
+
+app.use("/budgets", budgetsRouter);
 
 // Export de l'application pour être utilisée dans index.ts
 export default app;
