@@ -22,7 +22,7 @@ router.use(authMiddleware);
  * Swagger : GET /budgets
  * Renvoie toutes les budgets de l'utilisateur connecté
  * @openapi
- * /budget:
+ * /budgets:
  *   get:
  * 
  *     summary: Renvoie la liste des budgets de l'utilisateur connecté
