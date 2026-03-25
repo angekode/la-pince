@@ -300,6 +300,76 @@
         }
       }
     },
+    "/budgets/{id}": {
+      "get": {
+        "summary": "Renvoie les informations sur un budget",
+        "description": "Seul les utilisateurs avec un token en cookie sont autorisés sur cette route. Seulement les catégories appartenant à l'utilisateur peuvent être renvoyées.\n",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Identifiant du budget",
+            "schéma": {
+              "type": "number"
+            }
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "limit": {
+                      "type": "number"
+                    },
+                    "category": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Supprime le budget",
+        "description": "Seul les utilisateurs avec un token en cookie sont autorisés sur cette route. Seulement les catégories appartenant à l'utilisateur peuvent être supprimées.\n",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Identifiant de le budget",
+            "schéma": {
+              "type": "number"
+            }
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Supprimé avec succès"
+          }
+        }
+      }
+    },
     "/budget/{id}": {
       "patch": {
         "summary": "Met à jour la limite d'un budget",
@@ -359,33 +429,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/budgets/{id}": {
-      "delete": {
-        "summary": "Supprime le budget",
-        "description": "Seul les utilisateurs avec un token en cookie sont autorisés sur cette route. Seulement les catégories appartenant à l'utilisateur peuvent être supprimées.\n",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "Identifiant de le budget",
-            "schéma": {
-              "type": "number"
-            }
-          }
-        ],
-        "security": [
-          {
-            "cookieAuth": []
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Supprimé avec succès"
           }
         }
       }

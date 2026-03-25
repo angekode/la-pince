@@ -88,13 +88,13 @@ router.get("/", getAllBudgets);
  *           application/json:
  *             schema:
  *               type: object
- *                 properties:
- *                   id:
- *                     type: number
- *                   limit:
- *                     type: number
- *                   category:
- *                     type: string
+ *               properties:
+ *                 id:
+ *                   type: number
+ *                 limit:
+ *                   type: number
+ *                 category:
+ *                   type: string
  */
 router.get("/:id", getBudgetById);
 
