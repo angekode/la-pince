@@ -23,7 +23,7 @@ import {
 export const getAllCategories = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user!.id;
-    const categories = await findAll(userId);
+    const categories = await findAll();
 
     return res.status(200).json({
       count: categories.length,
@@ -43,7 +43,7 @@ export const getCategoryById = async (req: AuthRequest, res: Response) => {
     const id = Number(req.params.id);
     const userId = req.user!.id;
 
-    const category = await findById(id, userId);
+    const category = await findById(id);
 
     if (!category) {
       return res.status(404).json({ error: "Category not found" });
