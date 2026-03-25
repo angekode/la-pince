@@ -89,17 +89,18 @@ describe('GET /budgets/:id', () => {
 });
 
 
+
+// ---------------------------------------------------------
+// TEST : POST /budgets
+// Doit renvoyer un status 200 et un object contenant les infos d'un seul budget
+// ---------------------------------------------------------
+
 const postBudgetBodyResponse = zod.object({
   id: zod.number(),
   limit: zod.number(),
   categoryId: zod.number(),
   userId: zod.number()
 });
-
-// ---------------------------------------------------------
-// TEST : POST /budgets
-// Doit renvoyer un status 200 et un object contenant les infos d'un seul budget
-// ---------------------------------------------------------
 
 describe('POST /budgets', () => {
   it('should create one budget', async () => {
@@ -128,5 +129,47 @@ describe('POST /budgets', () => {
     assert.strictEqual(body.limit, budgetToCreate!.limit);
     assert.strictEqual(body.userId, user.id);
     assert.strictEqual(body.categoryId, budgetToCreate!.categoryId);
+  });
+});
+
+
+// ---------------------------------------------------------
+// TEST : PATCH /budgets//id
+// Doit renvoyer un status 200 et un object contenant les infos d'un seul budget
+// ---------------------------------------------------------
+
+const patchBudgetBodyResponse = zod.object({
+  id: zod.number(),
+  limit: zod.number(),
+  categoryId: zod.number(),
+  userId: zod.number()
+});
+
+describe('PATCH /budgets/:id', () => {
+  it('should update one budget', async () => {
+    // Arrange 
+    const { user, token } = await createNewUser();
+    const categories = await seedCategories();
+    const budgets = await seedBudgets(categories, user.id);
+    const refBudget = budgets[0];
+    const budgetToUpdate = { limit: 200 }; 
+
+    // Act
+    const httpResponse = await fetch(
+      `${apiUrl}/budgets/${refBudget.id}`,
+      {
+        method: 'PATCH',
+        headers: { 'Cookie': `token=${token}`, 'Content-Type': 'application/json'},
+        body: JSON.stringify(budgetToUpdate)
+      }
+    );
+    const responseBody = await httpResponse.json();
+    
+    // Assert
+    assert.strictEqual(httpResponse.status, StatusCodes.OK);
+    const body = patchBudgetBodyResponse.parse(responseBody);
+    assert.strictEqual(body.limit, budgetToUpdate!.limit);
+    assert.strictEqual(body.userId, user.id);
+    assert.strictEqual(body.categoryId, refBudget!.categoryId);
   });
 });

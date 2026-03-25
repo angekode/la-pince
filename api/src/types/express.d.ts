@@ -12,7 +12,7 @@
 // Optionnel : si on veux typer plus tard avec Prisma
 // import type { User } from "../db/prisma-client";
 
-import { BudgetPostBody } from "../middlewares/budgets.middleware.ts";
+import type { BudgetPostBody, BudgetPatchBody } from "../middlewares/budgets.middleware.ts";
 
 
 declare global {
@@ -24,7 +24,9 @@ declare global {
         id: number;
         email?: string;
       };
+
       budgetPostBody?: BudgetPostBody;
+      budgetPatchBody?: BudgetPatchBody;
     }
   }
 }

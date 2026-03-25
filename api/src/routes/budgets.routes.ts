@@ -2,13 +2,14 @@ import { Router } from "express";
 
 // Middleware d'authentification : toutes les routes sont protégées
 import { authMiddleware } from "../middlewares/auth.middleware.ts";
-import { validatePostBody } from "../middlewares/budgets.middleware.ts";
+import { validatePostBody, validatePatchBody } from "../middlewares/budgets.middleware.ts";
 
 // Import des contrôleurs de catégories
 import {
   getAllBudgets,
   getBudgetById,
-  createBudget
+  createBudget,
+  updateBudget
 } from "../controllers/budgets.controller.ts";
 
 const router = Router();
@@ -140,6 +141,58 @@ router.get("/:id", getBudgetById);
  *                   type: string
  */
 router.post("/", validatePostBody, createBudget);
+
+
+/**
+ * Swagger : PATCH /budget/:id
+ * Met à jour une catégorie existante de l'utilisateur connecté
+ * @openapi
+ * /budget/{id}:
+ *   patch:
+ * 
+ *     summary: Met à jour la limite d'un budget
+ *     description: > 
+ *       Seul les utilisateurs avec un token en cookie sont autorisés sur cette route.
+ *       Seulement les budgets appartenant à l'utilisateur peuvent être modifiées.
+ * 
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Identifiant de la catégorie
+ *         schéma:
+ *           type: number
+ * 
+ *     security:
+ *        - cookieAuth: []
+ * 
+ *     requestBody:
+ *       required: true
+ *       content:
+ *          application/json:
+ *             schema:
+ *               type: object
+ *               required: [name]
+ *               properties:
+ *                 limit:
+ *                   type: number
+ * 
+ *     responses:
+ *       200: 
+ *         description: Mise à jour avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: number
+ *                 limit:
+ *                   type: number
+ *                 category:
+ *                   type: string
+ */
+router.patch("/:id", validatePatchBody, updateBudget);
 
 export default router;
 
