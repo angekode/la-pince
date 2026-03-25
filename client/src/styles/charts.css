@@ -21,7 +21,7 @@
   border: 1px solid var(--border-color);    /* Bordure légère */
   box-shadow: var(--shadow-card);           /* Ombre douce */
   padding: 16px;                             /* Espacement interne */
-  height: 50vh;                              /* 50% de la hauteur de la fenêtre */
+  height: 100vh;                              /* 50% de la hauteur de la fenêtre */
   width: 100%;                               /* Le graphique occupe toute la largeur */
   display: flex;                             /* Permet d'étirer le graphique */
   justify-content: center;

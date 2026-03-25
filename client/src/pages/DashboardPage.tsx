@@ -1,266 +1,275 @@
-/**
- * Page principale du dashboard.
- * Affiche :
- *  - les indicateurs globaux (bloc 1)
- *  - les indicateurs par catégorie + choix du graphique (bloc 2)
- *  - le graphique (bloc 3)
- */
+/**************************************************************
+ * DashboardPage
+ * ------------------------------------------------------------
+ * Page organisée en 2 colonnes :
+ *
+ *  - Colonne gauche FIXE (300px) contenant :
+ *      • Titre "Catégorie"
+ *      • Filtre catégorie
+ *      • Icônes verticales (GraphIcons)
+ *      • Indicateurs de la catégorie sélectionnée
+ *      • Barre d’alerte catégorie (centrée, largeur 80%)
+ *
+ *  - Colonne droite (≈ 3× plus large) contenant :
+ *      • Bloc global (indicateurs globaux + alerte globale)
+ *      • Bloc graphique (graphique + légendes)
+ *
+ * La logique métier (calculs, services, types) est intégrée dans ce composant
+ * pour simplifier la compréhension et éviter une sur-abstraction prématurée.
+ *
+ * Les styles sont définis dans un fichier CSS séparé (dashboard-page.css).
+ * Ce fichier se concentre sur la structure et l’affichage.
+ **************************************************************/
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";                          // Import des hooks React
 
-// Import des composants graphiques
-import PieGraph from "../components/dashboard/PieGraph";
-import BarGraph from "../components/dashboard/BarGraph";
-import CurveGraph from "../components/dashboard/CurveGraph";
+// Import des composants de graphiques
+import PieGraph from "../components/dashboard/PieGraph";                       // Composant graphique camembert
+import BarGraph from "../components/dashboard/BarGraph";                       // Composant graphique en barres
+import CurveGraph from "../components/dashboard/CurveGraph";                   // Composant graphique en courbe
 
-// Import des services API
-import { getMe } from "../services/auth/auth.service";
-import { getCategories } from "../services/categories/categories.service";
-import { getBudgets } from "../services/budget/budget.service";
-import { getTransactions } from "../services/transactions/transactions.service";
-import { getSolde } from "../services/graphs/graphs-data.service";
+// Import des services pour récupérer les données
+import { getMe } from "../services/auth/auth.service";                         // Service : récupération de l’utilisateur
+import { getCategories } from "../services/categories/categories.service";     // Service : récupération des catégories
+import { getBudgets } from "../services/budget/budget.service";               // Service : récupération des budgets
+import { getTransactions } from "../services/transactions/transactions.service"; // Service : récupération des transactions
+import { getSolde } from "../services/graphs/graphs-data.service";            // Service : récupération du solde global
 
-// Header
-import Header from "../components/Header";
+// Import du header principal
+import Header from "../components/Header";                                     // Composant d’en-tête global
 
-// Types locaux
-type Category = { id: number; name: string };
-type Budget = { id: number; montant_limite: number; id_categorie: number };
-type Transaction = { id: number; amount: number; categoryId: number };
+// Import du composant d’icônes de sélection de graphique
+import GraphIcons from "../components/GraphIcons";                             // Composant d’icônes de sélection de graphique
 
-function DashboardPage() {
+// Définition des types locaux pour les données
+type Category = { id: number; name: string };                                  // Type : catégorie
+type Budget = { id: number; montant_limite: number; id_categorie: number };    // Type : budget par catégorie
+type Transaction = { id: number; amount: number; categoryId: number };         // Type : transaction
 
-  // Stocke l'utilisateur connecté
-  const [user, setUser] = useState<any>(undefined);
+function DashboardPage() {                                                     // Composant principal de la page Dashboard
 
-  // Stocke les catégories disponibles
-  const [categories, setCategories] = useState<Category[]>([]);
+/**************************************************************
+   * États principaux : données chargées depuis l’API
+   **************************************************************/
+  const [user, setUser] = useState<any>(undefined);                            // État : utilisateur connecté
+  const [categories, setCategories] = useState<Category[]>([]);                // État : liste des catégories
+  const [budgets, setBudgets] = useState<Budget[]>([]);                        // État : liste des budgets
+  const [transactions, setTransactions] = useState<Transaction[]>([]);         // État : liste des transactions
+  const [solde, setSolde] = useState(0);                                       // État : solde global
 
-  // Stocke les budgets par catégorie
-  const [budgets, setBudgets] = useState<Budget[]>([]);
+/**************************************************************
+   * États d’affichage : catégorie sélectionnée et type de graphique
+**************************************************************/
+  const [selectedCategoryId, setSelectedCategoryId] =                          // État : catégorie sélectionnée ("all" ou id)
+    useState<"all" | number>("all");
 
-  // Stocke toutes les transactions
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [graphType, setGraphType] =                                            // État : type de graphique sélectionné
+    useState<"pie" | "bar" | "curve">("pie");
 
-  // Stocke le solde global
-  const [solde, setSolde] = useState(0);
+/**************************************************************
+   * Chargement initial des données au montage du composant
+   **************************************************************/    
+  useEffect(() => {                                                            // Effet : chargement initial des données
+    getMe().then(setUser);                                                     //   → récupère l’utilisateur
+    getCategories().then(setCategories);                                       //   → récupère les catégories
+    getBudgets().then(setBudgets);                                             //   → récupère les budgets
+    getTransactions().then(setTransactions);                                   //   → récupère les transactions
+    getSolde().then(setSolde);                                                 //   → récupère le solde global
+  }, []);                                                                      // Exécuté une seule fois au montage
 
-  // Catégorie sélectionnée dans le filtre
-  const [selectedCategoryId, setSelectedCategoryId] = useState<"all" | number>("all");
-
-  // Type de graphique sélectionné (camembert, barres, courbe)
-  const [graphType, setGraphType] = useState<"pie" | "bar" | "curve">("pie");
-
-  /**
-   * Charge toutes les données nécessaires au dashboard
-   * au montage du composant.
-   */
-  useEffect(() => {
-    getMe().then(setUser);
-    getCategories().then(setCategories);
-    getBudgets().then(setBudgets);
-    getTransactions().then(setTransactions);
-    getSolde().then(setSolde);
-  }, []);
-
-  /**
-   * Calcule le budget total (somme des budgets par catégorie)
-   */
-  const totalBudget = useMemo(
+/**************************************************************
+   * Calculs globaux : budget total, dépenses, reste, pourcentage
+   **************************************************************/
+  const totalBudget = useMemo(                                                 // Calcul : budget total (somme des budgets)
     () => budgets.reduce((sum, b) => sum + b.montant_limite, 0),
     [budgets]
   );
 
-  /**
-   * Calcule les dépenses totales (somme des transactions)
-   */
-  const totalSpent = useMemo(
+  const totalSpent = useMemo(                                                  // Calcul : dépenses totales (somme des transactions)
     () => transactions.reduce((sum, t) => sum + t.amount, 0),
     [transactions]
   );
 
-  /**
-   * Calcule le reste global
-   */
-  const totalRemaining = totalBudget - totalSpent;
+  const totalRemaining = totalBudget - totalSpent;                             // Calcul : reste global
 
-  /**
-   * Pourcentage global de dépenses
-   */
-  const globalPercent = totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0;
+  const globalPercent =                                                        // Calcul : pourcentage global de dépenses
+    totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0;
 
-  /**
-   * Détermine la couleur du rectangle d’alerte global
-   */
   const globalAlertClass =
-    globalPercent < 79
-      ? "alert-green"
-      : globalPercent < 100
-      ? "alert-orange"
-      : "alert-red";
+    globalPercent < 79                                                        // Si moins de 79% du budget utilisé
+      ? "alert-green"                                                         // Alerte verte
+      : globalPercent < 100                                                   // Sinon, si moins de 100%
+      ? "alert-orange"                                                        // Alerte orange
+      : "alert-red";                                                          // Sinon, alerte rouge (dépassement)
 
-  /**
-   * Récupère le budget de la catégorie sélectionnée
-   */
-  const selectedBudget = useMemo(() => {
-    if (selectedCategoryId === "all") return undefined;
-    return budgets.find((b) => b.id_categorie === selectedCategoryId);
-  }, [budgets, selectedCategoryId]);
+/**************************************************************
+   * Calculs pour la catégorie sélectionnée
+   **************************************************************/
+  const selectedBudget = useMemo(                                              // Calcul : budget de la catégorie sélectionnée
+    () => {
+      if (selectedCategoryId === "all") return undefined;                      //   → si "all", pas de budget spécifique
+      return budgets.find((b) => b.id_categorie === selectedCategoryId);       //   → sinon, on cherche le budget correspondant
+    },
+    [budgets, selectedCategoryId]
+  );
 
-  /**
-   * Calcule les dépenses de la catégorie sélectionnée
-   */
-  const selectedSpent = useMemo(() => {
-    if (selectedCategoryId === "all") return 0;
-    return transactions
-      .filter((t) => t.categoryId === selectedCategoryId)
-      .reduce((sum, t) => sum + t.amount, 0);
-  }, [transactions, selectedCategoryId]);
+  const selectedSpent = useMemo(                                               // Calcul : dépenses de la catégorie sélectionnée
+    () => {
+      if (selectedCategoryId === "all") return 0;                              //   → si "all", dépenses spécifiques = 0
+      return transactions
+        .filter((t) => t.categoryId === selectedCategoryId)                    //   → filtre sur la catégorie
+        .reduce((sum, t) => sum + t.amount, 0);                                //   → somme des montants
+    },
+    [transactions, selectedCategoryId]
+  );
 
-  /**
-   * Calcule le reste pour la catégorie sélectionnée
-   */
-  const selectedRemaining = selectedBudget
+  const selectedRemaining = selectedBudget                                     // Calcul : reste pour la catégorie sélectionnée
     ? selectedBudget.montant_limite - selectedSpent
     : 0;
 
-  /**
-   * Pourcentage de dépenses pour la catégorie sélectionnée
-   */
-  const selectedPercent = selectedBudget
+  const selectedPercent = selectedBudget                                       // Calcul : pourcentage de dépenses pour la catégorie
     ? (selectedSpent / selectedBudget.montant_limite) * 100
     : 0;
 
-  /**
-   * Détermine la couleur du rectangle d’alerte catégorie
-   */
-  const selectedAlertClass =
-    selectedPercent < 79
-      ? "alert-green"
-      : selectedPercent < 100
-      ? "alert-orange"
-      : "alert-red";
+  const selectedAlertClass =                                                   // Classe d’alerte pour la catégorie sélectionnée
+    selectedPercent < 79                                                       // Si moins de 79% du budget utilisé
+      ? "alert-green"                                                          // Alerte verte
+      : selectedPercent < 100                                                  // Sinon, si moins de 100%
+      ? "alert-orange"                                                         // Alerte orange
+      : "alert-red";                                                           // Sinon, alerte rouge (dépassement)
 
-  return (
+  /**************************************************************
+   * Rendu principal : layout en 2 colonnes
+   **************************************************************/    
+  return (                                                                     // Rendu JSX principal
     <>
-      {/* Affiche le header */}
-      <Header />
+      <Header />                                                               {/* Affichage du header global */}
 
-      <main className="dashboard__main">
+      <div className="dashboard-layout">                                       {/* Conteneur principal en 2 colonnes */}
+      {/* --------------------------------------------------------
+           Colonne gauche (largeur fixe 300px)
+           Contient :
+           - Titre "Catégorie"
+           - Sélecteur de catégorie
+           - Icônes de sélection de graphique
+           - Indicateurs de la catégorie
+           - Barre d’alerte catégorie
+           -------------------------------------------------------- */}  
 
-        {/* BLOC 1 — Indicateurs globaux */}
-        <section className="dashboard__indicators-section">
+        <aside className="dashboard-left">                                     {/* Colonne gauche (300px fixe) */}
 
-          <div className="dashboard__indicators-row">
-            <div className="dashboard__indicator">
-              <h3>Budget total</h3>
-              <p>{totalBudget}€</p>
-            </div>
+          <h3 className="dashboard-left__title">Catégorie</h3>                 {/* Titre de la colonne gauche */}
 
-            <div className="dashboard__indicator">
-              <h3>% dépenses globales</h3>
-              <p>{globalPercent.toFixed(0)}%</p>
-            </div>
+          <select
+            className="dashboard-left__select"                                 // Select de choix de catégorie
+            value={selectedCategoryId}                                         // Valeur liée à l’état selectedCategoryId
+            onChange={(e) =>
+              setSelectedCategoryId(
+                e.target.value === "all" ? "all" : Number(e.target.value)      // Conversion en nombre ou "all"
+              )
+            }
+          >
+            <option value="all">Toutes les catégories</option>                         {/* Placeholder par défaut */}
+            {categories.map((c) => (                                           // Liste des catégories en options
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
 
-            <div className="dashboard__indicator">
-              <h3>Solde</h3>
-              <p>{totalRemaining}€</p>
-            </div>
-          </div>
+          <GraphIcons
+            graphType={graphType}                                              // Type de graphique actuel
+            onChange={setGraphType}                                            // Mise à jour du type de graphique
+          />
 
-          {/* Rectangle d’alerte global */}
-          <div className={`dashboard__alert-bar ${globalAlertClass}`}></div>
-        </section>
+          <div className="dashboard-left__indicators">                         {/* Indicateurs de la catégorie sélectionnée */}
 
-        {/* BLOC 2 — Catégorie + indicateurs + choix du graphique */}
-        <section className="dashboard__main-block">
-
-          {/* Ligne : filtre catégorie + icônes */}
-          <div className="dashboard__category-row">
-
-            {/* Filtre catégorie */}
-            <div className="dashboard__category-select">
-              <label>Catégorie</label>
-              <select
-                value={selectedCategoryId}
-                onChange={(e) =>
-                  setSelectedCategoryId(
-                    e.target.value === "all" ? "all" : Number(e.target.value)
-                  )
-                }
-              >
-                <option value="all">Toutes les catégories</option>
-                {categories.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Icônes de sélection du type de graphique */}
-            <div className="dashboard__graph-icons">
-              <img
-                src="/icons/pie.svg"
-                className={graphType === "pie" ? "active" : ""}
-                onClick={() => setGraphType("pie")}
-              />
-              <img
-                src="/icons/bar.svg"
-                className={graphType === "bar" ? "active" : ""}
-                onClick={() => setGraphType("bar")}
-              />
-              <img
-                src="/icons/curve.svg"
-                className={graphType === "curve" ? "active" : ""}
-                onClick={() => setGraphType("curve")}
-              />
-            </div>
-          </div>
-
-          {/* Indicateurs catégorie */}
-          <div className="dashboard__category-indicators">
-            <div className="dashboard__indicator-small">
+            <div>
               <h4>Budget limite</h4>
-              <p>{selectedBudget ? selectedBudget.montant_limite + "€" : "—"}</p>
+              <p>
+                {selectedBudget
+                  ? selectedBudget.montant_limite + "€"                        // Affiche le budget limite si disponible
+                  : "—"}                                                       {/*  Sinon, tiret*/}
+              </p>
             </div>
 
-            <div className="dashboard__indicator-small">
+            <div>
               <h4>Dépenses</h4>
-              <p>{selectedSpent}€</p>
+              <p>{selectedSpent}€</p>                                          {/* Affiche les dépenses de la catégorie */}
             </div>
 
-            <div className="dashboard__indicator-small">
+            <div>
               <h4>Reste</h4>
-              <p>{selectedRemaining}€</p>
+              <p>{selectedRemaining}€</p>                                      {/* Affiche le reste pour la catégorie */}
             </div>
+
           </div>
 
-          {/* Rectangle d’alerte catégorie */}
-          <div className="dashboard__alert-block">
-            <div className={`dashboard__alert-bar ${selectedAlertClass}`}>
-              {selectedCategoryId === "all"
-                ? "Budget total"
-                : categories.find(c => c.id === selectedCategoryId)?.name}
-            </div>
+          <div className={`dashboard-left__alert ${selectedAlertClass}`}>      {/* Barre d’alerte catégorie (centrée, 80%) */}
+            {selectedCategoryId === "all"
+              ? "Budget total"                                                 // Si "all", texte générique
+              : categories.find((c) => c.id === selectedCategoryId)?.name}     {/* Sinon, nom de la catégorie */}
           </div>
 
-        </section>
+        </aside>
 
-        {/* BLOC 3 — Graphique */}
-        <section className="dashboard__graph-section">
+        {/* --------------------------------------------------------
+           Colonne droite (≈ 3× plus large que la gauche)
+           Contient :
+           - Bloc global (indicateurs globaux + alerte)
+           - Bloc graphique (graphique + légendes)
+           -------------------------------------------------------- */}
 
-          {graphType === "pie" && <PieGraph />}
-          {graphType === "bar" && <BarGraph categoryId={selectedCategoryId} />}
-          {graphType === "curve" && <CurveGraph categoryId={selectedCategoryId} />}
+        <main className="dashboard-right">                                     {/* Colonne droite (≈ 3× plus large) */}
 
-        </section>
+          <section className="dashboard-global">                               {/* Bloc global : indicateurs + alerte */}
 
-      </main>
+            <div className="dashboard-global__row">                            {/* Ligne des indicateurs globaux */}
+
+              <div>
+                <h3>Budget total</h3>
+                <p>{totalBudget}€</p>                                          {/* Affiche le budget total */}
+              </div>
+
+              <div>
+                <h3>% dépenses globales</h3>
+                <p>{globalPercent.toFixed(0)}%</p>                             {/* Affiche le pourcentage global */}
+              </div>
+
+              <div>
+                <h3>Solde</h3>
+                <p>{totalRemaining}€</p>                                       {/* Affiche le reste global */}
+              </div>
+
+            </div>
+
+            <div className={`dashboard-global__alert ${globalAlertClass}`}></div> {/* Barre d’alerte globale */}
+          </section>
+
+          <section className="dashboard-graph">                                {/* Bloc graphique (zone scrollable) */}
+
+            {graphType === "pie" && (                                          // Si type = "pie"
+              <PieGraph />                                                     //   → affiche le graphique camembert
+            )}
+
+            {graphType === "bar" && (                                          // Si type = "bar"
+              <BarGraph categoryId={selectedCategoryId} />                     //   → affiche le graphique en barres
+            )}
+
+            {graphType === "curve" && (                                        // Si type = "curve"
+              <CurveGraph categoryId={selectedCategoryId} />                   //   → affiche le graphique en courbe
+            )}
+
+            <div className="dashboard-graph__legend">                          {/* Zone de légendes du graphique */}
+              Légendes du graphique
+            </div>
+
+          </section>
+
+        </main>
+      </div>
     </>
   );
 }
 
-export default DashboardPage;
-
-
+export default DashboardPage;                                                  // Export du composant principal

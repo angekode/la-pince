@@ -1,196 +1,184 @@
 /**************************************************************
  * Styles du dashboard
+ * ------------------------------------------------------------
  * Ce fichier gère :
- *  - la mise en page des 3 blocs
- *  - l'affichage des alertes
- *  - la visibilité des icônes
- *  - la lisibilité du filtre catégorie
+ *  - la mise en page des 2 colonnes
+ *  - les couleurs light/dark
+ *  - les alertes
+ *  - les titres et montants
  **************************************************************/
 
 
 /**************************************************************
- * BLOC 1 — INDICATEURS GLOBAUX
+ * Layout principal : 2 colonnes
  **************************************************************/
+.dashboard-layout {
+  display: flex;
+  height: calc(100vh - 80px);   /* Hauteur totale moins le header */
+  overflow: hidden;             /* Empêche les scrolls parasites */
+}
 
-.dashboard__indicators-section {
-  background: var(--bg-card);          /* Fond du bloc */
-  border-radius: var(--radius-lg);     /* Coins arrondis */
-  border: 1px solid var(--border-color); /* Bordure légère */
-  box-shadow: var(--shadow-card);      /* Ombre douce */
-  padding: 10px;                       /* Bloc plus compact */
+
+/**************************************************************
+ * Titres : light mode = noir / dark mode = doré
+ **************************************************************/
+body.light .dashboard-left__title,
+body.light .dashboard-global h3,
+body.light .dashboard-left__indicators h4 {
+  color: var(--text-main); /* Noir en light mode */
+}
+
+body.dark .dashboard-left__title,
+body.dark .dashboard-global h3,
+body.dark .dashboard-left__indicators h4 {
+  color: var(--color-primary-dark); /* Doré en dark mode */
+}
+
+
+/**************************************************************
+ * Montants en gris secondaire
+ **************************************************************/
+.dashboard-global p,
+.dashboard-left__indicators p {
+  color: var(--text-secondary);
+}
+
+
+/**************************************************************
+ * Colonne gauche (300px fixe)
+ **************************************************************/
+.dashboard-left {
+  width: 300px;
+  min-width: 300px;
+  max-width: 300px;
   display: flex;
   flex-direction: column;
-  gap: 10px;                           /* Espacement interne réduit */
-}
-
-.dashboard__indicators-row {
-  display: flex;
-  justify-content: space-between;      /* Répartition horizontale */
-  gap: 12px;                           /* Espacement entre indicateurs */
-}
-
-.dashboard__indicator p {
-  font-size: 1.1rem;                   /* Taille de texte réduite */
+  padding: 20px;
+  border-right: 1px solid #ddd;
+  overflow: hidden;             /* ❗ NE DOIT PAS SCROLLER */
 }
 
 
 /**************************************************************
- * RECTANGLE D’ALERTE GLOBAL (visible)
+ * Titre "Catégorie"
  **************************************************************/
-
-.dashboard__alert-bar {
-  height: 20px;                        /* Hauteur suffisante pour le texte */
-  line-height: 20px;                   /* Centre verticalement le texte */
-  border-radius: var(--radius-sm);     /* Coins arrondis */
-  text-align: center;                  /* Texte centré */
-  font-size: 1rem;                     /* Taille lisible */
-  font-weight: 600;                    /* Texte mis en valeur */
-  padding: 0;                          /* Pas de padding pour éviter l’écrasement */
-  color: white;                        /* Texte toujours lisible */
-}
-
-
-/**************************************************************
- * BLOC 2 — BLOC PRINCIPAL (compact)
- **************************************************************/
-
-.dashboard__main-block {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-card);
-  padding: 12px;                       /* Réduction du padding */
-  display: flex;
-  flex-direction: column;
-  gap: 12px;                           /* Réduction du gap */
-  width: 100%;
-}
-
-
-/**************************************************************
- * Ligne : Catégorie + Select + Icônes
- **************************************************************/
-
-.dashboard__category-row {
-  display: flex;
-  align-items: center;                 /* Alignement vertical */
-  justify-content: space-between;      /* Répartition horizontale */
-  width: 100%;
-}
-
-/* Filtre catégorie aligné et lisible en dark mode */
-.dashboard__category-select {
-  display: flex;
-  align-items: center;
-  gap: 8px;                            /* Espace entre label et select */
-}
-
-.dashboard__category-select label {
-  margin: 0;
+.dashboard-left__title {
+  font-size: 1.2rem;
   font-weight: 600;
-}
-
-.dashboard__category-select select {
-  padding: 6px 10px;                   /* Taille compacte */
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border-color);
-  background: var(--bg-input);
-  color: var(--text-light);            /* Lisible en dark mode */
+  margin-bottom: 15px;
 }
 
 
 /**************************************************************
- * Icônes graphiques (visibles)
+ * Select catégorie
  **************************************************************/
-
-.dashboard__graph-icons {
-  display: flex;
-  gap: 16px;                           /* Espacement entre icônes */
+.dashboard-left__select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
 }
 
-.dashboard__graph-icons img {
-  width: 40px;                         /* Taille suffisante */
-  height: 40px;
-  cursor: pointer;
-  background: transparent !important;  /* Supprime le fond gris */
-  object-fit: contain;                 /* Affiche correctement le SVG */
-  opacity: 0.9;                        /* Légère transparence */
-  filter: drop-shadow(0 0 3px rgba(0,0,0,0.4)); /* Ombre pour contraste */
-  transition: 0.2s ease;               /* Animation fluide */
-}
 
-.dashboard__graph-icons img:hover,
-.dashboard__graph-icons img.active {
-  opacity: 1;                          /* Icône plus visible */
-  transform: scale(1.15);              /* Zoom léger */
+/**************************************************************
+ * Icônes (ligne horizontale centrée)
+ * ------------------------------------------------------------
+ * Le style principal est dans graph-icons.css
+ * Ici, on s'assure juste que le conteneur est bien placé.
+ **************************************************************/
+.dashboard-left .graph-icons-container {
+  margin: 10px 0 20px 0;
 }
 
 
 /**************************************************************
  * Indicateurs catégorie
  **************************************************************/
-
-.dashboard__category-indicators {
+.dashboard-left__indicators {
   display: flex;
-  justify-content: center;
-  gap: 12px;                           /* Espacement réduit */
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
 }
 
 
 /**************************************************************
- * Rectangle d’alerte catégorie (visible)
+ * Barre d’alerte catégorie
  **************************************************************/
-
-.dashboard__alert-block .dashboard__alert-bar {
-  height: 24px;                        /* Hauteur suffisante */
-  line-height: 24px;                   /* Centre verticalement */
-  padding: 0;
-  font-size: 1rem;
+.dashboard-left__alert {
+  width: 80%;
+  margin: 20px auto 0 auto;
+  padding: 10px;
+  text-align: center;
+  border-radius: 6px;
   font-weight: 600;
+}
+
+
+/**************************************************************
+ * Colonne droite (scrollable)
+ **************************************************************/
+.dashboard-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Le scroll se fait uniquement dans le bloc graphique */
+}
+
+
+/**************************************************************
+ * Bloc global (fixe)
+ **************************************************************/
+.dashboard-global {
+  flex-shrink: 0;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.dashboard-global__row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+
+/**************************************************************
+ * Barre d’alerte globale
+ **************************************************************/
+.dashboard-global__alert {
+  height: 24px;
+  line-height: 24px;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 600;
+  margin-top: 10px;
   color: white;
 }
-.dashboard__alert-bar {
-  margin-top: 12px; /* Espace au-dessus de la barre */
-  padding: 8px; /* Hauteur / épaisseur de la barre */
-  border-radius: 6px; /* Coins arrondis */
-  text-align: center; /* Texte centré */
-  font-weight: bold; /* Texte en gras */
-  color: white; /* Texte en blanc */
-}
-
-.alert-green {
-  background: #2ecc71; /* Vert pour OK */
-}
-
-.alert-orange {
-  background: #f39c12; /* Orange pour attention */
-}
-
-.alert-red {
-  background: #e74c3c; /* Rouge pour alerte */
-}
-
 
 
 /**************************************************************
- * BLOC 3 — GRAPHIQUE (plus grand)
+ * Bloc graphique (scrollable)
  **************************************************************/
-
-.dashboard__graph-section {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-card);
-  padding: 16px;
-  height: 75vh;                        /* Bloc 3 encore plus grand */
-  width: 100%;
+.dashboard-graph {
+  flex: 1;
+  overflow-y: auto;  /* Le scroll est ici */
+  padding: 20px;
+  min-height: 800px; /* ← augmente la hauteur visible */
 }
 
-.dashboard__graph-section canvas,
-.dashboard__graph-section svg {
-  width: 100%;
-  height: 100%;                        /* Le graphique occupe tout l’espace */
+.dashboard-graph__legend {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  opacity: 0.7;
 }
 
+
+/**************************************************************
+ * Couleurs d’alerte
+ **************************************************************/
+.alert-green { background-color: var(--alert-green); }
+.alert-orange { background-color: var(--alert-orange); }
+.alert-red { background-color: var(--alert-red); }
 
 
