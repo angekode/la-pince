@@ -41,7 +41,6 @@ describe('GET /budgets', () => {
       `${apiUrl}/budgets`,
       { headers: { 'Cookie': `token=${token}`} }
     );
-    const s = httpResponse.status;
     const responseBody = await httpResponse.json();
     const body = apiBudgetListBodyScheme.parse(responseBody);
 
@@ -55,5 +54,36 @@ describe('GET /budgets', () => {
       assert.strictEqual(apiBudget.userId, refBudget!.userId);
       assert.strictEqual(apiBudget.category, refBudget!.category); // vérifier le nom
     }
+  });
+});
+
+
+// ---------------------------------------------------------
+// TEST : GET /budgets/:id
+// Doit renvoyer un status 200 et un object contenant les infos d'un seul budget
+// ---------------------------------------------------------
+
+describe('GET /budgets/:id', () => {
+  it('should return on budget from user', async () => {
+    // Arrange 
+    const { user, token } = await createNewUser();
+    const categories = await seedCategories();
+    const budgets = await seedBudgets(categories, user.id);
+    const refBudget = budgets[0];
+
+    // Act
+    const httpResponse = await fetch(
+      `${apiUrl}/budgets/${refBudget.id}`,
+      { headers: { 'Cookie': `token=${token}`} }
+    );
+    const responseBody = await httpResponse.json();
+    const body = apiBudgetItemScheme.parse(responseBody);
+
+    // Assert
+    assert.strictEqual(httpResponse.status, StatusCodes.OK);
+    assert.notStrictEqual(refBudget, undefined);
+    assert.strictEqual(body.limit, refBudget!.limit);
+    assert.strictEqual(body.userId, refBudget!.userId);
+    assert.strictEqual(body.category, refBudget!.category);
   });
 });

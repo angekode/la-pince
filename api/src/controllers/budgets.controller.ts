@@ -55,3 +55,62 @@ export async function getAllBudgets(req: Request, res: Response) {
     }
   }
 }
+
+
+// ---------------------------------------------------------
+// GET /budgets/:id
+// ---------------------------------------------------------
+
+// Renvoie la liste des budgets, mais uniquement ceux de l'utilisateur authentifié qui fait la requête
+export async function getBudgetById(req: Request, res: Response) {
+
+  try {
+
+    // Si req.user est undefined c'est qu'on a oublié d'appeller le authMiddleware
+    if (!req.user) {
+      throw new Error("user undefined, middleware non appellé");
+    }
+
+    const budgetId = Number(req.params.id);
+    if (isNaN(budgetId)) {
+      throw new Error("Identifiant du budget invalide, middleware non appellé");
+    }
+
+
+    // On filtre les résultats sur l'utilisateur
+    const userId = req.user.id;
+
+    const rawBudgetFromDatabase = await prisma.budget.findUnique({ 
+      where: { id: budgetId },
+      // On ajoute le nom de la catégorie en clair en plus de categoryId grâce à la liaison avec la
+      // table category
+      include: { 
+        category: {
+          select: { name: true } 
+        } 
+      }
+    });
+
+    if (!rawBudgetFromDatabase) {
+      return res.status(StatusCodes.NOT_FOUND).end();
+    }
+
+    // Le nom en clair de la catégorie est dans un sous objet category.name, on écrase la structure
+    // avant de l'envoyer :
+    // { id, limit, categoryId, userId, category: {name}}  => { id, limit, userId, category } 
+    const { categoryId, ...formatedBudget }  = { 
+      ...rawBudgetFromDatabase, 
+      category: rawBudgetFromDatabase.category.name 
+    };
+
+    return res.status(StatusCodes.OK).json(formatedBudget);
+
+  // Gestion d'erreurs
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+    } else {
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: String(error) });
+    }
+  }
+}

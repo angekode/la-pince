@@ -5,7 +5,8 @@ import { authMiddleware } from "../middlewares/auth.middleware.ts";
 
 // Import des contrôleurs de catégories
 import {
-  getAllBudgets
+  getAllBudgets,
+  getBudgetById
 } from "../controllers/budgets.controller.ts";
 
 const router = Router();
@@ -51,6 +52,47 @@ router.use(authMiddleware);
  *                         type: string
  */
 router.get("/", getAllBudgets);
+
+
+/**
+ * Swagger : GET /budgets/:id
+ * Renvoie les informations d'une catégorie spécifique de l'utilisateur connecté
+ * @openapi
+ * /budgets/{id}:
+ *   get:
+ * 
+ *     summary: Renvoie les informations sur un budget
+ *     description: > 
+ *       Seul les utilisateurs avec un token en cookie sont autorisés sur cette route.
+ *       Seulement les catégories appartenant à l'utilisateur peuvent être renvoyées.
+ * 
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Identifiant du budget
+ *         schéma:
+ *           type: number
+ * 
+ *     security:
+ *        - cookieAuth: []
+ * 
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *                 properties:
+ *                   id:
+ *                     type: number
+ *                   limit:
+ *                     type: number
+ *                   category:
+ *                     type: string
+ */
+router.get("/:id", getBudgetById);
 
 export default router;
 
