@@ -2,11 +2,13 @@ import { Router } from "express";
 
 // Middleware d'authentification : toutes les routes sont protégées
 import { authMiddleware } from "../middlewares/auth.middleware.ts";
+import { validatePostBody } from "../middlewares/budgets.middleware.ts";
 
 // Import des contrôleurs de catégories
 import {
   getAllBudgets,
-  getBudgetById
+  getBudgetById,
+  createBudget
 } from "../controllers/budgets.controller.ts";
 
 const router = Router();
@@ -93,6 +95,51 @@ router.get("/", getAllBudgets);
  *                     type: string
  */
 router.get("/:id", getBudgetById);
+
+
+/**
+ * Swagger : POST /budgets
+ * Crée un nouveau budget pour l'utilisateur connecté
+ * @openapi
+ * /budgets:
+ *   post:
+ * 
+ *     summary: Crée un nouveau budget
+ *     description: > 
+ *       Seul les utilisateurs avec un token en cookie sont autorisés sur cette route.
+ * 
+ *     security:
+ *        - cookieAuth: []
+ * 
+ *     requestBody:
+ *       required: true
+ *       content:
+ *          application/json:
+ *             schema:
+ *               type: object
+ *               required: [name]
+ *               properties:
+ *                 categoryId:
+ *                   type: number
+ *                 limit:
+ *                   type: number
+ * 
+ *     responses:
+ *       200: 
+ *         description: Crée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: number
+ *                 limit:
+ *                   type: number
+ *                 category:
+ *                   type: string
+ */
+router.post("/", validatePostBody, createBudget);
 
 export default router;
 

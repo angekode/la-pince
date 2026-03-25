@@ -87,3 +87,46 @@ describe('GET /budgets/:id', () => {
     assert.strictEqual(body.category, refBudget!.category);
   });
 });
+
+
+const postBudgetBodyResponse = zod.object({
+  id: zod.number(),
+  limit: zod.number(),
+  categoryId: zod.number(),
+  userId: zod.number()
+});
+
+// ---------------------------------------------------------
+// TEST : POST /budgets
+// Doit renvoyer un status 200 et un object contenant les infos d'un seul budget
+// ---------------------------------------------------------
+
+describe('POST /budgets', () => {
+  it('should create one budget', async () => {
+    // Arrange 
+    const { user, token } = await createNewUser();
+    const categories = await seedCategories();
+    const budgetToCreate = {
+      categoryId: categories[0].id,
+      limit: 100
+    };
+
+    // Act
+    const httpResponse = await fetch(
+      `${apiUrl}/budgets`,
+      {
+        method: 'POST',
+        headers: { 'Cookie': `token=${token}`, 'Content-Type': 'application/json'},
+        body: JSON.stringify(budgetToCreate)
+      }
+    );
+    const responseBody = await httpResponse.json();
+    
+    // Assert
+    assert.strictEqual(httpResponse.status, StatusCodes.CREATED);
+    const body = postBudgetBodyResponse.parse(responseBody);
+    assert.strictEqual(body.limit, budgetToCreate!.limit);
+    assert.strictEqual(body.userId, user.id);
+    assert.strictEqual(body.categoryId, budgetToCreate!.categoryId);
+  });
+});
