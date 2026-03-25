@@ -99,7 +99,6 @@ describe('GET /categories/:id', { skip }, () => {
     const response = await fetch(`${apiUrl}/categories/45686`, {
       headers: { 'Cookie' : `token=${token}`}
     });
-    const responseBody = await response.json();
 
     // Check
     assert.strictEqual(response.status, StatusCodes.NOT_FOUND);

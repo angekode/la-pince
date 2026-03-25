@@ -86,6 +86,23 @@ describe('GET /budgets/:id', () => {
     assert.strictEqual(body.userId, refBudget!.userId);
     assert.strictEqual(body.category, refBudget!.category);
   });
+
+  it('should return 404 for non existing budget', async () => {
+    // Arrange 
+    const { user, token } = await createNewUser();
+    const categories = await seedCategories();
+    const budgets = await seedBudgets(categories, user.id);
+    const refBudget = budgets[0];
+
+    // Act
+    const httpResponse = await fetch(
+      `${apiUrl}/budgets/${1256}`,
+      { headers: { 'Cookie': `token=${token}`} }
+    );
+
+    // Assert
+    assert.strictEqual(httpResponse.status, StatusCodes.NOT_FOUND);
+  });
 });
 
 
@@ -172,6 +189,28 @@ describe('PATCH /budgets/:id', () => {
     assert.strictEqual(body.userId, user.id);
     assert.strictEqual(body.categoryId, refBudget!.categoryId);
   });
+
+  it('should return 404 for non existing budget', async () => {
+    // Arrange 
+    const { user, token } = await createNewUser();
+    const categories = await seedCategories();
+    const budgets = await seedBudgets(categories, user.id);
+    const refBudget = budgets[0];
+    const budgetToUpdate = { limit: 200 }; 
+
+    // Act
+    const httpResponse = await fetch(
+      `${apiUrl}/budgets/${189198}`,
+      {
+        method: 'PATCH',
+        headers: { 'Cookie': `token=${token}`, 'Content-Type': 'application/json'},
+        body: JSON.stringify(budgetToUpdate)
+      }
+    );
+    
+    // Assert
+    assert.strictEqual(httpResponse.status, StatusCodes.NOT_FOUND);
+  });
 });
 
 
@@ -199,5 +238,24 @@ describe('PATCH /budgets/:id', () => {
     
     // Assert
     assert.strictEqual(httpResponse.status, StatusCodes.NO_CONTENT);
+  });
+
+  it('should return 404 for non existant budget', async () => {
+    // Arrange 
+    const { user, token } = await createNewUser();
+    const categories = await seedCategories();
+    const budgets = await seedBudgets(categories, user.id);
+
+    // Act
+    const httpResponse = await fetch(
+      `${apiUrl}/budgets/${51659}`, // budget innexistant
+      {
+        method: 'DELETE',
+        headers: { 'Cookie': `token=${token}`}
+      }
+    );
+    
+    // Assert
+    assert.strictEqual(httpResponse.status, StatusCodes.NOT_FOUND);
   });
 });

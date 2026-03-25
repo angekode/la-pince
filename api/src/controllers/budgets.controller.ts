@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 
 import { prisma } from "../db/prisma-client.ts";
-
+import { Prisma } from "@prisma/client";
 
 // ---------------------------------------------------------
 // GET /budgets
@@ -192,7 +192,16 @@ export async function updateBudget(req: Request, res: Response) {
 
   // Gestion d'erreurs
   } catch (error: unknown) {
-    if (error instanceof Error) {
+
+    // Erreurs Prisma
+    // https://www.prisma.io/docs/orm/reference/error-reference#prismaclientknownrequesterror
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      // Entrée innexistante: https://www.prisma.io/docs/orm/reference/error-reference#p2025
+      if (error.code === 'P2025') {
+        return res.status(StatusCodes.NOT_FOUND).end();
+      }
+
+    } else if (error instanceof Error) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
     } else {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: String(error) });
@@ -227,7 +236,17 @@ export async function removeBudget(req: Request, res: Response) {
 
   // Gestion d'erreurs
   } catch (error: unknown) {
-    if (error instanceof Error) {
+
+    // Erreurs Prisma
+    // https://www.prisma.io/docs/orm/reference/error-reference#prismaclientknownrequesterror
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      // Entrée innexistante: https://www.prisma.io/docs/orm/reference/error-reference#p2025
+      if (error.code === 'P2025') {
+        return res.status(StatusCodes.NOT_FOUND).end();
+      }
+
+    // Autres erreurs
+    } else if (error instanceof Error) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
     } else {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: String(error) });
