@@ -1,33 +1,33 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
+
 import { StatusCodes } from 'http-status-codes';
-import { prisma } from '../../src/db/prisma-client';
 import zod from 'zod';
 
-
 import { 
-  postObject,
-  extractTokenFromCookie,
   createNewUser, 
-  generateRandomUserInfo, 
   seedCategories, 
   seedBudgets,
   apiUrl
 } from '../tools';
-import { ref } from 'node:process';
-
 
 
 const apiBudgetItemScheme = zod.object({
   id: zod.number(),
   limit: zod.number(),
-  categoryId: zod.number()
+  category: zod.string(),
+  userId: zod.number()
 });
 
 const apiBudgetListBodyScheme = zod.object({
   count: zod.number(),
   budgets: zod.array(apiBudgetItemScheme)
 });
+
+// ---------------------------------------------------------
+// TEST : GET /budgets
+// Doit renvoyer un status 200 et un object { count, budgets }
+// ---------------------------------------------------------
 
 describe('GET /budgets', () => {
   it('should return all budgets from user', async () => {
@@ -42,19 +42,18 @@ describe('GET /budgets', () => {
       { headers: { 'Cookie': `token=${token}`} }
     );
     const s = httpResponse.status;
-
     const responseBody = await httpResponse.json();
+    const body = apiBudgetListBodyScheme.parse(responseBody);
 
     // Assert
     assert.strictEqual(httpResponse.status, StatusCodes.OK);
-    assert.doesNotThrow(() => apiBudgetListBodyScheme.parse(responseBody));
-    assert.strictEqual(responseBody.count, budgets.length);
-    for (const apiBudget of responseBody.budgets) {
+    assert.strictEqual(body.count, budgets.length);
+    for (const apiBudget of body.budgets) {
       const refBudget = budgets.find(b => b.id === apiBudget.id);
       assert.notStrictEqual(refBudget, undefined);
       assert.strictEqual(apiBudget.limit, refBudget!.limit);
       assert.strictEqual(apiBudget.userId, refBudget!.userId);
-      assert.strictEqual(apiBudget.categoryId, refBudget!.categoryId);
+      assert.strictEqual(apiBudget.category, refBudget!.category); // vérifier le nom
     }
   });
 });

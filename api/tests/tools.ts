@@ -183,10 +183,16 @@ Promise<{
  * Insère plusieurs budget pour toutes les catégories données (elles même générées par seedCategories)
  */
 export async function seedBudgets(categoryEntries: { id: number, name: string }[], userId: number):
-Promise<{ id: number, limit: number, categoryId: number, userId: number }[]>
+Promise<{ id: number, limit: number, categoryId: number, userId: number, category: string }[]>
 {
-  return await prisma.budget.createManyAndReturn({
+  // On récupère les données crées dans la table 
+  const rawDbEntries = await prisma.budget.createManyAndReturn({
     data: categoryEntries.map(category => ({ limit: 100, categoryId: category.id, userId }))
   });
 
+  // On ajoute un élément category: string qui contient le nom literal au lieu de l'id seul
+  return rawDbEntries.map(budgetEntry => ({
+    ...budgetEntry, 
+    category: categoryEntries.find(c => c.id === budgetEntry.categoryId)?.name ?? ''
+  }))
 }
