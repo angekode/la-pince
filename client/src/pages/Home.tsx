@@ -19,10 +19,10 @@ function Home() {
         </section>
 
         {/* Section Cybersecurité */}
-        <section id="securite" className="home-section">
+        <section  className="home-section">
           <div className="security-section">
     
-            <h2>Sécurité Avancé</h2>
+            <h2 id="securite">Sécurité Avancé</h2>
 
             <div className="security-points">
               <p>🔒 Vos données sont chiffrées et protégées.</p>
@@ -38,10 +38,10 @@ function Home() {
         </section>
 
         {/* Section proposition d'inscription */}
-        <section id="inscription" className="home-section">
+        <section  className="home-section">
           <div className="signup-section">
 
-            <h2>Alors convaincu ?</h2>
+            <h2 id="inscription">Alors convaincu ?</h2>
 
             <p>Inscrivez-vous gratuitement en quelques secondes et commencez à mieux gérer votre budget dès aujourd’hui.</p>
 

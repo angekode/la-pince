@@ -1,9 +1,22 @@
 import crabLogo from "../assets/crab-svgrepo-com.svg";
 import Dropdown from "./Dropdown";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { getMe } from "../services/auth/auth.service";
 import "../styles/header-home.css";
 
-function Header() {
+function HeaderHome() {
+  
+    
+  
+    const [isLogged, setIsLogged] = useState(false);
+
+    useEffect(() => {
+      getMe()
+        .then(() => setIsLogged(true))
+        .catch(() => setIsLogged(false));
+    }, []);
+
   return (
     <header className="home-header">
       {/* Logo */}
@@ -21,10 +34,10 @@ function Header() {
       {/* Liens à droite */}
       <nav className="home-header__nav">
         <Link to="/register">S'inscrire</Link>
-        <Link to="/login">Connexion</Link>
+        <Link to={isLogged ? "/dashboard" : "/login"}>Connexion</Link>
       </nav>
     </header>
   );
 }
 
-export default Header;
+export default HeaderHome;
