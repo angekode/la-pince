@@ -7,7 +7,7 @@
     "dev": "cross-env NODE_ENV=development tsx --watch src/index.ts",
     "build": "cross-env NODE_ENV=production tsc",
     "start": "cross-env NODE_ENV=production node --watch dist/index.js",
-    "prodstart": "cross-env NODE_ENV=production prisma migrate reset && NODE_ENV=production prisma migrate dev --name prod && cross-env NODE_ENV=production node --watch dist/index.js",
+    "prodstart": "cross-env NODE_ENV=production prisma migrate reset && cross-env NODE_ENV=production prisma migrate dev --name prod && cross-env NODE_ENV=production node --watch dist/index.js",
     "db:generate": "prisma generate",
     "db:migrate:dev": "prisma migrate dev --name dev",
     "db:seed": "prisma migrate reset -f && tsx prisma/seeding/seed.ts",
