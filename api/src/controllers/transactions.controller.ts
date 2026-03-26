@@ -84,6 +84,7 @@ export const getTransactionById = async (req: Request, res: Response) => {
     return res.status(200).json(transaction);
 
   } catch (error) {
+    console.error("GET TRANSACTION ERROR:", error);
     return res.status(500).json({ error: "Server error" });
   }
 };
@@ -108,6 +109,7 @@ export const createTransaction = async (req: Request, res: Response) => {
 
     // Validation des données envoyées par le client
     const parsed = createTransactionSchema.safeParse(req.body);
+    console.log('parsedd data', parsed.data);
 
     if (!parsed.success) {
       return res.status(400).json(parsed.error);
@@ -119,6 +121,7 @@ export const createTransaction = async (req: Request, res: Response) => {
     return res.status(201).json(newTransaction);
 
   } catch (error) {
+    console.error("CREATE TRANSACTION ERROR:", error);
     return res.status(500).json({ error: "Server error" });
   }
 };
@@ -160,6 +163,7 @@ export const updateTransaction = async (req: Request, res: Response) => {
     return res.status(200).json({ message: "Transaction updated" });
 
   } catch (error) {
+    console.error("UPDATE TRANSACTION ERROR:", error);
     return res.status(500).json({ error: "Server error" });
   }
 };
@@ -193,6 +197,7 @@ export const deleteTransaction = async (req: Request, res: Response) => {
     return res.status(200).json({ message: "Transaction deleted" });
 
   } catch (error) {
+    console.error("DELETE TRANSACTION ERROR:", error);
     return res.status(500).json({ error: "Server error" });
   }
 };
