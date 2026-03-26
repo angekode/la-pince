@@ -2,7 +2,20 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const BUDGET_URL = `${BASE_URL}/budgets`;
 
 // GET
-export async function getBudgets() {
+
+export type Budget = {
+  id: number;
+  limit: number;
+  category: string;
+  alertEnabled: boolean;
+};
+
+export type GetBudgetsResponse = {
+  count: number,
+  budgets: Budget[]
+};
+
+export async function getBudgets():Promise<GetBudgetsResponse> {
   const res = await fetch(BUDGET_URL, {
     credentials: "include",
   });

@@ -5,7 +5,7 @@ type Category = {
   name: string;
 };
 
-type GetCategoriesResponse = {
+export type GetCategoriesResponse = {
   count: number;
   categories: Category[];
 };

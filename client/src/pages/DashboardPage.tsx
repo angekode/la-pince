@@ -55,28 +55,24 @@ import CurveGraph from "../components/dashboard/CurveGraph";
 
 // Services API
 import { getMe } from "../services/auth/auth.service";
-import { getCategories } from "../services/categories/categories.service";
-import { getBudgets } from "../services/budget/budget.service";
-import { getTransactions } from "../services/transactions/transactions.service";
+import { getCategories, type GetCategoriesResponse } from "../services/category/category.service";
+import { getBudgets, type GetBudgetsResponse } from "../services/budget/budget.service";
+import { getTransactions, type GetTransactionsResponse } from "../services/expense/expense.service";
 import { getSolde } from "../services/graphs/graphs-data.service";
 
 // UI
 import Header from "../components/Header";
 import GraphIcons from "../components/GraphIcons";
 
-// Types locaux
-type Category = { id: number; name: string };
-type Budget = { id: number; montant_limite: number; id_categorie: number };
-type Transaction = { id: number; amount: number; categoryId: number };
 
 function DashboardPage() {
 
   /**************************************************************
    * États : données API
    **************************************************************/
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [budgets, setBudgets] = useState<Budget[]>([]);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [categories, setCategories] = useState<GetCategoriesResponse>();
+  const [budgets, setBudgets] = useState<GetBudgetsResponse>();
+  const [transactions, setTransactions] = useState<GetTransactionsResponse>();
 
   /**************************************************************
    * États : affichage
@@ -102,12 +98,12 @@ function DashboardPage() {
    * Calculs globaux
    **************************************************************/
   const totalBudget = useMemo(
-    () => budgets.reduce((sum, b) => sum + b.montant_limite, 0),
+    () => budgets?.budgets.reduce((sum, b) => sum + b.limit, 0) ?? 0,
     [budgets]
   );
 
   const totalSpent = useMemo(
-    () => transactions.reduce((sum, t) => sum + t.amount, 0),
+    () => transactions?.transactions.reduce((sum, t) => sum + t.amount, 0) ?? 0,
     [transactions]
   );
 
@@ -128,14 +124,14 @@ function DashboardPage() {
    **************************************************************/
   const selectedBudget = useMemo(() => {
     if (selectedCategoryId === "all") return undefined;
-    return budgets.find((b) => b.id_categorie === selectedCategoryId);
+    return budgets?.bu.find((b) => /*b.id_categorie*/0 === selectedCategoryId);
   }, [budgets, selectedCategoryId]);
 
   const selectedSpent = useMemo(() => {
     if (selectedCategoryId === "all") return 0;
-    return transactions
+    return transactions?.transactions
       .filter((t) => t.categoryId === selectedCategoryId)
-      .reduce((sum, t) => sum + t.amount, 0);
+      .reduce((sum, t) => sum + t.amount, 0) ?? 0;
   }, [transactions, selectedCategoryId]);
 
   const selectedRemaining = selectedBudget
@@ -201,7 +197,7 @@ function DashboardPage() {
             }
           >
             <option value="all">Toutes les catégories</option>
-            {categories.map((c) => (
+            {categories?.categories.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
               </option>
@@ -230,7 +226,7 @@ function DashboardPage() {
           <div className={`dashboard-left__alert ${selectedAlertClass}`}>
             {selectedCategoryId === "all"
               ? "Budget total"
-              : categories.find((c) => c.id === selectedCategoryId)?.name}
+              : categories?.categories.find((c) => c.id === selectedCategoryId)?.name}
           </div>
         </aside>
 

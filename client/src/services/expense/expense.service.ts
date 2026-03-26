@@ -3,6 +3,23 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const TRANSACTIONS_URL = `${BASE_URL}/transactions`;
 
 // ================= GET =================
+
+export type Transaction = {
+  id: number;
+  label: string;
+  amount: number;
+  date: string;
+  categoryId: number;
+  userId: number;
+  description: number;
+};
+
+export type GetTransactionsResponse = {
+  count: number;
+  transactions: Transaction[];
+};
+
+
 export async function getTransactions() {
   const res = await fetch(TRANSACTIONS_URL, {
     credentials: "include",
