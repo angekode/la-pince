@@ -1,6 +1,6 @@
 const API_URL = "http://localhost:3000/categories";
 
-type Category = {
+export type Category = {
   id: number;
   name: string;
 };

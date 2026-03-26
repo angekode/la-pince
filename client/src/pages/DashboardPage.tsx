@@ -55,9 +55,9 @@ import CurveGraph from "../components/dashboard/CurveGraph";
 
 // Services API
 import { getMe } from "../services/auth/auth.service";
-import { getCategories, type GetCategoriesResponse } from "../services/category/category.service";
-import { getBudgets, type GetBudgetsResponse } from "../services/budget/budget.service";
-import { getTransactions, type GetTransactionsResponse } from "../services/expense/expense.service";
+import { getCategories, type Category } from "../services/category/category.service";
+import { getBudgets, type Budget } from "../services/budget/budget.service";
+import { getTransactions, type Transaction } from "../services/expense/expense.service";
 import { getSolde } from "../services/graphs/graphs-data.service";
 
 // UI
@@ -70,9 +70,9 @@ function DashboardPage() {
   /**************************************************************
    * États : données API
    **************************************************************/
-  const [categories, setCategories] = useState<GetCategoriesResponse>();
-  const [budgets, setBudgets] = useState<GetBudgetsResponse>();
-  const [transactions, setTransactions] = useState<GetTransactionsResponse>();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [budgets, setBudgets] = useState<Budget[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   /**************************************************************
    * États : affichage
@@ -86,24 +86,47 @@ function DashboardPage() {
   /**************************************************************
    * Chargement initial des données
    **************************************************************/
+
+    // ===== LOAD =====
+
   useEffect(() => {
-    getMe();
-    getCategories().then(setCategories);
-    getBudgets().then(setBudgets);
-    getTransactions().then(setTransactions);
-    getSolde();
+    async function loadData() {
+
+      try {
+
+        getMe();
+
+        const categoriesData = await getCategories();
+        setCategories(categoriesData.categories);
+
+        const budgetsData = await getBudgets();
+        setBudgets(budgetsData.budgets);
+
+        const transactionsData = await getTransactions();
+        setTransactions(transactionsData.transactions);
+
+        getSolde();
+
+      } catch (error: unknown) {
+        const errorMsg = error instanceof Error ? error.message : String(error);
+        console.error(`Erreur à la récupération des données: ${errorMsg}`);
+      }
+    }
+
+    loadData();
   }, []);
+
 
   /**************************************************************
    * Calculs globaux
    **************************************************************/
   const totalBudget = useMemo(
-    () => budgets?.budgets.reduce((sum, b) => sum + b.limit, 0) ?? 0,
+    () => budgets.reduce((sum, b) => sum + b.limit, 0) ?? 0,
     [budgets]
   );
 
   const totalSpent = useMemo(
-    () => transactions?.transactions.reduce((sum, t) => sum + t.amount, 0) ?? 0,
+    () => transactions.reduce((sum, t) => sum + t.amount, 0) ?? 0,
     [transactions]
   );
 
@@ -124,22 +147,22 @@ function DashboardPage() {
    **************************************************************/
   const selectedBudget = useMemo(() => {
     if (selectedCategoryId === "all") return undefined;
-    return budgets?.bu.find((b) => /*b.id_categorie*/0 === selectedCategoryId);
+    return budgets.find((b) => /*b.id_categorie*/0 === selectedCategoryId);
   }, [budgets, selectedCategoryId]);
 
   const selectedSpent = useMemo(() => {
     if (selectedCategoryId === "all") return 0;
-    return transactions?.transactions
+    return transactions
       .filter((t) => t.categoryId === selectedCategoryId)
       .reduce((sum, t) => sum + t.amount, 0) ?? 0;
   }, [transactions, selectedCategoryId]);
 
   const selectedRemaining = selectedBudget
-    ? selectedBudget.montant_limite - selectedSpent
+    ? selectedBudget.limit - selectedSpent
     : 0;
 
   const selectedPercent = selectedBudget
-    ? (selectedSpent / selectedBudget.montant_limite) * 100
+    ? (selectedSpent / selectedBudget.limit) * 100
     : 0;
 
   const selectedAlertClass =
@@ -197,7 +220,7 @@ function DashboardPage() {
             }
           >
             <option value="all">Toutes les catégories</option>
-            {categories?.categories.map((c) => (
+            {categories.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
               </option>
@@ -209,7 +232,7 @@ function DashboardPage() {
           <div className="dashboard-left__indicators">
             <div>
               <h4>Budget limite</h4>
-              <p>{selectedBudget ? selectedBudget.montant_limite + "€" : "—"}</p>
+              <p>{selectedBudget ? selectedBudget.limit + "€" : "—"}</p>
             </div>
 
             <div>
@@ -226,7 +249,7 @@ function DashboardPage() {
           <div className={`dashboard-left__alert ${selectedAlertClass}`}>
             {selectedCategoryId === "all"
               ? "Budget total"
-              : categories?.categories.find((c) => c.id === selectedCategoryId)?.name}
+              : categories.find((c) => c.id === selectedCategoryId)?.name}
           </div>
         </aside>
 
