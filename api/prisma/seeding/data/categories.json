@@ -1,10 +1,10 @@
 [
-  { "name" : "logement" },
-  { "name" : "transport" },
-  { "name" : "nourriture" },
-  { "name" : "loisir" },
-  { "name" : "shopping" },
-  { "name" : "sante" },
-  { "name" : "charges" },
-  { "name" : "salaire" }
+  { "id": 1, "name": "logement" },
+  { "id": 2, "name": "transport" },
+  { "id": 3, "name": "nourriture" },
+  { "id": 4, "name": "loisir" },
+  { "id": 5, "name": "shopping" },
+  { "id": 6, "name": "sante" },
+  { "id": 7, "name": "charges" },
+  { "id": 8, "name": "salaire" }
 ]
