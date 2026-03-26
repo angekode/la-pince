@@ -26,7 +26,7 @@ header h1 {
   margin: 0;                               /* Supprime le margin par défaut */
   font-size: 1.5rem;                       /* Taille de titre lisible */
   font-weight: 600;                        /* Poids intermédiaire pour un rendu moderne */
-  color: var(--color-primary-dark);        /* Couleur d'accent utilisée dans ton thème */
+  color: var(--color-primary-dark);        /* Couleur d'accent utilisée dans theme */
 }
 
 /* -----------------------------------------------------------

@@ -194,7 +194,8 @@ export async function updateBudget(req: Request, res: Response) {
     // Met à jour le budger dans la base et envoie une exception en cas de problèmes
     const updatedBudgetEntry = await prisma.budget.update({ 
       where : {
-        id: budgetId
+        id: budgetId,
+        userId: req.user.id
       },
       data: updateData
     });
@@ -212,6 +213,7 @@ export async function updateBudget(req: Request, res: Response) {
         return res.status(StatusCodes.NOT_FOUND).end();
       }
 
+    // Autres erreurs
     } else if (error instanceof Error) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
     } else {

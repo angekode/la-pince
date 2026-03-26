@@ -1,45 +1,71 @@
 /**
- * Affiche une graphique sous forme de de barres qui montre la somme dépensée dans chaque catégorie.
- * A améliorer en ajoutant le niveau de budget maximum par catégorie.
+ * Composant qui affiche un graphique en camembert (pie chart) en 3D.
+ * Les données proviennent du backend via getCategoryTotalsForPieGraphData.
+ * Highcharts 3D est utilisé pour l'effet de profondeur.
+ * Le camembert est volontairement réduit via plotOptions.pie.size.
  */
 
 import { useState, useEffect } from "react";
 
+// Import du composant React qui encapsule Highcharts
 import { Chart } from '@highcharts/react';
+
+// Type des options Highcharts
 import type { HighchartsOptionsType } from '@highcharts/react';
+
+// Active le module 3D de Highcharts
 import 'highcharts/esm/highcharts-3d.src.js';
 
+// Service qui récupère les totaux par catégorie
 import { getCategoryTotalsForPieGraphData, type CategoryTotalsData } from "../../services/graphs/graphs-data.service";
-
 
 function PieGraph() {
 
+  // Stocke les données reçues du backend
   const [graphData, setGraphData] = useState<CategoryTotalsData[]>();
 
-  // On configure tout le graphique ici (Données, apparance)
+  /**
+   * Configuration complète du graphique Highcharts.
+   * - chart : type, fond, 3D
+   * - series : données du camembert
+   * - plotOptions : style du camembert, labels, taille, bordures
+   */
   const chartOptions : HighchartsOptionsType = {
     chart: {
-      type: "pie",
-      backgroundColor: "transparent",
-      plotBorderWidth: 0,
+      type: "pie",                 // Type de graphique
+      backgroundColor: "transparent", // Fond transparent pour s'intégrer au thème
+      plotBorderWidth: 0,          // Pas de bordure autour du graphique
       options3d: {
-        enabled: true,
-        alpha: 45,
-        beta: 0
+        enabled: true,             // Active la 3D
+        alpha: 45,                 // Inclinaison verticale
+        beta: 0                    // Inclinaison horizontale
       }
     },
+
+    // Série principale contenant les données du camembert
     series: [
       {
-        name: 'categories',
-        data: graphData?.map(item => ({ y: item.total, name: item.category }))
+        name: 'categories',        // Nom de la série
+        data: graphData?.map(item => ({
+          y: item.total,           // Valeur numérique
+          name: item.category      // Nom de la catégorie
+        }))
       }
     ],
+
     plotOptions: {
       pie: {
+        /**
+         * Réduit la taille du camembert.
+         * Valeur recommandée : 50% à 70%.
+         * Ici : 60% pour un rendu équilibré.
+         */
+        size: "60%",
+
         dataLabels: {
-          useHTML: true, // Pour autoriser l'utilisation des class définie en dessous à partir du css (chart.css)
-          enabled: true,
-          formatter: function () {
+          useHTML: true,           // Permet d'utiliser des classes CSS personnalisées
+          enabled: true,           // Active les labels
+          formatter: function () { // Format du label
             return `
             <div class="pie-label-box">
               <span class="pie-label-name">${this.point.name}</span> 
@@ -48,29 +74,41 @@ function PieGraph() {
             `;
           },
         },
-        borderColor: "#171a21",
-        borderWidth: 2,
-        borderRadius: 6,
-        depth: 35 // indispensable pour voir la 3D
+
+        borderColor: "#171a21",    // Bordure du camembert
+        borderWidth: 2,            // Épaisseur de la bordure
+        borderRadius: 6,           // Arrondis des segments
+        depth: 35                  // Profondeur 3D
       },
+
+      // Ombre portée sous le camembert
       series: {
-                shadow: {
-          color: "rgba(0, 0, 0, 1)",
-          offsetX: 0,
-          offsetY: 6,
-          opacity: 0.05,
-          width: 10
+        shadow: {
+          color: "rgba(0, 0, 0, 1)", // Couleur de l'ombre
+          offsetX: 0,                // Décalage horizontal
+          offsetY: 6,                // Décalage vertical
+          opacity: 0.05,             // Transparence
+          width: 10                  // Taille de l'ombre
         }
       }
     },
   };
 
-  // Lance l'acquisition des données une fois au montage du composant (car tableau des dépendances vide)
-  useEffect(() => { getCategoryTotalsForPieGraphData().then(setGraphData) }, []);
+  /**
+   * Récupère les données du backend au montage du composant.
+   * Le tableau de dépendances vide [] garantit un appel unique.
+   */
+  useEffect(() => {
+    getCategoryTotalsForPieGraphData().then(setGraphData);
+  }, []);
 
+  /**
+   * Affiche le graphique Highcharts.
+   * Le composant <Chart> se charge de créer et mettre à jour le graphique.
+   */
   return (
     <Chart options={chartOptions} />
-);
+  );
 }
 
 export default PieGraph;

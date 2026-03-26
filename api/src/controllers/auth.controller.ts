@@ -1,5 +1,5 @@
 // Importation des types Request et Response d'Express pour typer correctement les fonctions du contrôleur.
-import type { Request, Response } from "express";
+import type { Request, Response, CookieOptions } from "express";
 
 // Importer bcrypt pour pouvoir hasher les mots de passe et comparer les hash.
 //import bcrypt from "bcrypt";
@@ -73,6 +73,52 @@ export async function register(req: Request, res: Response) {
 // POST /auth/login
 // -----------------------------
 
+/**
+ * Options des cookies à réutiliser dans login et logout de manière identique.
+ */
+const cookieOptions : CookieOptions = {
+  /* 
+    httpOnly = true
+    - Le navigateur ne pourra pas accéder au cookie via le javascript avec document.cookie()
+      (utile contre les attaques XSS)
+  */
+  httpOnly: true,
+
+  /*
+    secure = true 
+    - Le front enverra le cookie uniquement en HTTPS (production)
+    secure = false
+    - Le front enverra le cookie en HTTP et HTTPS (development)
+  */
+  secure: process.env.NODE_ENV === "production" ? true : false,
+  
+  /* 
+    sameSite = lax 
+    - Le front enverra le cookie sur les urls same site (même protocole, même nom de domaine)
+    - ex : http://localhost:3000 <-> http://localhost:5173 ok
+    - ex : http://localhost:3000 <-> http://127.0.0.1:5173 pas ok 
+
+    sameSite = none
+    - Le front enverra le cookie en cross site (domaine différent)
+      On le fait car il y a une chance sur 2 que le navigateur considère que dans l'exemple ci 
+      dessous n'a pas le same site : le nom de domaine est le même (onrender.com) donc normalement
+      considéré comme same site, mais pas sur à 100% à cause du sous domaine différent à sa gauche :
+    - ex : https://la-pince-1suz.onrender.com <-> https://la-pince-api-90p7.onrender.com ok
+            (normale le nom de domaine ici est uniquement "onrender.com")
+    - Attention "none" impose secure = true, ce qui ne pose pas de problème en production
+      puisqu'on est en https normalement.
+  */
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+
+  /*
+    path = "/" 
+    - Le front enverra le cookie sur toutes les routes commençant par "/" donc sur tout le site.
+    - Attention, si vide il envoie uniquement sur une sous url de celle invoquée pour créer le 
+      cookie (donc /auth/login pour ici).
+  */
+  path: "/"
+};
+
 export async function login(req: Request, res: Response) {
   try {
     // Récupération de l'email et du mot de passe envoyés par le front.
@@ -94,14 +140,19 @@ export async function login(req: Request, res: Response) {
     // Si tout est bon, génération d'un token JWT contenant l'id et l'email.
     const token = signToken({ id: user.id, email: user.email });
 
-    // Envoi du cookie HTTPOnly avec le token d'authentification. --> Stockage du token dans un cookie sécurisé
-    res.cookie("token", token, {
-      httpOnly: true,                     // non accessible via javascript coté client avec document.cookie (attaque XSS)
-      secure: process.env.NODE_ENV !== "production", // secure = true => cookie envoyé uniquement en HTTPS (pour la prod),
-      sameSite: "lax",                    // cross-site: cookie envoyé en GET mais pas en POST
-      path: "/",                           // coockie envoyé sur toutes les routes
-      maxAge: 24 * 1000 * 60 * 60,        // durée de vie de 24h 
+    /* Envoie du cookie au front end avec des options pour :
+      - Le rendre invisible en javascript coté front.
+      - Autoriser l'envoie des cookies en HTTP non sécurisé en mode "development", 
+        mais imposer l'envoie des cookies uniquement en HTTPS en mode "production".
+      - Imposer le same site pour l'envoie des cookies (même nom de domaine).
+
+      En pratique: envoie un header "Set-Cookie" : "token=izaojfaoifj".
+    */
+    res.cookie("token", token, { 
+      ...cookieOptions, 
+      maxAge: 24 * 1000 * 60 * 60 // durée du token en millisecondes (ici 24h)
     });
+
     // Renvoi de l'utilisateur (sans le mot de passe) + le token.
     return res.status(200).json({
         id: user.id,            
@@ -122,14 +173,10 @@ export async function login(req: Request, res: Response) {
 // -----------------------------
 
 export async function logout(req: AuthRequest, res: Response) {
-  // Le logout est géré côté front (on supprime le token).
-  const isProd = process.env.NODE_ENV === "production";
-   res.clearCookie("token", {
-    httpOnly: true,
-    secure: isProd,
-    sameSite: isProd ? "none" : "lax", 
-    path: "/",
-  });
+
+  // On envoie l'instruction au front de supprimer le cookie.
+  res.clearCookie("token", cookieOptions);
+
   // Ici renvoie d'un message de confirmation.
   return res.status(200).json({ message: "Déconnecté" });
 }

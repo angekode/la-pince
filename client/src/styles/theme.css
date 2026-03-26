@@ -17,6 +17,16 @@
 
   --shadow-card: 0 16px 40px rgba(0, 0, 0, 0.12);
   --shadow-button: 0 2px 8px rgba(0, 0, 0, 0.12);
+
+ --alert-green-light: #166534;
+--alert-green-dark: #1f7a4a;
+
+--alert-orange-light: #b85c00;
+--alert-orange-dark: #d97706;
+
+--alert-red-light: #b91c1c;
+--alert-red-dark: #ef4444;
+
 }
 
 /* -----------------------------------------------------------
@@ -41,6 +51,10 @@ body.light {
   --rule-default: #7a7f8c;
   --rule-valid: #4caf50;
   --rule-invalid: #e53935;
+
+  --alert-green: var(--alert-green-light);
+  --alert-orange: var(--alert-orange-light);
+  --alert-red: var(--alert-red-light);
 }
 
 /* -----------------------------------------------------------
@@ -65,6 +79,11 @@ body.dark {
   --rule-default: #9ca6bf;
   --rule-valid: #4caf50;
   --rule-invalid: #ff7b72;
+
+  --alert-green: var(--alert-green-dark);
+  --alert-orange: var(--alert-orange-dark);
+  --alert-red: var(--alert-red-dark);
+
 }
 
 /* -----------------------------------------------------------
@@ -114,6 +133,8 @@ a {
   padding: 24px;
 }
 
+
+
 .home-section {
   min-height: 500px;
   margin-bottom: 32px;
@@ -121,6 +142,10 @@ a {
   background: var(--bg-card);
   border-radius: 16px;
   scroll-margin-top: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;   
 }
 
 /* -----------------------------------------------------------
