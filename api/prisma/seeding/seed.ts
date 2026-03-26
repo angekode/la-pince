@@ -4,7 +4,8 @@ import config from "dotenv/config";
 import categoriesData from "./data/categories.json" with { type: 'json' };
 import expensesData from "./data/expenses.json" with { type: 'json' };
 import usersData from "./data/users.json" with { type: 'json' };
-import bcrypt from "bcrypt";
+import budgetsData from "./data/budgets.json" with { type: 'json' };
+import argon2 from "argon2";
 
 
 /**
@@ -38,7 +39,7 @@ const usersWithHashedPasswords = await Promise.all(usersData.map(async (user) =>
     const { password, ...rest } = user;
     return {
       ...rest,
-      password: await bcrypt.hash(password, Number(process.env.SALT_ROUNDS) || 10)
+      password: await argon2.hash(password)
     };
 }));
 
@@ -53,9 +54,9 @@ const users = await prisma.user.createManyAndReturn({
 // -------------------------------------------------------------------------------------------------
 
 // On transforme :
-// { name } => { name, userId }
+// { name } => { name }
 const categories = await prisma.category.createManyAndReturn({
-  data: categoriesData.map(category => ({ name: category.name, userId: users[0].id }))
+  data: categoriesData
 });
 
 
@@ -73,6 +74,23 @@ const expenses = await prisma.expense.createManyAndReturn({
     return {
       ...rest,
       categoryId: categories.find(c => c.name === expense.category)?.id ?? 0,
+      userId: users[0]?.id ?? 0
+    };
+  })
+});
+
+
+// -------------------------------------------------------------------------------------------------
+// Budgets
+// -------------------------------------------------------------------------------------------------
+
+const budgets = await prisma.budget.createManyAndReturn({
+  data: budgetsData.map(budget => {
+    // On récupère tout dans "rest" sauf category qui est une string (nous on veut l'id)
+    const { category, ...rest } = budget; 
+    return {
+      ...rest,
+      categoryId: categories.find(c => c.name === budget.category)?.id ?? 0,
       userId: users[0]?.id ?? 0
     };
   })

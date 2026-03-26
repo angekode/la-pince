@@ -117,19 +117,19 @@ export function generateRandomUserInfo(): {
  * Elles sont clonées pour chaque utilisateur via seedCategories().
  */
 const categoriesToCreate = [
-    { name: 'nourriture', userId: 1 },
-    { name: 'impots', userId: 1 },
-    { name: 'loisirs', userId: 1 }
+    { name: 'nourriture' },
+    { name: 'impots' },
+    { name: 'loisirs' }
 ];
 
 /**
  * Insère plusieurs catégories pour un utilisateur donné.
  * Utilisé dans les tests des routes /categories.
  */
-export async function seedCategories(userId: number): Promise<{ id: number, name: string, userId: number }[]> {
+export async function seedCategories(): Promise<{ id: number, name: string }[]> {
    return await prisma.category.createManyAndReturn(
     { 
-      data: categoriesToCreate.map(c => ({ name: c.name, userId })) 
+      data: categoriesToCreate 
     });
 }
 
@@ -176,4 +176,23 @@ Promise<{
     { 
       data: transactionsToCreate.map(c => ({...c, userId, categoryId })) 
     });
+}
+
+
+/**
+ * Insère plusieurs budget pour toutes les catégories données (elles même générées par seedCategories)
+ */
+export async function seedBudgets(categoryEntries: { id: number, name: string }[], userId: number):
+Promise<{ id: number, limit: number, categoryId: number, userId: number, category: string, alertEnabled: boolean }[]>
+{
+  // On récupère les données crées dans la table 
+  const rawDbEntries = await prisma.budget.createManyAndReturn({
+    data: categoryEntries.map(category => ({ limit: 100, categoryId: category.id, userId, alertEnabled: true }))
+  });
+
+  // On ajoute un élément category: string qui contient le nom literal au lieu de l'id seul
+  return rawDbEntries.map(budgetEntry => ({
+    ...budgetEntry, 
+    category: categoryEntries.find(c => c.id === budgetEntry.categoryId)?.name ?? ''
+  }))
 }

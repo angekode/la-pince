@@ -1,207 +1,174 @@
 /* -----------------------------------------------------------
-   VARIABLES GLOBALES (communes aux thèmes clair et sombre)
-   Ces variables définissent les couleurs principales, les ombres
-   et les rayons de bordure utilisés dans toute l'application.
+   VARIABLES GLOBALES
 ----------------------------------------------------------- */
 :root {
-  /* Couleurs principales (mode clair par défaut) */
-  --color-primary-light: #2d6cdf;            /* Bleu principal utilisé en mode clair */
-  --color-primary-light-hover: #1f5bd0;      /* Variation plus sombre pour le hover */
+  --color-primary-light: #2d6cdf;
+  --color-primary-light-hover: #1f5bd0;
 
-  /* Couleurs principales (mode sombre) */
-  --color-primary-dark: #d4af37;             /* Doré utilisé en mode sombre */
-  --color-primary-dark-hover: #b8962e;       /* Variation plus sombre pour le hover */
+  --color-primary-dark: #d4af37;
+  --color-primary-dark-hover: #b8962e;
 
-  /* Couleurs fonctionnelles */
-  --color-success: #4caf50;                  /* Vert pour les validations */
-  --color-error: #e53935;                    /* Rouge pour les erreurs */
+  --color-success: #4caf50;
+  --color-error: #e53935;
 
-  /* Rayons de bordure */
-  --radius-sm: 6px;                          /* Petits arrondis */
-  --radius-md: 8px;                          /* Arrondis moyens */
-  --radius-lg: 16px;                         /* Grands arrondis */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
 
-  /* Ombres */
-  --shadow-card: 0 16px 40px rgba(0, 0, 0, 0.12);   /* Ombre standard des cartes */
-  --shadow-button: 0 2px 8px rgba(0, 0, 0, 0.12);   /* Ombre légère des boutons */
+  --shadow-card: 0 16px 40px rgba(0, 0, 0, 0.12);
+  --shadow-button: 0 2px 8px rgba(0, 0, 0, 0.12);
+
+ --alert-green-light: #166534;
+--alert-green-dark: #1f7a4a;
+
+--alert-orange-light: #b85c00;
+--alert-orange-dark: #d97706;
+
+--alert-red-light: #b91c1c;
+--alert-red-dark: #ef4444;
+
 }
 
 /* -----------------------------------------------------------
    THÈME CLAIR
-   Toutes les variables spécifiques au mode clair.
-   Elles écrasent celles définies dans :root.
 ----------------------------------------------------------- */
 body.light {
-  /* Fonds */
-  --bg-page: #f7f9fc;                        /* Fond global de la page */
-  --bg-card: #ffffff;                        /* Fond des cartes */
-  --bg-input: #ffffff;                       /* Fond des champs de saisie */
-  --border-color: #d9deea;                   /* Bordures légères */
+  --bg-page: #f7f9fc;
+  --bg-card: #ffffff;
+  --bg-input: #ffffff;
+  --border-color: #d9deea;
 
-  /* Texte */
-  --text-main: #1e1e1e;                      /* Texte principal */
-  --text-secondary: #6b6b6b;                 /* Texte secondaire */
+  --text-main: #1e1e1e;
+  --text-secondary: #6b6b6b;
 
-  /* Boutons */
-  --button-primary: var(--color-primary-light);        /* Couleur du bouton principal */
+  --button-primary: var(--color-primary-light);
   --button-primary-hover: var(--color-primary-light-hover);
 
-  /* Liens */
-  --link-color: #2d6cdf;                     /* Couleur des liens */
+  --link-color: #2d6cdf;
+  --alert-error-bg: rgba(229, 57, 53, 0.08);
+  --alert-success-bg: rgba(76, 175, 80, 0.08);
 
-  /* Alertes */
-  --alert-error-bg: rgba(229, 57, 53, 0.08); /* Fond des alertes d'erreur */
-  --alert-success-bg: rgba(76, 175, 80, 0.08); /* Fond des alertes de succès */
+  --rule-default: #7a7f8c;
+  --rule-valid: #4caf50;
+  --rule-invalid: #e53935;
 
-  /* Règles de validation (ex : mot de passe) */
-  --rule-default: #7a7f8c;                   /* Couleur par défaut */
-  --rule-valid: #4caf50;                     /* Règle valide */
-  --rule-invalid: #e53935;                   /* Règle invalide */
+  --alert-green: var(--alert-green-light);
+  --alert-orange: var(--alert-orange-light);
+  --alert-red: var(--alert-red-light);
 }
 
 /* -----------------------------------------------------------
    THÈME SOMBRE
-   Toutes les variables spécifiques au mode sombre.
 ----------------------------------------------------------- */
 body.dark {
-  /* Fonds */
-  --bg-page: #0f1115;                        /* Fond global sombre */
-  --bg-card: #171a21;                        /* Fond des cartes */
-  --bg-input: #11141a;                       /* Fond des champs */
-  --border-color: #2b3140;                   /* Bordures sombres */
+  --bg-page: #0f1115;
+  --bg-card: #171a21;
+  --bg-input: #11141a;
+  --border-color: #2b3140;
 
-  /* Texte */
-  --text-main: #ffffff;                      /* Texte principal */
-  --text-secondary: #b8c0d4;                 /* Texte secondaire */
+  --text-main: #ffffff;
+  --text-secondary: #b8c0d4;
 
-  /* Boutons */
-  --button-primary: var(--color-primary-dark);         /* Couleur du bouton principal */
+  --button-primary: var(--color-primary-dark);
   --button-primary-hover: var(--color-primary-dark-hover);
 
-  /* Liens */
-  --link-color: #ffffff;                     /* Liens en blanc */
+  --link-color: #ffffff;
+  --alert-error-bg: rgba(229, 57, 53, 0.15);
+  --alert-success-bg: rgba(76, 175, 80, 0.15);
 
-  /* Alertes */
-  --alert-error-bg: rgba(229, 57, 53, 0.15); /* Fond des alertes d'erreur */
-  --alert-success-bg: rgba(76, 175, 80, 0.15); /* Fond des alertes de succès */
-
-  /* Règles de validation */
   --rule-default: #9ca6bf;
   --rule-valid: #4caf50;
   --rule-invalid: #ff7b72;
+
+  --alert-green: var(--alert-green-dark);
+  --alert-orange: var(--alert-orange-dark);
+  --alert-red: var(--alert-red-dark);
+
 }
 
 /* -----------------------------------------------------------
    RÉGLAGES GLOBAUX
-   S'appliquent à tous les thèmes.
 ----------------------------------------------------------- */
 * {
-  box-sizing: border-box;                    /* Calcul cohérent des tailles */
+  box-sizing: border-box;
 }
 
 html,
 body,
 #root {
-  min-height: 100%;                          /* S'assure que la page occupe toute la hauteur */
-  margin: 0;                                 /* Supprime les marges par défaut */
+  min-height: 100%;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 /* -----------------------------------------------------------
-   STYLE GLOBAL DU BODY
+   STYLE GLOBAL
 ----------------------------------------------------------- */
 body {
-  font-family: Inter, Arial, sans-serif;     /* Police globale */
-  background: var(--bg-page);                /* Fond dépendant du thème */
-  color: var(--text-main);                   /* Couleur du texte dépendant du thème */
+  font-family: Inter, Arial, sans-serif;
+  background: var(--bg-page);
+  color: var(--text-main);
 }
 
-/* -----------------------------------------------------------
-   STYLE GLOBAL DES LIENS
------------------------------------------------------------ */
 a {
-  text-decoration: underline;                /* Style par défaut */
+  text-decoration: underline;
 }
 
 /* -----------------------------------------------------------
-   CONTENEUR DE PAGE (utilisé dans Register)
+   CONTENEURS GÉNÉRAUX
 ----------------------------------------------------------- */
 .page-container {
-  min-height: 100vh;                         /* Occupe toute la hauteur */
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;                       /* Centre horizontalement */
-  justify-content: center;                   /* Centre verticalement */
-  padding: 88px 16px 32px;                   /* Espacement interne */
+  align-items: center;
+  justify-content: center;
+  padding: 88px 16px 32px;
+}
+
+.home-main {
+  padding: 24px;
+}
+
+
+
+.home-section {
+  min-height: 500px;
+  margin-bottom: 32px;
+  padding: 24px;
+  background: var(--bg-card);
+  border-radius: 16px;
+  scroll-margin-top: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;   
 }
 
 /* -----------------------------------------------------------
-   CARTE D'AUTHENTIFICATION (Register)
+   CARTE D'AUTHENTIFICATION
 ----------------------------------------------------------- */
 .auth-card {
   width: 100%;
-  max-width: 520px;                          /* Largeur maximale */
-  background: var(--bg-card);                /* Fond dépendant du thème */
-  border-radius: var(--radius-lg);           /* Coins arrondis */
-  box-shadow: var(--shadow-card);            /* Ombre standard */
-  padding: 32px 28px;                        /* Espacement interne */
+  max-width: 520px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 32px 28px;
 }
 
 /* -----------------------------------------------------------
-   FORMULAIRE D'INSCRIPTION
+   FORMULAIRES
 ----------------------------------------------------------- */
 .register-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;                                 /* Espacement entre les champs */
+  gap: 16px;
 }
 
-/* -----------------------------------------------------------
-   BLOC MARQUE (logo + titre)
------------------------------------------------------------ */
-.brand-block {
-  text-align: center;                        /* Centre le contenu */
-  margin-bottom: 8px;                        /* Espacement inférieur */
-}
-
-.brand-logo {
-  width: 100px;
-  height: 100px;
-  margin: 0 auto 14px auto;                  /* Centre horizontalement */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 20px;                       /* Coins arrondis */
-}
-
-.brand-logo img {
-  width: 120px;
-  height: auto;
-}
-
-/* -----------------------------------------------------------
-   TITRES ET SOUS-TITRES
------------------------------------------------------------ */
-.register-title {
-  margin: 0;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--text-main);
-}
-
-.register-subtitle {
-  margin: 10px 0 0;
-  color: var(--text-secondary);
-  font-size: 0.95rem;
-}
-
-.inline-link {
-  color: var(--link-color);
-  font-weight: 600;
-}
-
-/* -----------------------------------------------------------
-   FORM GROUP (Register)
------------------------------------------------------------ */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -234,8 +201,53 @@ a {
   border-color: var(--button-primary);
   box-shadow: 0 0 0 3px rgba(45, 108, 223, 0.12);
 }
+
 /* -----------------------------------------------------------
-   MOT DE PASSE : règles + bouton afficher/masquer
+   BLOC MARQUE
+----------------------------------------------------------- */
+.brand-block {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.brand-logo {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 14px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+}
+
+.brand-logo img {
+  width: 120px;
+  height: auto;
+}
+
+/* -----------------------------------------------------------
+   TITRES
+----------------------------------------------------------- */
+.register-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.register-subtitle {
+  margin: 10px 0 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.inline-link {
+  color: var(--link-color);
+  font-weight: 600;
+}
+
+/* -----------------------------------------------------------
+   MOT DE PASSE
 ----------------------------------------------------------- */
 .password-input-wrapper {
   display: flex;
@@ -294,7 +306,7 @@ a {
 }
 
 /* -----------------------------------------------------------
-   BOUTON PRINCIPAL
+   BOUTONS
 ----------------------------------------------------------- */
 .primary-button {
   height: 48px;
@@ -319,9 +331,6 @@ a {
   cursor: not-allowed;
 }
 
-/* -----------------------------------------------------------
-   BOUTON ACCUEIL
------------------------------------------------------------ */
 .acceuil-button {
   display: flex;
   flex-direction: column;
@@ -360,7 +369,7 @@ a {
 }
 
 /* -----------------------------------------------------------
-   BOUTON DE CHANGEMENT DE THÈME
+   THEME TOGGLE
 ----------------------------------------------------------- */
 .theme-toggle-wrapper {
   position: fixed;
@@ -373,7 +382,7 @@ a {
   border: 1px solid var(--border-color);
   background: var(--bg-card);
   color: var(--text-main);
-  border-radius: 999px;                     /* Forme de pilule */
+  border-radius: 999px;
   height: 42px;
   padding: 0 14px;
   cursor: pointer;
@@ -382,7 +391,7 @@ a {
 }
 
 /* -----------------------------------------------------------
-   RESPONSIVE (GRANDS ÉCRANS)
+   RESPONSIVE
 ----------------------------------------------------------- */
 @media (min-width: 1024px) {
   .auth-header {
@@ -400,7 +409,8 @@ a {
   }
 }
 
-/*@media (max-width: 600px) {
+/*
+@media (max-width: 600px) {
   .page-container {
     padding-top: 80px;
   }
@@ -421,5 +431,5 @@ a {
     width: 100%;
     height: 42px;
   }
-}*/
-
+}
+*/

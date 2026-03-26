@@ -202,6 +202,255 @@
         }
       }
     },
+    "/budgets": {
+      "get": {
+        "summary": "Renvoie la liste des budgets de l'utilisateur connecté",
+        "description": "Seul les utilisateurs avec un token en cookie sont autorisés sur cette route. Seul les catégories de l'utilisateur connecté sont renvoyées.\n",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "number"
+                    },
+                    "budgets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number"
+                          },
+                          "limit": {
+                            "type": "number"
+                          },
+                          "category": {
+                            "type": "string"
+                          },
+                          "alertEnabled": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Crée un nouveau budget",
+        "description": "Seul les utilisateurs avec un token en cookie sont autorisés sur cette route.\n",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "categoryId": {
+                    "type": "number"
+                  },
+                  "limit": {
+                    "type": "number"
+                  },
+                  "alertEnabled": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Crée avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "limit": {
+                      "type": "number"
+                    },
+                    "category": {
+                      "type": "string"
+                    },
+                    "alertEnabled": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/budgets/{id}": {
+      "get": {
+        "summary": "Renvoie les informations sur un budget",
+        "description": "Seul les utilisateurs avec un token en cookie sont autorisés sur cette route. Seulement les catégories appartenant à l'utilisateur peuvent être renvoyées.\n",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Identifiant du budget",
+            "schéma": {
+              "type": "number"
+            }
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "limit": {
+                      "type": "number"
+                    },
+                    "category": {
+                      "type": "string"
+                    },
+                    "alertEnabled": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Supprime le budget",
+        "description": "Seul les utilisateurs avec un token en cookie sont autorisés sur cette route. Seulement les catégories appartenant à l'utilisateur peuvent être supprimées.\n",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Identifiant de le budget",
+            "schéma": {
+              "type": "number"
+            }
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Supprimé avec succès"
+          }
+        }
+      }
+    },
+    "/budget/{id}": {
+      "patch": {
+        "summary": "Met à jour la limite d'un budget",
+        "description": "Seul les utilisateurs avec un token en cookie sont autorisés sur cette route. Seulement les budgets appartenant à l'utilisateur peuvent être modifiées.\n",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Identifiant du budget",
+            "schéma": {
+              "type": "number"
+            }
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "limit": {
+                    "type": "number"
+                  },
+                  "alertEnabled": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mise à jour avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "limit": {
+                      "type": "number"
+                    },
+                    "category": {
+                      "type": "string"
+                    },
+                    "alertEnabled": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/categories": {
       "get": {
         "summary": "Renvoie la liste des catégories de l'utilisateur connecté",
