@@ -68,8 +68,8 @@ function PieGraph() {
           formatter: function () { // Format du label
             return `
             <div class="pie-label-box">
-              <span class="pie-label-name">${this.point.name}</span> 
-              <span class="pie-label-value">${this.point.y.toFixed(0)} €</span>
+              <span class="pie-label-name">${this.name}</span> 
+              <span class="pie-label-value">${this.y?.toFixed(0)} €</span>
             </div>
             `;
           },
