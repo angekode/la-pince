@@ -55,19 +55,15 @@ import CurveGraph from "../components/dashboard/CurveGraph";
 
 // Services API
 import { getMe } from "../services/auth/auth.service";
-import { getCategories } from "../services/categories/categories.service";
-import { getBudgets } from "../services/budget/budget.service";
-import { getTransactions } from "../services/transactions/transactions.service";
+import { getCategories, type Category } from "../services/category/category.service";
+import { getBudgets, type Budget } from "../services/budget/budget.service";
+import { getTransactions, type Transaction } from "../services/expense/expense.service";
 import { getSolde } from "../services/graphs/graphs-data.service";
 
 // UI
 import Header from "../components/Header";
 import GraphIcons from "../components/GraphIcons";
 
-// Types locaux
-type Category = { id: number; name: string };
-type Budget = { id: number; montant_limite: number; id_categorie: number };
-type Transaction = { id: number; amount: number; categoryId: number };
 
 function DashboardPage() {
 
@@ -90,24 +86,47 @@ function DashboardPage() {
   /**************************************************************
    * Chargement initial des données
    **************************************************************/
+
+    // ===== LOAD =====
+
   useEffect(() => {
-    getMe();
-    getCategories().then(setCategories);
-    getBudgets().then(setBudgets);
-    getTransactions().then(setTransactions);
-    getSolde();
+    async function loadData() {
+
+      try {
+
+        getMe();
+
+        const categoriesData = await getCategories();
+        setCategories(categoriesData.categories);
+
+        const budgetsData = await getBudgets();
+        setBudgets(budgetsData.budgets);
+
+        const transactionsData = await getTransactions();
+        setTransactions(transactionsData.transactions);
+
+        getSolde();
+
+      } catch (error: unknown) {
+        const errorMsg = error instanceof Error ? error.message : String(error);
+        console.error(`Erreur à la récupération des données: ${errorMsg}`);
+      }
+    }
+
+    loadData();
   }, []);
+
 
   /**************************************************************
    * Calculs globaux
    **************************************************************/
   const totalBudget = useMemo(
-    () => budgets.reduce((sum, b) => sum + b.montant_limite, 0),
+    () => budgets.reduce((sum, b) => sum + b.limit, 0) ?? 0,
     [budgets]
   );
 
   const totalSpent = useMemo(
-    () => transactions.reduce((sum, t) => sum + t.amount, 0),
+    () => transactions.reduce((sum, t) => sum + t.amount, 0) ?? 0,
     [transactions]
   );
 
@@ -128,22 +147,22 @@ function DashboardPage() {
    **************************************************************/
   const selectedBudget = useMemo(() => {
     if (selectedCategoryId === "all") return undefined;
-    return budgets.find((b) => b.id_categorie === selectedCategoryId);
+    return budgets.find((b) => /*b.id_categorie*/0 === selectedCategoryId);
   }, [budgets, selectedCategoryId]);
 
   const selectedSpent = useMemo(() => {
     if (selectedCategoryId === "all") return 0;
     return transactions
       .filter((t) => t.categoryId === selectedCategoryId)
-      .reduce((sum, t) => sum + t.amount, 0);
+      .reduce((sum, t) => sum + t.amount, 0) ?? 0;
   }, [transactions, selectedCategoryId]);
 
   const selectedRemaining = selectedBudget
-    ? selectedBudget.montant_limite - selectedSpent
+    ? selectedBudget.limit - selectedSpent
     : 0;
 
   const selectedPercent = selectedBudget
-    ? (selectedSpent / selectedBudget.montant_limite) * 100
+    ? (selectedSpent / selectedBudget.limit) * 100
     : 0;
 
   const selectedAlertClass =
@@ -213,7 +232,7 @@ function DashboardPage() {
           <div className="dashboard-left__indicators">
             <div>
               <h4>Budget limite</h4>
-              <p>{selectedBudget ? selectedBudget.montant_limite + "€" : "—"}</p>
+              <p>{selectedBudget ? selectedBudget.limit + "€" : "—"}</p>
             </div>
 
             <div>
