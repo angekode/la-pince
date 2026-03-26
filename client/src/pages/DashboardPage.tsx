@@ -57,7 +57,7 @@ import CurveGraph from "../components/dashboard/CurveGraph";
 import { getMe } from "../services/auth/auth.service";
 import { getCategories, type Category } from "../services/category/category.service";
 import { getBudgets, type Budget } from "../services/budget/budget.service";
-import { getTransactions, type Transaction } from "../services/expense/expense.service";
+import { getTransactions, type Transaction } from "../services/transaction/transaction.service";
 import { getSolde } from "../services/graphs/graphs-data.service";
 
 // UI

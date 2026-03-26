@@ -13,7 +13,7 @@ import {
   getTransactions,
   createTransaction,
   deleteTransaction,
-} from "../services/expense/expense.service";
+} from "../services/transaction/transaction.service";
 
 // ===== TYPES =====
 type Category = {
