@@ -1,8 +1,8 @@
 /**************************************************************
  * Styles du dashboard
  * ------------------------------------------------------------
- * Ce fichier gère :
- *  - la mise en page des 2 colonnes
+ * Gère :
+ *  - la mise en page des 2 colonnes (desktop)
  *  - les couleurs light/dark
  *  - les alertes
  *  - les titres et montants
@@ -10,44 +10,60 @@
 
 
 /**************************************************************
- * Layout principal : 2 colonnes
+ * Layout principal : 2 colonnes (DESKTOP)
+ * ------------------------------------------------------------
+ * Nouvelle structure DOM :
+ *   .dashboard-global  (B)
+ *   .dashboard-left    (A)
+ *   .dashboard-graph   (C)
+ *
+ * On utilise CSS Grid pour recréer :
+ *
+ *   ┌───────────────┬──────────────────────────┐
+ *   │     A         │            B             │
+ *   │               ├──────────────────────────┤
+ *   │               │            C             │
+ *   └───────────────┴──────────────────────────┘
  **************************************************************/
 .dashboard-layout {
-  display: flex;
-  height: calc(100vh - 80px);   /* Hauteur totale moins le header */
-  overflow: hidden;             /* Empêche les scrolls parasites */
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "left global"
+    "left graph";
+  height: calc(100vh - 80px);
+  overflow: hidden;
 }
 
-
 /**************************************************************
- * Titres : light mode = noir / dark mode = doré
+ * Titres : light/dark
  **************************************************************/
 body.light .dashboard-left__title,
 body.light .dashboard-global h3,
 body.light .dashboard-left__indicators h4 {
-  color: var(--text-main); /* Noir en light mode */
+  color: var(--text-main);
 }
 
 body.dark .dashboard-left__title,
 body.dark .dashboard-global h3,
 body.dark .dashboard-left__indicators h4 {
-  color: var(--color-primary-dark); /* Doré en dark mode */
+  color: var(--color-primary-dark);
 }
 
-
 /**************************************************************
- * Montants en gris secondaire
+ * Montants
  **************************************************************/
 .dashboard-global p,
 .dashboard-left__indicators p {
   color: var(--text-secondary);
 }
 
-
 /**************************************************************
- * Colonne gauche (300px fixe)
+ * Colonne gauche (BLOC A — catégorie)
  **************************************************************/
 .dashboard-left {
+  grid-area: left;
   width: 300px;
   min-width: 300px;
   max-width: 300px;
@@ -55,19 +71,17 @@ body.dark .dashboard-left__indicators h4 {
   flex-direction: column;
   padding: 20px;
   border-right: 1px solid #ddd;
-  overflow: hidden;             /* ❗ NE DOIT PAS SCROLLER */
+  overflow: hidden;
 }
 
-
 /**************************************************************
- * Titre "Catégorie"
+ * Titre catégorie
  **************************************************************/
 .dashboard-left__title {
   font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: 15px;
 }
-
 
 /**************************************************************
  * Select catégorie
@@ -80,17 +94,12 @@ body.dark .dashboard-left__indicators h4 {
   border: 1px solid #ccc;
 }
 
-
 /**************************************************************
  * Icônes (ligne horizontale centrée)
- * ------------------------------------------------------------
- * Le style principal est dans graph-icons.css
- * Ici, on s'assure juste que le conteneur est bien placé.
  **************************************************************/
 .dashboard-left .graph-icons-container {
   margin: 10px 0 20px 0;
 }
-
 
 /**************************************************************
  * Indicateurs catégorie
@@ -101,7 +110,6 @@ body.dark .dashboard-left__indicators h4 {
   gap: 12px;
   margin-top: 10px;
 }
-
 
 /**************************************************************
  * Barre d’alerte catégorie
@@ -115,22 +123,11 @@ body.dark .dashboard-left__indicators h4 {
   font-weight: 600;
 }
 
-
 /**************************************************************
- * Colonne droite (scrollable)
- **************************************************************/
-.dashboard-right {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden; /* Le scroll se fait uniquement dans le bloc graphique */
-}
-
-
-/**************************************************************
- * Bloc global (fixe)
+ * BLOC B — Indicateurs globaux
  **************************************************************/
 .dashboard-global {
+  grid-area: global;
   flex-shrink: 0;
   padding: 20px;
   border-bottom: 1px solid #ddd;
@@ -141,7 +138,6 @@ body.dark .dashboard-left__indicators h4 {
   justify-content: space-between;
   margin-bottom: 15px;
 }
-
 
 /**************************************************************
  * Barre d’alerte globale
@@ -156,15 +152,15 @@ body.dark .dashboard-left__indicators h4 {
   color: white;
 }
 
-
 /**************************************************************
- * Bloc graphique (scrollable)
+ * BLOC C — Graphiques
  **************************************************************/
 .dashboard-graph {
+  grid-area: graph;
   flex: 1;
-  overflow-y: auto;  /* Le scroll est ici */
+  overflow-y: auto;
   padding: 20px;
-  min-height: 800px; /* ← augmente la hauteur visible */
+  min-height: 800px;
 }
 
 .dashboard-graph__legend {
@@ -172,7 +168,6 @@ body.dark .dashboard-left__indicators h4 {
   font-size: 0.9rem;
   opacity: 0.7;
 }
-
 
 /**************************************************************
  * Couleurs d’alerte
@@ -182,3 +177,130 @@ body.dark .dashboard-left__indicators h4 {
 .alert-red { background-color: var(--alert-red); }
 
 
+/**************************************************************
+ * VERSION MOBILE — Ordre : B → A → C
+ * ------------------------------------------------------------
+ * On abandonne la grille pour un layout vertical.
+ * L’ordre est contrôlé par order :
+ *   1 → .dashboard-global  (B)
+ *   2 → .dashboard-left    (A)
+ *   3 → .dashboard-graph   (C)
+ **************************************************************/
+@media (max-width: 768px) {
+
+  .dashboard-layout {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+    gap: 20px;
+  }
+
+  /* BLOC B — GLOBAL (en haut) */
+  .dashboard-global {
+    order: 1;
+    width: 100%;
+    padding: 15px 10px;
+  }
+
+  .dashboard-global__row {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .dashboard-global__alert {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  /* BLOC A — CATÉGORIE (au milieu) */
+  .dashboard-left {
+    order: 2;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    border-right: none;
+    padding: 15px 10px;
+  }
+
+  .dashboard-left__title {
+    text-align: center;
+  }
+
+  .graph-icons {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .dashboard-left__indicators {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: center;
+  }
+
+  .dashboard-left__alert {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  /* BLOC C — GRAPHIQUES (en bas) */
+  .dashboard-graph {
+    order: 3;
+    width: 100%;
+    margin-top: 20px;
+    overflow-x: auto;
+  }
+
+  .dashboard-graph canvas,
+  .dashboard-graph svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .dashboard-graph__legend {
+    text-align: center;
+    margin-top: 10px;
+  }
+}
+
+
+/**************************************************************
+ * VERSION TABLETTE (768px → 1024px)
+ * ------------------------------------------------------------
+ * On conserve la grille mais on réduit la colonne gauche.
+ **************************************************************/
+@media (min-width: 768px) and (max-width: 1024px) {
+
+  .dashboard-layout {
+    grid-template-columns: 260px 1fr;
+    height: auto;
+  }
+
+  .dashboard-left {
+    width: 260px;
+    min-width: 260px;
+    max-width: 260px;
+    padding: 15px;
+  }
+
+  .dashboard-global,
+  .dashboard-graph {
+    padding: 15px;
+  }
+
+  .dashboard-global__row {
+    gap: 15px;
+  }
+
+  .dashboard-graph {
+    padding: 10px;
+  }
+}
+
+
+
+
+  
