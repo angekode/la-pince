@@ -16,7 +16,8 @@ const apiBudgetItemScheme = zod.object({
   id: zod.number(),
   limit: zod.number(),
   category: zod.string(),
-  userId: zod.number()
+  userId: zod.number(),
+  alertEnabled: zod.boolean()
 });
 
 const apiBudgetListBodyScheme = zod.object({
@@ -53,6 +54,7 @@ describe('GET /budgets', () => {
       assert.strictEqual(apiBudget.limit, refBudget!.limit);
       assert.strictEqual(apiBudget.userId, refBudget!.userId);
       assert.strictEqual(apiBudget.category, refBudget!.category); // vérifier le nom
+      assert.strictEqual(apiBudget.alertEnabled, refBudget!.alertEnabled);
     }
   });
 });
@@ -85,6 +87,7 @@ describe('GET /budgets/:id', () => {
     assert.strictEqual(body.limit, refBudget!.limit);
     assert.strictEqual(body.userId, refBudget!.userId);
     assert.strictEqual(body.category, refBudget!.category);
+    assert.strictEqual(body.alertEnabled, refBudget!.alertEnabled);
   });
 
   it('should return 404 for non existing budget', async () => {
@@ -116,7 +119,8 @@ const postBudgetBodyResponse = zod.object({
   id: zod.number(),
   limit: zod.number(),
   categoryId: zod.number(),
-  userId: zod.number()
+  userId: zod.number(),
+  alertEnabled: zod.boolean()
 });
 
 describe('POST /budgets', () => {
@@ -126,7 +130,8 @@ describe('POST /budgets', () => {
     const categories = await seedCategories();
     const budgetToCreate = {
       categoryId: categories[0].id,
-      limit: 100
+      limit: 100,
+      alertEnabled: true
     };
 
     // Act
@@ -146,6 +151,7 @@ describe('POST /budgets', () => {
     assert.strictEqual(body.limit, budgetToCreate!.limit);
     assert.strictEqual(body.userId, user.id);
     assert.strictEqual(body.categoryId, budgetToCreate!.categoryId);
+    assert.strictEqual(body.alertEnabled, budgetToCreate!.alertEnabled);
   });
 });
 
@@ -159,7 +165,8 @@ const patchBudgetBodyResponse = zod.object({
   id: zod.number(),
   limit: zod.number(),
   categoryId: zod.number(),
-  userId: zod.number()
+  userId: zod.number(),
+  alertEnabled: zod.boolean()
 });
 
 describe('PATCH /budgets/:id', () => {
@@ -188,6 +195,7 @@ describe('PATCH /budgets/:id', () => {
     assert.strictEqual(body.limit, budgetToUpdate!.limit);
     assert.strictEqual(body.userId, user.id);
     assert.strictEqual(body.categoryId, refBudget!.categoryId);
+    assert.strictEqual(body.alertEnabled, refBudget!.alertEnabled);
   });
 
   it('should return 404 for non existing budget', async () => {

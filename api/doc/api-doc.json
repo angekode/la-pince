@@ -235,6 +235,9 @@
                           },
                           "category": {
                             "type": "string"
+                          },
+                          "alertEnabled": {
+                            "type": "boolean"
                           }
                         }
                       }
@@ -269,6 +272,9 @@
                   },
                   "limit": {
                     "type": "number"
+                  },
+                  "alertEnabled": {
+                    "type": "boolean"
                   }
                 }
               }
@@ -291,6 +297,9 @@
                     },
                     "category": {
                       "type": "string"
+                    },
+                    "alertEnabled": {
+                      "type": "boolean"
                     }
                   }
                 }
@@ -336,6 +345,9 @@
                     },
                     "category": {
                       "type": "string"
+                    },
+                    "alertEnabled": {
+                      "type": "boolean"
                     }
                   }
                 }
@@ -402,6 +414,9 @@
                 "properties": {
                   "limit": {
                     "type": "number"
+                  },
+                  "alertEnabled": {
+                    "type": "boolean"
                   }
                 }
               }
@@ -424,6 +439,9 @@
                     },
                     "category": {
                       "type": "string"
+                    },
+                    "alertEnabled": {
+                      "type": "boolean"
                     }
                   }
                 }

@@ -15,7 +15,8 @@ import { StatusCodes } from "http-status-codes";
 
 const postBodyScheme = zod.object({
   categoryId: zod.number(),
-  limit: zod.number()
+  limit: zod.number(),
+  alertEnabled: zod.boolean()
 });
 export type BudgetPostBody = zod.infer<typeof postBodyScheme>;
 
@@ -45,7 +46,8 @@ export function validatePostBody(req: Request, res: Response, next: NextFunction
  */
 
 const patchBodyScheme = zod.object({
-  limit: zod.number()
+  limit: zod.number().optional(),
+  alertEnabled: zod.boolean().optional()
 });
 export type BudgetPatchBody = zod.infer<typeof patchBodyScheme>;
 
