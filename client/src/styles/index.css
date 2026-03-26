@@ -42,3 +42,6 @@ a {
   text-decoration: underline;              /* Style par défaut des liens */
   color: var(--color-primary-light-hover); /* Couleur d'accent */
 }
+body {
+  padding-top: 140px; /* Espace pour le header fixe */
+}

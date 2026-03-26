@@ -68,9 +68,14 @@ import GraphIcons from "../components/GraphIcons";
 type Category = { id: number; name: string };
 type Budget = { id: number; montant_limite: number; id_categorie: number };
 type Transaction = { id: number; amount: number; categoryId: number };
+type UserInfo = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+};
 
 function DashboardPage() {
-
   /**************************************************************
    * États : données API
    **************************************************************/
@@ -81,11 +86,11 @@ function DashboardPage() {
   /**************************************************************
    * États : affichage
    **************************************************************/
-  const [selectedCategoryId, setSelectedCategoryId] =
-    useState<"all" | number>("all");
+  const [selectedCategoryId, setSelectedCategoryId] = useState<"all" | number>(
+    "all",
+  );
 
-  const [graphType, setGraphType] =
-    useState<"pie" | "bar" | "curve">("pie");
+  const [graphType, setGraphType] = useState<"pie" | "bar" | "curve">("pie");
 
   /**************************************************************
    * Chargement initial des données
@@ -103,25 +108,24 @@ function DashboardPage() {
    **************************************************************/
   const totalBudget = useMemo(
     () => budgets.reduce((sum, b) => sum + b.montant_limite, 0),
-    [budgets]
+    [budgets],
   );
 
   const totalSpent = useMemo(
     () => transactions.reduce((sum, t) => sum + t.amount, 0),
-    [transactions]
+    [transactions],
   );
 
   const totalRemaining = totalBudget - totalSpent;
 
-  const globalPercent =
-    totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0;
+  const globalPercent = totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0;
 
   const globalAlertClass =
     globalPercent < 79
       ? "alert-green"
       : globalPercent < 100
-      ? "alert-orange"
-      : "alert-red";
+        ? "alert-orange"
+        : "alert-red";
 
   /**************************************************************
    * Calculs pour la catégorie sélectionnée
@@ -150,8 +154,14 @@ function DashboardPage() {
     selectedPercent < 79
       ? "alert-green"
       : selectedPercent < 100
-      ? "alert-orange"
-      : "alert-red";
+        ? "alert-orange"
+        : "alert-red";
+
+  const [user, setUser] = useState<UserInfo | null>(null);
+
+  useEffect(() => {
+    getMe().then((value) => setUser(value));
+  }, []);
 
   /**************************************************************
    * Rendu principal
@@ -161,11 +171,9 @@ function DashboardPage() {
       <Header />
 
       <div className="dashboard-layout">
-
         {/*********************** BLOC B — GLOBAL ************************/}
         <section className="dashboard-global">
           <div className="dashboard-global__row">
-
             <div>
               <h3>Budget total</h3>
               <p>{totalBudget}€</p>
@@ -180,7 +188,6 @@ function DashboardPage() {
               <h3>Solde</h3>
               <p>{totalRemaining}€</p>
             </div>
-
           </div>
 
           <div className={`dashboard-global__alert ${globalAlertClass}`}></div>
@@ -188,7 +195,6 @@ function DashboardPage() {
 
         {/*********************** BLOC A — CATÉGORIE ************************/}
         <aside className="dashboard-left">
-
           <h3 className="dashboard-left__title">Catégorie</h3>
 
           <select
@@ -196,7 +202,7 @@ function DashboardPage() {
             value={selectedCategoryId}
             onChange={(e) =>
               setSelectedCategoryId(
-                e.target.value === "all" ? "all" : Number(e.target.value)
+                e.target.value === "all" ? "all" : Number(e.target.value),
               )
             }
           >
@@ -213,7 +219,9 @@ function DashboardPage() {
           <div className="dashboard-left__indicators">
             <div>
               <h4>Budget limite</h4>
-              <p>{selectedBudget ? selectedBudget.montant_limite + "€" : "—"}</p>
+              <p>
+                {selectedBudget ? selectedBudget.montant_limite + "€" : "—"}
+              </p>
             </div>
 
             <div>
@@ -236,15 +244,21 @@ function DashboardPage() {
 
         {/*********************** BLOC C — GRAPHIQUES ************************/}
         <section className="dashboard-graph">
-
-          {graphType === "pie" && <PieGraph />}
-          {graphType === "bar" && <BarGraph />}
-          {graphType === "curve" && <CurveGraph />}
-
-          <div className="dashboard-graph__legend">
-            Légendes du graphique
-          </div>
-        </section>
+  {!user ? (
+     <div className="dashboard-graph__placeholder-group">
+      <img src="/graphique-a-barres.png" alt="Graphique barres exemple" />
+      <img src="/graphique-lineaire.png" alt="Graphique lineaire exemple" />
+      <img src="/diagramme-circulaire.png" alt="Graphique camembert exemple" />
+    </div>
+  ) : (
+    <>
+      {graphType === "pie" && <PieGraph />}
+      {graphType === "bar" && <BarGraph />}
+      {graphType === "curve" && <CurveGraph />}
+      <div className="dashboard-graph__legend">Légendes du graphique</div>
+    </>
+  )}
+</section>
 
       </div>
     </>

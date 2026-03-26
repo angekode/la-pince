@@ -169,6 +169,24 @@ body.dark .dashboard-left__indicators h4 {
   opacity: 0.7;
 }
 
+.dashboard-graph__placeholder-group {
+  display: flex;
+  flex-direction: row;        /* ← alignement horizontal */
+  justify-content: center;    /* ← centré */
+  align-items: center;
+  gap: 50px;                  /* ← espace entre les images */
+  padding: 20px;
+}
+
+.dashboard-graph__placeholder-group img {
+  width: 35%;              /* ← réduit la taille */
+  max-width: 240px;        /* ← limite la largeur */
+  border-radius: 10px;
+  opacity: 0.9;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+
 /**************************************************************
  * Couleurs d’alerte
  **************************************************************/

@@ -34,12 +34,10 @@ export default function ThemeToggle({ theme, onToggle }: ThemeToggleProps) {
         {theme === "dark" ? (
           <>
             <span className="theme-icon">☀️</span>
-            <span>Light mode</span>
           </>
         ) : (
           <>
             <span className="theme-icon">🌙</span>
-            <span>Dark mode</span>
           </>
         )}
       </button>

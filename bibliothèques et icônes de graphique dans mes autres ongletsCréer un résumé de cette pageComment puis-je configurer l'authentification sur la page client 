@@ -1,0 +1,16 @@
+  Bcrypt-Argon2[m
+  chore/add-code-comments[m
+  correction-PieGraph[m
+* [32mdevelop[m
+  docs[m
+  feature/backend-auth[m
+  feature/budget-module[m
+  feature/categories-crud[m
+  feature/expenses-clean[m
+  feature/expenses-crud[m
+  feature/middleware-controller-auth[m
+  fix/dashboard-polish[m
+  fix/logout-clear-cookie[m
+  harmonisation-css[m
+  login-fix[m
+  master[m
