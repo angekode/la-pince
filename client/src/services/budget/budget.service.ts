@@ -1,5 +1,4 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const BUDGET_URL = `${BASE_URL}/budgets`;
+const BUDGET_URL = `${import.meta.env.VITE_API_BASE_URL}/budgets`;
 
 // GET
 

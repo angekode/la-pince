@@ -1,6 +1,4 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-const TRANSACTIONS_URL = `${BASE_URL}/transactions`;
+const TRANSACTIONS_URL = `${import.meta.env.VITE_API_BASE_URL}/transactions`;
 
 // ================= GET =================
 

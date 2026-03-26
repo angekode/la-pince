@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/categories";
+const CATEGORY_URL = `${import.meta.env.VITE_API_BASE_URL}/categories`;
 
 export type Category = {
   id: number;
@@ -12,7 +12,7 @@ export type GetCategoriesResponse = {
 
 // GET
 export async function getCategories(): Promise<GetCategoriesResponse> {
-  const res = await fetch(API_URL, {
+  const res = await fetch(CATEGORY_URL, {
     credentials: "include",
   });
 
@@ -25,7 +25,7 @@ export async function getCategories(): Promise<GetCategoriesResponse> {
 
 // POST
 export async function createCategory(name: string): Promise<Category> {
-  const res = await fetch(API_URL, {
+  const res = await fetch(CATEGORY_URL, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -43,7 +43,7 @@ export async function createCategory(name: string): Promise<Category> {
 
 // DELETE
 export async function deleteCategory(id: number): Promise<void> {
-  const res = await fetch(`${API_URL}/${id}`, {
+  const res = await fetch(`${CATEGORY_URL}/${id}`, {
     method: "DELETE",
     credentials: "include",
   });
