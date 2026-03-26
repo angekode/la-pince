@@ -6,9 +6,8 @@ import { getMe } from "../services/auth/auth.service";
 import "../styles/header-home.css";
 
 function HeaderHome() {
-  
-    
-  
+
+    //  VERIFICATION SI LE USER EST LOG OU PAS 
     const [isLogged, setIsLogged] = useState(false);
 
     useEffect(() => {
@@ -34,6 +33,8 @@ function HeaderHome() {
       {/* Liens à droite */}
       <nav className="home-header__nav">
         <Link to="/register">S'inscrire</Link>
+
+        {/* REDIRECTION VERS LA BONNE PAGE SELON LE STATUT LOG */}
         <Link to={isLogged ? "/dashboard" : "/login"}>Connexion</Link>
       </nav>
     </header>
