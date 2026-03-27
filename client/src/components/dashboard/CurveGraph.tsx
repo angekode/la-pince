@@ -32,7 +32,7 @@ Highcharts.setOptions({
 
 function CurveGraph() {
 
-  const [graphData, setGraphData] = useState<SoldeEvolutionData>([]);
+  const [graphData, setGraphData] = useState<SoldeEvolutionData | null>(null);
 
   // On configure tout le graphique ici (Données, apparance)
   const chartOptions : HighchartsOptionsType = {
@@ -89,6 +89,10 @@ function CurveGraph() {
   
   // Lance l'acquisition des données une fois au montage du composant (car tableau des dépendances vide)
   useEffect(() => { getSoldeEvolutionForCurveGraphData().then(setGraphData) }, []);
+
+  if (!graphData) {
+    return null;
+  }
 
   return (
     <Chart options={chartOptions} />

@@ -14,7 +14,7 @@ import { getCategoryTotalsForPieGraphData, type CategoryTotalsData } from "../..
 
 function BarGraph() {
 
-  const [graphData, setGraphData] = useState<CategoryTotalsData[]>();
+  const [graphData, setGraphData] = useState<CategoryTotalsData[]| null>(null);
 
   // On configure tout le graphique ici (Données, apparance)
   const chartOptions : HighchartsOptionsType = {
@@ -91,6 +91,10 @@ function BarGraph() {
   
   // Lance l'acquisition des données une fois au montage du composant (car tableau des dépendances vide) 
   useEffect(() => { getCategoryTotalsForPieGraphData().then(setGraphData) }, []);
+
+  if (!graphData) {
+    return null; // ou un spinner de chargement
+  }
 
   return (
     <Chart options={chartOptions} />

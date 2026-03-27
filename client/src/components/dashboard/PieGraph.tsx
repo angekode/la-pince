@@ -22,7 +22,7 @@ import { getCategoryTotalsForPieGraphData, type CategoryTotalsData } from "../..
 function PieGraph() {
 
   // Stocke les données reçues du backend
-  const [graphData, setGraphData] = useState<CategoryTotalsData[]>();
+  const [graphData, setGraphData] = useState<CategoryTotalsData[]| null>(null);
 
   /**
    * Configuration complète du graphique Highcharts.
@@ -101,6 +101,11 @@ function PieGraph() {
   useEffect(() => {
     getCategoryTotalsForPieGraphData().then(setGraphData);
   }, []);
+
+  if (!graphData) {
+    return null;
+  }
+  
 
   /**
    * Affiche le graphique Highcharts.

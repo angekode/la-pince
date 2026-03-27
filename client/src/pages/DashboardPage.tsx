@@ -47,6 +47,7 @@
  **************************************************************/
 
 import { useState, useEffect, useMemo } from "react";
+import { useLocation } from "react-router-dom"; 
 
 // Graphiques
 import PieGraph from "../components/dashboard/PieGraph";
@@ -83,18 +84,19 @@ function DashboardPage() {
   const [graphType, setGraphType] =
     useState<"pie" | "bar" | "curve">("pie");
 
-  /**************************************************************
-   * Chargement initial des données
-   **************************************************************/
+  const location = useLocation();  
 
-    // ===== LOAD =====
+  /**************************************************************
+   * Chargement des données
+   * → se relance à chaque fois qu'on revient sur /dashboard
+   **************************************************************/
+     // ===== LOAD =====
 
   useEffect(() => {
     async function loadData() {
 
       try {
-
-        getMe();
+        await getMe();
 
         const categoriesData = await getCategories();
         setCategories(categoriesData.categories);
@@ -105,8 +107,7 @@ function DashboardPage() {
         const transactionsData = await getTransactions();
         setTransactions(transactionsData.transactions);
 
-        getSolde();
-
+        await getSolde();
       } catch (error: unknown) {
         const errorMsg = error instanceof Error ? error.message : String(error);
         console.error(`Erreur à la récupération des données: ${errorMsg}`);
@@ -114,7 +115,7 @@ function DashboardPage() {
     }
 
     loadData();
-  }, []);
+  }, [location.pathname]); // Se relance à chaque navigation vers /dashboard
 
 
   /**************************************************************
@@ -256,9 +257,9 @@ function DashboardPage() {
         {/*********************** BLOC C — GRAPHIQUES ************************/}
         <section className="dashboard-graph">
 
-          {graphType === "pie" && <PieGraph />}
-          {graphType === "bar" && <BarGraph />}
-          {graphType === "curve" && <CurveGraph />}
+          {graphType === "pie" && <PieGraph key={`pie-${location.key}`} />}
+          {graphType === "bar" && <BarGraph key={`bar-${location.key}`} />}
+          {graphType === "curve" && <CurveGraph key={`curve-${location.key}`} />}
 
           <div className="dashboard-graph__legend">
             Légendes du graphique
