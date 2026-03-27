@@ -257,9 +257,30 @@ function DashboardPage() {
         {/*********************** BLOC C — GRAPHIQUES ************************/}
         <section className="dashboard-graph">
 
-          {graphType === "pie" && <PieGraph key={`pie-${location.key}`} />}
-          {graphType === "bar" && <BarGraph key={`bar-${location.key}`} />}
-          {graphType === "curve" && <CurveGraph key={`curve-${location.key}`} />}
+          {graphType === "pie" && (
+            <PieGraph 
+              key={`pie-${JSON.stringify(transactions)}`}
+              categories={categories}
+              transactions={transactions}
+              budgets={budgets} 
+              />
+            )}
+          {graphType === "bar" && (
+            <BarGraph 
+              key={`bar-${JSON.stringify(transactions)}`}
+              categories={categories}
+              transactions={transactions}
+              budgets={budgets} 
+              />
+            )}
+          {graphType === "curve" && (
+            <CurveGraph 
+              key={`curve-${JSON.stringify(transactions)}`}
+              categories={categories}
+              transactions={transactions}
+              budgets={budgets} 
+              />
+            )}
 
           <div className="dashboard-graph__legend">
             Légendes du graphique

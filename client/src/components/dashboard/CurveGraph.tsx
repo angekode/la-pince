@@ -12,7 +12,9 @@ import type { HighchartsOptionsType } from '@highcharts/react';
 import 'highcharts/esm/highcharts-3d.src.js';
 
 import { getSoldeEvolutionForCurveGraphData, type SoldeEvolutionData } from "../../services/graphs/graphs-data.service";
-
+import type { Budget } from "../../services/budget/budget.service";
+import type { Transaction } from "../../services/transaction/transaction.service";
+import type { Category } from "../../services/category/category.service";
 
 // Pour traduire en francais l'affichage en anglais par défaut de Highcharts.dateFormat() utilisé
 // dans labels.formatter()
@@ -29,8 +31,14 @@ Highcharts.setOptions({
   }
 });
 
+type CurveGraphProps = {
+  categories: Category[];
+  transactions: Transaction[];
+  budgets: Budget[];
+};
 
-function CurveGraph() {
+function CurveGraph({ categories, transactions, budgets }: CurveGraphProps) {
+
 
   const [graphData, setGraphData] = useState<SoldeEvolutionData | null>(null);
 
@@ -88,11 +96,18 @@ function CurveGraph() {
   };
   
   // Lance l'acquisition des données une fois au montage du composant (car tableau des dépendances vide)
-  useEffect(() => { getSoldeEvolutionForCurveGraphData().then(setGraphData) }, []);
-
-  if (!graphData) {
-    return null;
+useEffect(() => {
+  async function load() {
+    const data = await getSoldeEvolutionForCurveGraphData(transactions);
+    setGraphData(data);
   }
+  load();
+}, [transactions]);
+
+
+
+ if (!Array.isArray(graphData)) return null;
+
 
   return (
     <Chart options={chartOptions} />
