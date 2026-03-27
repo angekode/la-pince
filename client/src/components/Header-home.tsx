@@ -25,10 +25,18 @@ function HeaderHome() {
         alt="La Pince logo"
       />
 
-      {/* Menu */}
+      {/* Menu MOBILE*/}
       <div className="home-header__menu">
         <Dropdown />
       </div>
+
+      {/* Menu Desktop */}
+      <nav className="home-header__sections desktop-only">
+        <a href="#visualisation">À propos</a>
+        <a href="#gestion-budget">Gestion de budget</a>
+        <a href="#securite">Sécurité</a>
+        <a href="#securite">Inscription</a>
+      </nav>
 
       {/* Liens à droite */}
       <nav className="home-header__nav">

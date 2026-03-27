@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+
+//  FONCTION MENU DEROULEUR HOME PAGE
 function Dropdown() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -12,11 +14,11 @@ function Dropdown() {
           <a href="#gestion-budget" onClick={() => setIsOpen(false)}>
             Gestion de budget
           </a>
-          <a href="#visualisation" onClick={() => setIsOpen(false)}>
-            Visualisation
-          </a>
           <a href="#securite" onClick={() => setIsOpen(false)}>
             Sécurité
+          </a>
+          <a href="#inscription" onClick={() => setIsOpen(false)}>
+            Inscription
           </a>
         </div>
       )}
