@@ -38,6 +38,7 @@ function HeaderHome() {
         <a href="#gestion-budget">Gestion de budget</a>
         <a href="#securite">Sécurité</a>
         
+
       </nav>
 
       {/* Liens à droite */}

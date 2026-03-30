@@ -47,30 +47,30 @@
 }
 
 /* CSS de Section Cybersecurité */
-
-.security-section {
+/* MOBILE */
+.security-section-mobile {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
 
-.security-section h2 {
+.security-section-mobile h2 {
   margin-bottom: 20px;
 }
 
-.security-points {
+.security-points-mobile {
   display: flex;
   flex-direction: column;
   gap: 12px;
   margin-bottom: 24px;
 }
 
-.security-points p {
+.security-points-mobile p {
   color: var(--text-secondary);
 }
 
-.security-image {
+.security-image-mobile {
   width: 100%;
   height: 200px;
   display: flex;
@@ -78,36 +78,133 @@
   justify-content: center;
 }
 
-.security-image img {
+.security-image-mobile img {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
 }
 
-/* CSS de Section proposition d'inscription */
+/* DESKTOP */
 
-.signup-section {
+
+/* CSS de Section proposition d'inscription */
+/*  MOBILE  */
+.signup-section-mobile {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
 
-.signup-section h2 {
+.signup-section-mobile h2 {
   margin-bottom: 16px;
 }
 
-.signup-section p {
+.signup-section-mobile p {
   color: var(--text-secondary);
   margin-bottom: 24px;
   max-width: 320px;
 }
+
+/*  DESKTOP  */
+
 
 .signup-button {
   width: auto;
   padding: 0 24px;
 }
 
+/* RESPONSIVE MOBILE */
+/* SIGNUP */
+.signup-section-desktop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.signup-section-desktop {
+  display: none;
+}
+
+/* SECURITY */
+.security-section-desktop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.security-section-desktop {
+  display: none;
+}
+
+
+
 @media (min-width: 1024px) {
-  
+  /* RESPONSIVE MOBILE */
+  /* SIGNUP */
+  .signup-section-mobile {
+    display: none;
+  }
+
+  .signup-section-desktop {
+    display: block;
+  }
+
+  /* SECURITY */
+  .security-section-desktop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  }
+
+  .security-section-mobile {
+    display: none;
+  }
+
+  .home-slide {
+    padding: 40px;
+  }
+
+  .home-slide__image {
+    max-width: 500px;
+  }
+
+  .home-slide p {
+    max-width: 600px;
+  }
+
+  /* Security */
+  .security-section {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    gap: 40px;
+  }
+
+  .security-points {
+    flex: 1;
+    margin-bottom: 0;
+  }
+
+  .security-image {
+    flex: 1;
+    height: 300px;
+  }
+
+  /* Signup */
+  .signup-section-mobile p {
+    max-width: 600px;
+  }
+
+  .signup-section p {
+    max-width: 600px;
+  }
+
+  .signup-button {
+    padding: 0 32px;
+  }
 }
