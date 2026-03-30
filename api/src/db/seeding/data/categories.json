@@ -1,10 +1,10 @@
 [
-  { "id": 1, "name": "logement" },
-  { "id": 2, "name": "transport" },
-  { "id": 3, "name": "nourriture" },
-  { "id": 4, "name": "loisir" },
-  { "id": 5, "name": "shopping" },
-  { "id": 6, "name": "sante" },
-  { "id": 7, "name": "charges" },
-  { "id": 8, "name": "salaire" }
+  { "id": 1, "name": "logement", "colorCode": "#2F4B7C" },
+  { "id": 2, "name": "transport","colorCode": "#6A4C93" },
+  { "id": 3, "name": "nourriture", "colorCode": "#3F88C5" },
+  { "id": 4, "name": "loisir", "colorCode": "#8E6CFF" },
+  { "id": 5, "name": "shopping", "colorCode": "#1B9AAA" },
+  { "id": 6, "name": "sante", "colorCode": "#9D4EDD" },
+  { "id": 7, "name": "charges", "colorCode": "#5F6F94" },
+  { "id": 8, "name": "salaire", "colorCode": "#4A00E0" }
 ]

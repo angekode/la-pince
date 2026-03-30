@@ -49,6 +49,7 @@ model User {
 model Category {
   id        Int       @id @default(autoincrement())
   name      String
+  colorCode String    @db.Char(7)
 
   // Relations
   expenses  Expense[]                                       // Une catégorie contient plusieurs dépenses
