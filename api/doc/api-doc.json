@@ -484,6 +484,9 @@
                           },
                           "userId": {
                             "type": "number"
+                          },
+                          "colorCode": {
+                            "type": "string"
                           }
                         }
                       }
@@ -510,12 +513,17 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "name"
+                  "name",
+                  "colorCode"
                 ],
                 "properties": {
                   "name": {
                     "type": "string",
                     "description": "Nom de la catégorie (entre 2 et 50 caractères)."
+                  },
+                  "colorCode": {
+                    "type": "string",
+                    "description": "Code de la couleur au format"
                   }
                 }
               }
@@ -538,6 +546,9 @@
                     },
                     "userId": {
                       "type": "number"
+                    },
+                    "colorCode": {
+                      "type": "string"
                     }
                   }
                 }
@@ -583,6 +594,9 @@
                     },
                     "userId": {
                       "type": "number"
+                    },
+                    "colorCode": {
+                      "type": "string"
                     }
                   }
                 }
@@ -623,6 +637,10 @@
                   "name": {
                     "type": "string",
                     "description": "Nom de la catégorie (entre 2 et 50 caractères)."
+                  },
+                  "colorCode": {
+                    "type": "string",
+                    "description": "Code de la couleur au format"
                   }
                 }
               }
@@ -645,6 +663,9 @@
                     },
                     "userId": {
                       "type": "number"
+                    },
+                    "colorCode": {
+                      "type": "string"
                     }
                   }
                 }
