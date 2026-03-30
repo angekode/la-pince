@@ -51,3 +51,15 @@ export async function createBudget(data: {
 
   return json;
 }
+
+// DELETE
+export async function deleteBudget(id: number) {
+  const res = await fetch(`${BUDGET_URL}/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    throw new Error("Erreur suppression budget");
+  }
+}

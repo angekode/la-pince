@@ -50,7 +50,10 @@ export async function createTransaction(data: {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+  ...data,
+  label: data.label || "Dépense", // ✅ FIX ICI
+}),
   });
 
   const responseData: any = await res.json();
@@ -94,4 +97,25 @@ export async function deleteTransaction(id: number) {
   }
 
   return data;
+}
+
+// PATCH
+export async function updateTransaction(id: number, data: any) {
+  const res = await fetch(`${TRANSACTIONS_URL}/${id}`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+  ...data,
+  label: data.label || "Dépense", // ✅ FIX ICI
+}),
+  });
+
+  if (!res.ok) {
+    throw new Error("Erreur update transaction");
+  }
+
+  return res.json();
 }
