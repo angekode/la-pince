@@ -34,9 +34,13 @@ body,
   font-family: Inter, Arial, sans-serif;   /* Police globale */
 }
 body {
-  padding-top: 140px;
+  padding-top: 185px;
 }
-
+@media (max-width: 768px) {
+  body {
+    padding-top: 160px;
+  }
+}
 /* -----------------------------------------------------------
    LIENS GLOBAUX
    Style par défaut appliqué à tous les <a> de l'application.
