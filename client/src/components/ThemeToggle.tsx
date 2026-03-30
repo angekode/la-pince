@@ -23,23 +23,18 @@ type ThemeToggleProps = {
 export default function ThemeToggle({ theme, onToggle }: ThemeToggleProps) {
   return (
     <div
-      className="theme-toggle-wrapper"
-      style={{
-        position: "fixed",
-        top: "20px",
-        right: "20px"
-      }}
-    >
+      className="theme-toggle-wrapper">
+      
       <button className="theme-toggle-button" onClick={onToggle}>
         {theme === "dark" ? (
           <>
             <span className="theme-icon">☀️</span>
-            <span>Light mode</span>
+           
           </>
         ) : (
           <>
             <span className="theme-icon">🌙</span>
-            <span>Dark mode</span>
+           
           </>
         )}
       </button>

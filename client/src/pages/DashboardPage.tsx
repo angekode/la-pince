@@ -47,7 +47,7 @@
  **************************************************************/
 
 import { useState, useEffect, useMemo } from "react";
-import { useLocation } from "react-router-dom"; 
+import { useLocation } from "react-router-dom";
 
 // Graphiques
 import PieGraph from "../components/dashboard/PieGraph";
@@ -56,18 +56,29 @@ import CurveGraph from "../components/dashboard/CurveGraph";
 
 // Services API
 import { getMe } from "../services/auth/auth.service";
-import { getCategories, type Category } from "../services/category/category.service";
+import {
+  getCategories,
+  type Category,
+} from "../services/category/category.service";
 import { getBudgets, type Budget } from "../services/budget/budget.service";
-import { getTransactions, type Transaction } from "../services/transaction/transaction.service";
+import {
+  getTransactions,
+  type Transaction,
+} from "../services/transaction/transaction.service";
 import { getSolde } from "../services/graphs/graphs-data.service";
 
 // UI
 import Header from "../components/Header";
 import GraphIcons from "../components/GraphIcons";
 
+type UserInfo = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+};
 
 function DashboardPage() {
-
   /**************************************************************
    * États : données API
    **************************************************************/
@@ -78,23 +89,22 @@ function DashboardPage() {
   /**************************************************************
    * États : affichage
    **************************************************************/
-  const [selectedCategoryId, setSelectedCategoryId] =
-    useState<"all" | number>("all");
+  const [selectedCategoryId, setSelectedCategoryId] = useState<"all" | number>(
+    "all",
+  );
 
-  const [graphType, setGraphType] =
-    useState<"pie" | "bar" | "curve">("pie");
+  const [graphType, setGraphType] = useState<"pie" | "bar" | "curve">("pie");
 
-  const location = useLocation();  
+  const location = useLocation();
 
   /**************************************************************
    * Chargement des données
    * → se relance à chaque fois qu'on revient sur /dashboard
    **************************************************************/
-     // ===== LOAD =====
+  // ===== LOAD =====
 
   useEffect(() => {
     async function loadData() {
-
       try {
         await getMe();
 
@@ -117,45 +127,45 @@ function DashboardPage() {
     loadData();
   }, [location.pathname]); // Se relance à chaque navigation vers /dashboard
 
-
   /**************************************************************
    * Calculs globaux
    **************************************************************/
   const totalBudget = useMemo(
     () => budgets.reduce((sum, b) => sum + b.limit, 0) ?? 0,
-    [budgets]
+    [budgets],
   );
 
   const totalSpent = useMemo(
     () => transactions.reduce((sum, t) => sum + t.amount, 0) ?? 0,
-    [transactions]
+    [transactions],
   );
 
   const totalRemaining = totalBudget - totalSpent;
 
-  const globalPercent =
-    totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0;
+  const globalPercent = totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0;
 
   const globalAlertClass =
     globalPercent < 79
       ? "alert-green"
       : globalPercent < 100
-      ? "alert-orange"
-      : "alert-red";
+        ? "alert-orange"
+        : "alert-red";
 
   /**************************************************************
    * Calculs pour la catégorie sélectionnée
    **************************************************************/
   const selectedBudget = useMemo(() => {
     if (selectedCategoryId === "all") return undefined;
-    return budgets.find((b) => /*b.id_categorie*/0 === selectedCategoryId);
+    return budgets.find((b) => /*b.id_categorie*/ 0 === selectedCategoryId);
   }, [budgets, selectedCategoryId]);
 
   const selectedSpent = useMemo(() => {
     if (selectedCategoryId === "all") return 0;
-    return transactions
-      .filter((t) => t.categoryId === selectedCategoryId)
-      .reduce((sum, t) => sum + t.amount, 0) ?? 0;
+    return (
+      transactions
+        .filter((t) => t.categoryId === selectedCategoryId)
+        .reduce((sum, t) => sum + t.amount, 0) ?? 0
+    );
   }, [transactions, selectedCategoryId]);
 
   const selectedRemaining = selectedBudget
@@ -170,8 +180,14 @@ function DashboardPage() {
     selectedPercent < 79
       ? "alert-green"
       : selectedPercent < 100
-      ? "alert-orange"
-      : "alert-red";
+        ? "alert-orange"
+        : "alert-red";
+
+  const [user, setUser] = useState<UserInfo | null>(null);
+
+  useEffect(() => {
+    getMe().then((value) => setUser(value));
+  }, []);
 
   /**************************************************************
    * Rendu principal
@@ -181,11 +197,9 @@ function DashboardPage() {
       <Header />
 
       <div className="dashboard-layout">
-
         {/*********************** BLOC B — GLOBAL ************************/}
         <section className="dashboard-global">
           <div className="dashboard-global__row">
-
             <div>
               <h3>Budget total</h3>
               <p>{totalBudget}€</p>
@@ -200,7 +214,6 @@ function DashboardPage() {
               <h3>Solde</h3>
               <p>{totalRemaining}€</p>
             </div>
-
           </div>
 
           <div className={`dashboard-global__alert ${globalAlertClass}`}></div>
@@ -208,7 +221,6 @@ function DashboardPage() {
 
         {/*********************** BLOC A — CATÉGORIE ************************/}
         <aside className="dashboard-left">
-
           <h3 className="dashboard-left__title">Catégorie</h3>
 
           <select
@@ -216,7 +228,7 @@ function DashboardPage() {
             value={selectedCategoryId}
             onChange={(e) =>
               setSelectedCategoryId(
-                e.target.value === "all" ? "all" : Number(e.target.value)
+                e.target.value === "all" ? "all" : Number(e.target.value),
               )
             }
           >
@@ -256,37 +268,33 @@ function DashboardPage() {
 
         {/*********************** BLOC C — GRAPHIQUES ************************/}
         <section className="dashboard-graph">
-
           {graphType === "pie" && (
-            <PieGraph 
+            <PieGraph
               key={`pie-${JSON.stringify(transactions)}`}
               categories={categories}
               transactions={transactions}
-              budgets={budgets} 
-              />
-            )}
+              budgets={budgets}
+            />
+          )}
           {graphType === "bar" && (
-            <BarGraph 
+            <BarGraph
               key={`bar-${JSON.stringify(transactions)}`}
               categories={categories}
               transactions={transactions}
-              budgets={budgets} 
-              />
-            )}
+              budgets={budgets}
+            />
+          )}
           {graphType === "curve" && (
-            <CurveGraph 
+            <CurveGraph
               key={`curve-${JSON.stringify(transactions)}`}
               categories={categories}
               transactions={transactions}
-              budgets={budgets} 
-              />
-            )}
+              budgets={budgets}
+            />
+          )}
 
-          <div className="dashboard-graph__legend">
-            Légendes du graphique
-          </div>
+          <div className="dashboard-graph__legend">Légendes du graphique</div>
         </section>
-
       </div>
     </>
   );

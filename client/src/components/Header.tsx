@@ -3,7 +3,8 @@ import { NavLink } from "react-router-dom";
 
 import crabLogo from "../assets/crab-svgrepo-com.svg";
 import { getMe } from "../services/auth/auth.service";
-
+import ThemeToggle from "./ThemeToggle";
+import "../styles/header.css";
 
 type UserInfo = {
   id: number;
@@ -13,6 +14,13 @@ type UserInfo = {
 };
 
 function Header() {
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+function toggleTheme() {
+  setTheme(theme === "light" ? "dark" : "light");
+  document.body.className = theme === "light" ? "dark" : "light";
+}
+
 
   // undefined => utilisateur déconnecté, sinon contient les infos de l'utilisateur
   const [user, setUser] = useState<UserInfo | undefined>(undefined);
@@ -32,7 +40,12 @@ function Header() {
         <NavLink to="/transactions" className={({ isActive }) => isActive ? "active" : "pending" }>Dépenses</NavLink>
         <NavLink to="/" className={({ isActive }) => isActive ? "active" : "pending" }>Home</NavLink>
       </nav>
-      <p className="header__user">{user ? `${user.firstName} ${user.lastName} connecté 🟢` : 'Déconnecté ⚪'}</p>
+      <ThemeToggle theme={theme} onToggle={toggleTheme} />
+      <p className="header__user">{user ? ( <>Bonjour, <strong>{user.firstName}</strong> 🟢</>
+    ) : ( 
+    <>Vous n’êtes pas connecté <span className="status-dot status-dot--red"></span></>)}</p>
+
+    
     </header>
   );
 }
