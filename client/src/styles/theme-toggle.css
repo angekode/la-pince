@@ -30,6 +30,12 @@
 
   transition: color 0.2s ease;
 }
+.theme-toggle-wrapper {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+}
+
 
 /* Icône */
 .theme-icon {

@@ -3,13 +3,35 @@
    Conteneur principal du header : logo + titre + navigation
 ----------------------------------------------------------- */
 header {
+  position: fixed;
+  top: 0px; /* Positionné en haut de la page, mais avec un offset pour éviter de cacher le contenu */
+  left: 0px; /* Légère marge à gauche pour éviter de coller au bord */
+  width: 100%;
   display: flex;                                 /* Place les éléments sur une seule ligne */
   align-items: center;                           /* Centre verticalement logo, titre et nav */
   justify-content: space-between;                /* Espace entre logo et navigation */
-  padding: 1rem;                                 /* Espacement interne pour aérer le header */
+  padding: 2rem;                           /* Espacement interne pour aérer le header */
+  gap: 1rem;
   background: var(--bg-page);                    /* Fond cohérent avec le reste de l'application */
   border-bottom: 1px solid var(--border-color);  /* Ligne discrète pour séparer du contenu */
+  z-index: 9999;
 }
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 6px;
+}
+
+.status-dot--green {
+  background-color: #22c55e;
+}
+
+.status-dot--red {
+  background-color: #ef4444;
+}
+
 
 /* -----------------------------------------------------------
    LOGO
@@ -84,3 +106,9 @@ nav  .pending {
   opacity: 0.6;                            /* Indique un état transitoire */
   text-decoration: none;                   /* Pas de soulignement */
 }
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+}
+
