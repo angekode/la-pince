@@ -10,6 +10,8 @@ function HeaderHome() {
     //  VERIFICATION SI LE USER EST LOG OU PAS 
     const [isLogged, setIsLogged] = useState(false);
 
+    //Le token est stocké un cookies securisé pour ne pas etre vulnerable au attaque XSS
+    //On utilise un HOOK dans le header qui fait un appel fetch sur la route /auth/me qui verifie si le token est valide 
     useEffect(() => {
       getMe()
         .then(() => setIsLogged(true))
@@ -26,7 +28,7 @@ function HeaderHome() {
       />
 
       {/* Menu MOBILE*/}
-      <div className="home-header__menu">
+      <div className="home-header__menu mobile-only">
         <Dropdown />
       </div>
 
@@ -35,7 +37,7 @@ function HeaderHome() {
         <a href="#visualisation">À propos</a>
         <a href="#gestion-budget">Gestion de budget</a>
         <a href="#securite">Sécurité</a>
-        <a href="#securite">Inscription</a>
+        
       </nav>
 
       {/* Liens à droite */}

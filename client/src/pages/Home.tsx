@@ -14,7 +14,8 @@ function Home() {
       <main className="home-main">
 
         {/* Section présentation des slides */}
-        <section id="gestion-budget" className="home-section">
+        {/*<section id="gestion-budget" className="home-section">*/}
+        <section id="visualisation" className="home-section">
           <HomeSlide />
         </section>
 
