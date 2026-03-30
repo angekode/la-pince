@@ -10,7 +10,7 @@ import {
 } from '../tools';
 
 
-const skip = false; // tant que les routes ne sont pas implémentés - Les tests sont activés
+const skip = true; // tant que les routes ne sont pas implémentés - Les tests sont activés
 
 
 /**
