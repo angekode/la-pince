@@ -62,23 +62,23 @@ export default function ExpensePage() {
 
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
   const [editingBudget, setEditingBudget] = useState<any>(null);
-const [expenseDate, setExpenseDate] = useState<Date | null>(new Date());
+  const [expenseDate, setExpenseDate] = useState<Date | null>(new Date());
   // ===== LOAD =====
   useEffect(() => {
     loadData();
   }, []);
 
-useEffect(() => {
-  if (editingTransaction) {
-    setNewExpenseAmount(editingTransaction.amount.toString());
-    setSelectedCategoryId(editingTransaction.category.id);
-    setLabel(editingTransaction.label || "");
-    setExpenseDate(
-      editingTransaction.date ? new Date(editingTransaction.date) : new Date()
-    );
-    setShowAddExpense(true);
-  }
-}, [editingTransaction]);
+  useEffect(() => {
+    if (editingTransaction) {
+      setNewExpenseAmount(editingTransaction.amount.toString());
+      setSelectedCategoryId(editingTransaction.category.id);
+      setLabel(editingTransaction.label || "");
+      setExpenseDate(
+        editingTransaction.date ? new Date(editingTransaction.date) : new Date()
+      );
+      setShowAddExpense(true);
+    }
+  }, [editingTransaction]);
 
   useEffect(() => {
     if (editingBudget) {
@@ -153,75 +153,75 @@ useEffect(() => {
   }
 
   // ===== EXPENSE =====
-async function handleSaveExpense() {
-  if (!newExpenseAmount || !selectedCategoryId) {
-    setError("Montant et catégorie obligatoires");
-    return;
-  }
-
-  if (!expenseDate) {
-    setError("La date est obligatoire");
-    return;
-  }
-
-  // normaliser les dates sans l'heure
-  const selectedDate = new Date(expenseDate);
-  selectedDate.setHours(0, 0, 0, 0);
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const oneMonthAgo = new Date();
-  oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
-  oneMonthAgo.setHours(0, 0, 0, 0);
-
-  if (isNaN(selectedDate.getTime())) {
-    setError("Date invalide");
-    return;
-  }
-
-  if (selectedDate > today) {
-    setError("La date ne peut pas être dans le futur");
-    return;
-  }
-
-  if (selectedDate < oneMonthAgo) {
-    setError("La date ne peut pas dépasser 1 mois");
-    return;
-  }
-
-  try {
-    setLoading(true);
-    setError("");
-
-    const payload = {
-      categoryId: Number(selectedCategoryId),
-      amount: Number(newExpenseAmount),
-      label: label || "Dépense",
-      date: selectedDate.toISOString(),
-    };
-
-    if (editingTransaction) {
-      await updateTransaction(editingTransaction.id, payload);
-    } else {
-      await createTransaction(payload);
+  async function handleSaveExpense() {
+    if (!newExpenseAmount || !selectedCategoryId) {
+      setError("Montant et catégorie obligatoires");
+      return;
     }
 
-    setEditingTransaction(null);
-    setNewExpenseAmount("");
-    setSelectedCategoryId("");
-    setLabel("");
-    setExpenseDate(new Date());
-    setShowAddExpense(false);
+    if (!expenseDate) {
+      setError("La date est obligatoire");
+      return;
+    }
 
-    await loadData();
-  } catch (err: any) {
-    console.error(err);
-    setError(err.message || "Erreur lors de la sauvegarde");
-  } finally {
-    setLoading(false);
+    // normaliser les dates sans l'heure
+    const selectedDate = new Date(expenseDate);
+    selectedDate.setHours(0, 0, 0, 0);
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+    oneMonthAgo.setHours(0, 0, 0, 0);
+
+    if (isNaN(selectedDate.getTime())) {
+      setError("Date invalide");
+      return;
+    }
+
+    if (selectedDate > today) {
+      setError("La date ne peut pas être dans le futur");
+      return;
+    }
+
+    if (selectedDate < oneMonthAgo) {
+      setError("La date ne peut pas dépasser 1 mois");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError("");
+
+      const payload = {
+        categoryId: Number(selectedCategoryId),
+        amount: Number(newExpenseAmount),
+        label: label || "Dépense",
+        date: selectedDate.toISOString(),
+      };
+
+      if (editingTransaction) {
+        await updateTransaction(editingTransaction.id, payload);
+      } else {
+        await createTransaction(payload);
+      }
+
+      setEditingTransaction(null);
+      setNewExpenseAmount("");
+      setSelectedCategoryId("");
+      setLabel("");
+      setExpenseDate(new Date());
+      setShowAddExpense(false);
+
+      await loadData();
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || "Erreur lors de la sauvegarde");
+    } finally {
+      setLoading(false);
+    }
   }
-}
 
   async function handleDeleteExpense(id: number) {
     try {
@@ -290,74 +290,75 @@ async function handleSaveExpense() {
             </div>
 
             {showAddExpense && (
-  <div className="form">
-    <select
-      value={selectedCategoryId}
-      onChange={(e) => {
-        const value = e.target.value;
-        setSelectedCategoryId(value ? Number(value) : "");
-      }}
-    >
-      <option value="">-- Choisir catégorie --</option>
-      {categories.map((cat) => (
-        <option key={cat.id} value={cat.id}>
-          {cat.name}
-        </option>
-      ))}
-    </select>
+              <div className="form">
+                <select
+                  value={selectedCategoryId}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setSelectedCategoryId(value ? Number(value) : "");
+                  }}
+                >
+                  <option value="">-- Choisir catégorie --</option>
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </option>
+                  ))}
+                </select>
 
-    <input
-      type="number"
-      value={newExpenseAmount}
-      onChange={(e) => setNewExpenseAmount(e.target.value)}
-      placeholder="Montant"
-    />
+                <input
+                  type="number"
+                  value={newExpenseAmount}
+                  onChange={(e) => setNewExpenseAmount(e.target.value)}
+                  placeholder="Montant"
+                />
 
-    {/* ✅ DATE */}
-<DatePicker
-  selected={expenseDate}
-  onChange={(date: Date | null) => setExpenseDate(date)}
-  maxDate={new Date()}
-  minDate={new Date(new Date().setMonth(new Date().getMonth() - 1))}
-  dateFormat="dd/MM/yyyy"
-  className="custom-datepicker"
-/>
+                {/* ✅ DATE */}
+                <DatePicker
+                  selected={expenseDate}
+                  onChange={(date: Date | null) => setExpenseDate(date)}
+                  maxDate={new Date()}
+                  minDate={new Date(new Date().setMonth(new Date().getMonth() - 1))}
+                  dateFormat="dd/MM/yyyy"
+                  className="custom-datepicker"
+                />
 
-    <div className="form-actions">
-      <button onClick={() => setShowAddExpense(false)}>
-        Annuler
-      </button>
+                <div className="form-actions">
 
-      <button
-        className="primary-button"
-        onClick={handleSaveExpense}
-      >
-        Sauvegarder
-      </button>
-    </div>
-  </div>
-)}
+
+                  <button
+                    className="primary-button"
+                    onClick={handleSaveExpense}
+                  >
+                    Sauvegarder
+                  </button>
+                  <button onClick={() => setShowAddExpense(false)}>
+                    Annuler
+                  </button>
+                </div>
+              </div>
+            )}
 
             <h2 className="card-title" style={{ marginTop: "20px" }}>
               Historique des dépenses
             </h2>
 
             <div className="expense-list">
-  {transactions.map((t) => (
-    <div key={t.id} className="expense-row">
-      <span>{t.category?.name}</span>
-      <span>{t.amount} €</span>
+              {transactions.map((t) => (
+                <div key={t.id} className="expense-row">
+                  <span>{t.category?.name}</span>
+                  <span>{t.amount} €</span>
 
-      {/* ✅ DATE */}
-      <span>{new Date(t.date).toLocaleDateString()}</span>
+                  {/* ✅ DATE */}
+                  <span>{new Date(t.date).toLocaleDateString()}</span>
 
-      <div className="actions">
-        <button onClick={() => handleDeleteExpense(t.id)}>❌</button>
-        <button onClick={() => setEditingTransaction(t)}>✏️</button>
-      </div>
-    </div>
-  ))}
-</div>
+                  <div className="actions">
+                    <button onClick={() => handleDeleteExpense(t.id)}>❌</button>
+                    <button onClick={() => setEditingTransaction(t)}>✏️</button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </section>
 
           {/* ===== BUDGET PAR CATEGORIE ===== */}
