@@ -36,11 +36,11 @@ const GraphIcons: React.FC<GraphIconsProps> = ({ graphType, onChange }) => {
         onClick={() => onChange("bar")}
         aria-label="Graphique en barres"
       >
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
-          <rect x="3" y="10" width="4" height="11" rx="1" />
-          <rect x="10" y="6" width="4" height="15" rx="1" />
-          <rect x="17" y="3" width="4" height="18" rx="1" />
-        </svg>
+        <img
+          src="/icons/graphique-a-barres.png"
+          alt="Graphique en barres"
+          className="graph-icon-img"
+        />
       </button>
 
       {/********************************************************************
@@ -55,18 +55,12 @@ const GraphIcons: React.FC<GraphIconsProps> = ({ graphType, onChange }) => {
         onClick={() => onChange("curve")}
         aria-label="Graphique en courbe"
       >
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
-          <circle cx="4" cy="14" r="2" />
-          <circle cx="12" cy="8" r="2" />
-          <circle cx="20" cy="12" r="2" />
-          <path
-            d="M4 14 L12 8 L20 12"
-            stroke="currentColor"
-            strokeWidth="3"
-            fill="none"
-            strokeLinecap="round"
-          />
-        </svg>
+        <img
+          src="/icons/graphique-lineaire.png"
+          alt="Graphique en courbe"
+          className="graph-icon-img"
+        />
+       
       </button>
 
       {/********************************************************************
@@ -77,10 +71,11 @@ const GraphIcons: React.FC<GraphIconsProps> = ({ graphType, onChange }) => {
         onClick={() => onChange("pie")}
         aria-label="Graphique en camembert"
       >
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M11 2 A10 10 0 1 0 22 13 L11 13 Z" />
-          <path d="M12 2 L12 12 L22 12 A10 10 0 0 0 12 2" />
-        </svg>
+        <img
+          src="/icons/diagramme-circulaire.png"
+          alt="Graphique en camembert"
+          className="graph-icon-img"
+        />
       </button>
     </div>
   );

@@ -56,14 +56,13 @@
 
 /* === LIGNE STANDARD (historique dépenses) === */
 .expense-row {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
   align-items: center;
   padding: 15px;
   border: 1px solid var(--border);
   border-radius: 12px;
   background: #111418;
-  transition: 0.2s;
 }
 
 .expense-row:hover {
@@ -277,4 +276,14 @@
 .form select option:checked {
   background: var(--primary-color);
   color: #000;
+}
+
+.custom-datepicker {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #111418;
+  color: white;
+  width: 100%;
+  font-size: 14px;
 }
