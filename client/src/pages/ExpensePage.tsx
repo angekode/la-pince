@@ -2,6 +2,8 @@ import "../styles/expense-page.css";
 import Header from "../components/Header";
 import { useEffect, useState } from "react";
 import { getBudgets, createBudget } from "../services/budget/budget.service";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import {
   getCategories,
@@ -13,6 +15,7 @@ import {
   getTransactions,
   createTransaction,
   deleteTransaction,
+  updateTransaction
 } from "../services/transaction/transaction.service";
 
 // ===== TYPES =====
@@ -21,9 +24,12 @@ type Category = {
   name: string;
 };
 
+// ===== TYPES =====
 type Transaction = {
   id: number;
   amount: number;
+  label: string;
+  date: string; // ✅ AJOUT
   category: {
     id: number;
     name: string;
@@ -54,10 +60,39 @@ export default function ExpensePage() {
 
   const [label, setLabel] = useState("");
 
+  const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
+  const [editingBudget, setEditingBudget] = useState<any>(null);
+  const [expenseDate, setExpenseDate] = useState<Date | null>(new Date());
   // ===== LOAD =====
   useEffect(() => {
     loadData();
   }, []);
+
+  useEffect(() => {
+    if (editingTransaction) {
+      setNewExpenseAmount(editingTransaction.amount.toString());
+      setSelectedCategoryId(editingTransaction.category.id);
+      setLabel(editingTransaction.label || "");
+      setExpenseDate(
+        editingTransaction.date ? new Date(editingTransaction.date) : new Date()
+      );
+      setShowAddExpense(true);
+    }
+  }, [editingTransaction]);
+
+  useEffect(() => {
+    if (editingBudget) {
+      setSelectedBudgetCategoryId(editingBudget.id);
+
+      if (editingBudget.budget) {
+        setBudgetAmount(editingBudget.budget.limit.toString());
+        setAlertEnabled(editingBudget.budget.alertEnabled);
+      }
+
+      setShowBudget(true);
+    }
+  }, [editingBudget]);
+
 
   async function loadData() {
     setLoading(true);
@@ -117,42 +152,72 @@ export default function ExpensePage() {
     }
   }
 
-  async function handleDeleteCategory(id: number) {
-    try {
-      setLoading(true);
-      await deleteCategory(id);
-      await loadData();
-    } catch {
-      setError("Erreur suppression catégorie");
-    } finally {
-      setLoading(false);
-    }
-  }
-
   // ===== EXPENSE =====
-  async function handleAddExpense() {
-    if (!newExpenseAmount || !selectedCategoryId) return;
+  async function handleSaveExpense() {
+    if (!newExpenseAmount || !selectedCategoryId) {
+      setError("Montant et catégorie obligatoires");
+      return;
+    }
+
+    if (!expenseDate) {
+      setError("La date est obligatoire");
+      return;
+    }
+
+    // normaliser les dates sans l'heure
+    const selectedDate = new Date(expenseDate);
+    selectedDate.setHours(0, 0, 0, 0);
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+    oneMonthAgo.setHours(0, 0, 0, 0);
+
+    if (isNaN(selectedDate.getTime())) {
+      setError("Date invalide");
+      return;
+    }
+
+    if (selectedDate > today) {
+      setError("La date ne peut pas être dans le futur");
+      return;
+    }
+
+    if (selectedDate < oneMonthAgo) {
+      setError("La date ne peut pas dépasser 1 mois");
+      return;
+    }
 
     try {
       setLoading(true);
       setError("");
 
-      await createTransaction({
+      const payload = {
         categoryId: Number(selectedCategoryId),
         amount: Number(newExpenseAmount),
         label: label || "Dépense",
-        date: new Date().toISOString(),
-      });
+        date: selectedDate.toISOString(),
+      };
 
+      if (editingTransaction) {
+        await updateTransaction(editingTransaction.id, payload);
+      } else {
+        await createTransaction(payload);
+      }
+
+      setEditingTransaction(null);
       setNewExpenseAmount("");
       setSelectedCategoryId("");
       setLabel("");
+      setExpenseDate(new Date());
       setShowAddExpense(false);
 
       await loadData();
     } catch (err: any) {
       console.error(err);
-      setError(err.message || "Erreur ajout dépense");
+      setError(err.message || "Erreur lors de la sauvegarde");
     } finally {
       setLoading(false);
     }
@@ -171,7 +236,7 @@ export default function ExpensePage() {
   }
 
   // ===== BUDGET =====
-  async function handleAddBudget() {
+  async function handleSaveBudget() {
     if (!selectedBudgetCategoryId || !budgetAmount) return;
 
     try {
@@ -183,19 +248,21 @@ export default function ExpensePage() {
         alertEnabled: alertEnabled,
       });
 
+      // reset
+      setEditingBudget(null);
       setSelectedBudgetCategoryId("");
       setBudgetAmount("");
       setAlertEnabled(true);
       setShowBudget(false);
 
       await loadData();
+
     } catch (err: any) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
   }
-
   return (
     <>
       <Header />
@@ -211,22 +278,7 @@ export default function ExpensePage() {
 
           {/* ===== HISTORIQUE ===== */}
           <section className="expense-card">
-            <h2 className="card-title">Historique des dépenses</h2>
-
-            <div className="expense-list">
-              {transactions.map((t) => (
-                <div key={t.id} className="expense-row">
-                  <span>{t.category?.name}</span>
-                  <span>{t.amount} €</span>
-
-                  <div className="actions">
-                    <button onClick={() => handleDeleteExpense(t.id)}>
-                      ❌
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <h2 className="card-title">Ajouter une dépense</h2>
 
             <div className="card-footer">
               <button
@@ -261,77 +313,57 @@ export default function ExpensePage() {
                   placeholder="Montant"
                 />
 
+                {/* ✅ DATE */}
+                <DatePicker
+                  selected={expenseDate}
+                  onChange={(date: Date | null) => setExpenseDate(date)}
+                  maxDate={new Date()}
+                  minDate={new Date(new Date().setMonth(new Date().getMonth() - 1))}
+                  dateFormat="dd/MM/yyyy"
+                  className="custom-datepicker"
+                />
+
                 <div className="form-actions">
-                  <button onClick={() => setShowAddExpense(false)}>
-                    Annuler
-                  </button>
+
 
                   <button
                     className="primary-button"
-                    onClick={handleAddExpense}
+                    onClick={handleSaveExpense}
                   >
                     Sauvegarder
+                  </button>
+                  <button onClick={() => setShowAddExpense(false)}>
+                    Annuler
                   </button>
                 </div>
               </div>
             )}
+
+            <h2 className="card-title" style={{ marginTop: "20px" }}>
+              Historique des dépenses
+            </h2>
+
+            <div className="expense-list">
+              {transactions.map((t) => (
+                <div key={t.id} className="expense-row">
+                  <span>{t.category?.name}</span>
+                  <span>{t.amount} €</span>
+
+                  {/* ✅ DATE */}
+                  <span>{new Date(t.date).toLocaleDateString()}</span>
+
+                  <div className="actions">
+                    <button onClick={() => handleDeleteExpense(t.id)}>❌</button>
+                    <button onClick={() => setEditingTransaction(t)}>✏️</button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </section>
 
           {/* ===== BUDGET PAR CATEGORIE ===== */}
           <section className="expense-card">
-            <h2 className="card-title">Budget par catégorie</h2>
-
-            <div className="expense-list">
-              {mergedCategories.map((cat) => {
-                const hasBudget = !!cat.budget;
-
-                return (
-                  <div key={cat.id} className="expense-row">
-
-                    {/* catégorie */}
-                    <span>{cat.name}</span>
-
-                    {/* budget */}
-                    <span>
-                      {hasBudget ? `${cat.budget.limit} €` : "-"}
-                    </span>
-
-                    {/* dépensé */}
-                    {hasBudget && (
-                      <span style={{ opacity: 0.7 }}>
-                        {cat.spent} €
-                      </span>
-                    )}
-
-                    {/* alert 80% */}
-                    {hasBudget &&
-                      cat.budget.alertEnabled &&
-                      cat.percent >= 80 &&
-                      cat.percent < 100 && (
-                        <span style={{ color: "orange" }}>
-                          ⚠️ 80%
-                        </span>
-                      )}
-
-                    {/* alert 100% */}
-                    {hasBudget &&
-                      cat.budget.alertEnabled &&
-                      cat.percent >= 100 && (
-                        <span style={{ color: "red" }}>
-                          🔴 Dépassé
-                        </span>
-                      )}
-
-                    <div className="actions">
-                      <button onClick={() => handleDeleteCategory(cat.id)}>
-                        ❌
-                      </button>
-                    </div>
-
-                  </div>
-                );
-              })}
-            </div>
+            <h2 className="card-title">Configurer un budget</h2>
 
             <div className="card-footer">
               <button
@@ -382,13 +414,67 @@ export default function ExpensePage() {
 
                   <button
                     className="primary-button"
-                    onClick={handleAddBudget}
+                    onClick={handleSaveBudget}
                   >
                     Sauvegarder
                   </button>
                 </div>
               </div>
             )}
+
+            <h2 className="card-title" style={{ marginTop: "20px" }}>
+              Budget par catégorie
+            </h2>
+
+            <div className="expense-list">
+
+              <div className="budget-header">
+                <span>Catégorie</span>
+                <span>Budget</span>
+                <span>Dépensé</span>
+                <span>Statut</span>
+                <span>Actions</span>
+              </div>
+
+              {mergedCategories.map((cat) => {
+                const hasBudget = !!cat.budget;
+
+                return (
+                  <div key={cat.id} className="budget-row">
+
+                    <span className="budget-col">{cat.name}</span>
+
+                    <span className="budget-col">
+                      {hasBudget ? `${cat.budget.limit} €` : "-"}
+                    </span>
+
+                    <span className="budget-col">
+                      {cat.spent} €
+                    </span>
+
+                    <span className="budget-col status">
+                      {hasBudget &&
+                        cat.budget.alertEnabled &&
+                        cat.percent >= 80 &&
+                        cat.percent < 100 && (
+                          <span className="warning">⚠️ 80%</span>
+                        )}
+
+                      {hasBudget &&
+                        cat.budget.alertEnabled &&
+                        cat.percent >= 100 && (
+                          <span className="danger">🔴 Dépassé</span>
+                        )}
+                    </span>
+
+                    <div className="budget-col actions">
+                      <button onClick={() => setEditingBudget(cat)}>✏️</button>
+                    </div>
+
+                  </div>
+                );
+              })}
+            </div>
           </section>
 
         </div>

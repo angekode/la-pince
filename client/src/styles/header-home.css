@@ -14,22 +14,8 @@
   flex-shrink: 0;
 }
 
-.home-header__menu {
-  margin-left: px;
- 
-}
+/* MENU MOBILE */
 
-.home-header__nav {
-  margin-left: auto;
-  display: flex;
-  justify-content: flex-end;
-  gap: 24px;
-}
-
-.home-header__nav a {
-  color: var(--text-main);
-  text-decoration: underline;
-}
 
 .home-header__menu button {
   background: none;
@@ -70,4 +56,62 @@
 
 .home-header__menu .dropdown-menu a:hover {
   background: var(--bg-input);
+}
+
+/* LIENS CONNEXION / INSCRIPTION */
+.home-header__nav {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  flex: 0 0 auto;
+}
+
+.home-header__nav a {
+  color: var(--text-main);
+  text-decoration: underline;
+}
+
+/* VISIBILITE MOBILE / DESKTOP */
+.mobile-only {
+  display: block !important;
+}
+
+.desktop-only {
+  display: none !important;
+}
+
+/* NAV DESKTOP */
+.home-header__sections {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.home-header__sections a {
+  color: var(--text-main);
+  text-decoration: underline;
+}
+
+/* DESKTOP */
+@media (min-width: 1024px) {
+  .mobile-only {
+    display: none !important;
+  }
+
+  .desktop-only {
+    display: flex !important;
+    
+  }
+
+  .home-header {
+    justify-content: space-between;
+  }
+
+  .home-header__sections {
+    flex: 1;
+    justify-content: center;
+    margin-left: 40px;
+  }
 }
