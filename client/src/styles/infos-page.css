@@ -1,0 +1,39 @@
+/* Utilisé pour les pages en lien dans les footer (RGPD, Mentions légales, Conditions générales */
+
+.infos-page__main {
+  padding: 2rem;
+  
+  max-width: 90ch;
+  margin: 0 auto;
+
+  background-color: var(--bg-card);
+  border-radius: var(--radius-lg);
+
+  h1 {
+    text-align: center;
+    margin: 2rem 0;
+    font-size: large;
+  }
+
+  h2 {
+    margin-top: 2rem;
+    font-size: medium;
+  }
+
+  p {
+    text-align: justify;
+    font-size: small;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: row;
+    align-content: space-around;
+  }
+
+  a {
+    text-decoration: underline;
+    font-size: small;
+  }
+}
+
