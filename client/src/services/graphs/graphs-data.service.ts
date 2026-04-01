@@ -7,6 +7,8 @@
  */
 
 import { getAllCategories, getAllTransactions } from "./data-fetcher.service";
+import { type Category } from "../category/category.service";
+import { type Transaction } from "../transaction/transaction.service";
 
 /**
  * Renvoie le total du solde calculé en faisant la somme de toutes les transactions

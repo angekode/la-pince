@@ -158,32 +158,57 @@ git push -u origin feature/nom-de-la-fonctionnalité
 # 3) Déploiement
 ---
 
-## Render
+L'application est composé de 3 services : les services client et api seront déployés sur [render.com](https://render.com/) et la base de donnée sur [neon.com](https://neon.com/).
+
+Render offre un service de base de données, mais il s'expire au bout d'un mois.
+
+## Déploiement sur Render.com
 
 Pour déployer le site sur Render, on doit lui donner l'adresse d'un dépot publique. Le dépot de la pince est privé. Il faut créer un clone du dépot sur notre propre compte Github et le mettre en publique.
 
-### Cloner de dépot
+### Copie du dépot
 
-- Créer un mirroir du dépot sur l'ordinateur localement :
+Render a besoin d'avoir accès à un dépot publique. Mais le dépot de "La Pince" sur l'organisation "O'Clock Francfort" est privé. 
+
+Il faut créer une copie du dépot de La Pince sur son compte personnel.
+
+**2) Créer un nouveau dépot sur le github perso**
+
+Il faut créer un nouveau dépot sur son propre compte github : https://github.com
+<img src="docs/images/Déploiement/new-repo-menu.png" width="500">
+
+Bien choisir son propre compte :
+<img src="docs/images/Déploiement/new-repo-owner.png" width="500">
+
+Cliquer sur le bouton `Create New Repository`.
+
+
+**2) Cloner le dépot sur l'ordinateur local (O-clock-Francfort/la-pince -> ordinateur local)**
+
+Ouvrir le terminal sur l'ordinateur local et se placer dans un dossier où se copié le dépot :
 ```
-git clone --mirror git@github.com:O-clock-Francfort/la-pince.git
+git clone --mirror git@github.com:O-clock-Francfort/la-pince.git # option mirror pour copier toutes les branches
 ```
+Celà a crée un dossier `la-pince` dans le répertoire où la commande a été lancée. 
 
-- Créer un nouveau dépot sur notre propre compte Github.
+**3) Copier le contenu sur l'ordinateur local -> sur le dépot github perso**
 
-- Envoyer la copie créer sur l'ordinateur en local vers le nouveau dépot Github :
+Il faut rentrer à l'intérieur du dossier `la-pince` :
+```
+cd la-pince
+```
+Une fois à l'intérieur du dossier `la-pince`, on lance la commande qui va copier le contenu local vers le dépot github perso (celui crée à l'étape 1) :
 ```
 git push --mirror git@github.com:TON-USERNAME/nom-du-repo.git
 ```
-### Sur Render
+*On peut récupérer l'adresse `git@github.com:TON-USERNAME/nom-du-repo.git` sur la page qui s'affiche après avoir crée le repot perso sur github.*
 
-Il faut créer 3 services (database, api, client).
+<img src="docs/images/Déploiement/new-repo-page.png" width="500">
 
-#### Database
 
-Il faut créer un service Postgres sur Render. Noter l'url pour les variabels d'environnement du service API.
+### Création du service API
 
-#### API
+Pour déployer un service, Render utilise les conteneurs Docker. Pour le service API, on doit créer un service de type Docker, indiquer le chemin vers le fichier `api/docker/Dockerfile.prod` et configurer les variables d'environnement.
 
 - Créer un nouveau service :
 
@@ -212,6 +237,16 @@ Même chose que pour l'API en indiquant les chemins vers le répertoire `client`
 
 Attention render met toujours le port 80 pour tous les services, même si on lui demande un autre port sur le service API.
 
+## Création de la base de données sur Neon.com
+
+- Cliquer sur le bouton `New Project` :
+<img src="docs/images/Déploiement/neon-new-project.png" width="500">
+
+- Choisir un serveur en Europe :
+<img src="docs/images/Déploiement/neon-new-project-config.png" width="300">
+
+- Aller dans le dashboard du nouveau projet et cliquer sur 
+<img src="docs/images/Déploiement/neon-project-dashboard.png" width="600">
 
 ---
 # 4) Documentation API
@@ -219,3 +254,4 @@ Attention render met toujours le port 80 pour tous les services, même si on lui
 La documentation est accessible via l'API sur : http://localhost:3000/docs. 
 
 Elle aussi disponible au format json ici : `./api/docs/api-doc.json`.
+
