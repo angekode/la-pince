@@ -13,12 +13,14 @@ function Home() {
 
       <main className="home-main">
 
-        {/*                 MOBILE                                       */}
+        
         {/* Section présentation des slides */}
         {/*<section id="gestion-budget" className="home-section">*/}
         <section id="visualisation" className="home-section">
           <HomeSlide />
         </section>
+
+
 
         {/* Section Cybersecurité */}
         <section  className="home-section">
@@ -41,11 +43,38 @@ function Home() {
 
           {/* Desktop */}
           <div className="security-section-desktop">
-    
-            <h2 id="securite">Sécurité Avancé</h2>
+            <div className="security-cards">
+              <div className="security-card">
+                <div className="card-image"><img src="/Hacker.png" alt="sécurité" />
+                <div className="card-overlay">
+                    <h3>Unifiez votre défense</h3>
+                    <p>Défendez votre organisation avec une plateforme unifiée..</p>
+                  </div>
+                </div> 
+              </div>
 
+              <div className="security-card">
+                <div className="card-image"><img src="/Shield.png" alt="sécurité" />
+                  <div className="card-overlay">
+                    <h3>Unifiez votre défense</h3>
+                    <p>Défendez votre organisation avec une plateforme unifiée..</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="security-card">
+                <div className="card-image"><img src="/Finger.png" alt="sécurité" />
+                  <div className="card-overlay">
+                      <h3>Unifiez votre défense</h3>
+                      <p>Défendez votre organisation avec une plateforme unifiée..</p>
+                    </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
+
+
 
         {/* Section proposition d'inscription */}
         <section  className="home-section">
