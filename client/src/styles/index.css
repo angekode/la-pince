@@ -37,9 +37,16 @@ body,
 body {
   padding-top: 185px;
 }
+
+body.home-page {
+  padding-top: 0;
+}
 @media (max-width: 768px) {
   body {
     padding-top: 160px;
+  }
+  body.home-page {
+    padding-top: 0;
   }
 }
 /* -----------------------------------------------------------

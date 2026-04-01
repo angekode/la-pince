@@ -12,6 +12,7 @@ type ManagedChartProps = {
 function ManagedChart({ options }: ManagedChartProps) {
   const chartRef = useRef<HighchartsReactRefObject | null>(null);
 
+
   useEffect(() => {
     return () => {
       chartRef.current?.chart?.destroy();

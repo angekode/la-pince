@@ -1,16 +1,18 @@
-import HeaderHome from "../components/Header-home";
+import Header from "../components/Header";
 import HomeSlide from "../components/HomeSlide";
 import "../styles/home.css"
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function Home() {
   const navigate = useNavigate();
+  
   return (
-    <div>
+    <div className="home-page">
 
       {/* Header de la page Home */}
-      <HeaderHome />
-
+      <Header />
+      
       <main className="home-main">
 
         {/* Section présentation des slides */}
@@ -56,5 +58,7 @@ function Home() {
     </div>
   );
 }
+
+
 
 export default Home;

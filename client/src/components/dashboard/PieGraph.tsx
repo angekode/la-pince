@@ -44,6 +44,8 @@ function PieGraph({ categories, transactions, budgets }: PieGraphProps) {
   const chartOptions: HighchartsOptionsType = {
     chart: {
       type: "pie", // Type de graphique
+      
+
       backgroundColor: "transparent", // Fond transparent pour s'intégrer au thème
       plotBorderWidth: 0, // Pas de bordure autour du graphique
       options3d: {
@@ -52,7 +54,8 @@ function PieGraph({ categories, transactions, budgets }: PieGraphProps) {
         beta: 0, // Inclinaison horizontale
       },
     },
-
+      legend: { enabled: false },
+      credits: { enabled: false },
     // Série principale contenant les données du camembert
     series: [
       {
