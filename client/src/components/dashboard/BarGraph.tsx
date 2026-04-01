@@ -60,7 +60,8 @@ function BarGraph({ categories, transactions, budgets }: BarGraphProps) {
         x: -10, // pour l'éloigner de l'axe
       },
     },
-
+      legend: { enabled: false },
+      credits: { enabled: false },
     // Apparence
     yAxis: {
       title: {

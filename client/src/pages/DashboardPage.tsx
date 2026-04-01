@@ -293,7 +293,7 @@ function DashboardPage() {
             />
           )}
 
-          <div className="dashboard-graph__legend">Légendes du graphique</div>
+          
         </section>
       </div>
     </>
