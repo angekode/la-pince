@@ -3,6 +3,7 @@ const CATEGORY_URL = `${import.meta.env.VITE_API_BASE_URL}/categories`;
 export type Category = {
   id: number;
   name: string;
+  colorCode: string;
 };
 
 export type GetCategoriesResponse = {
