@@ -12,6 +12,7 @@ import ExpensePage from "./pages/ExpensePage";
 
 import "./styles/index.css";
 import "./services/graphs/graphs-data.service"
+import { RGPDPage } from "./pages/RGPDPage";
 
 export default function App() {
 
@@ -35,6 +36,7 @@ export default function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/transactions" element={<ExpensePage />} />
+        <Route path="/rgpd" element={<RGPDPage />} />
       </Routes>
       <Footer/>
     </>
