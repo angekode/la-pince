@@ -5,11 +5,6 @@ import { getBudgets, createBudget } from "../services/budget/budget.service";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import ExpenseList from "../components/expense/ExpenseList";
-import ExpenseForm from "../components/expense/ExpenseForm";
-import BudgetList from "../components/expense/BudgetList";
-import BudgetForm from "../components/expense/BudgetForm";
-
 import {
   getCategories,
   createCategory,
@@ -27,7 +22,6 @@ import {
 type Category = {
   id: number;
   name: string;
-  colorCode: string;
 };
 
 // ===== TYPES =====
@@ -35,11 +29,10 @@ type Transaction = {
   id: number;
   amount: number;
   label: string;
-  date: string;
+  date: string; // ✅ AJOUT
   category: {
     id: number;
     name: string;
-    colorCode: string;
   };
 };
 
@@ -333,15 +326,14 @@ export default function ExpensePage() {
                 <div className="form-actions">
 
 
-
-                  <button onClick={() => setShowAddExpense(false)}>
-                    Annuler
-                  </button>
                   <button
                     className="primary-button"
                     onClick={handleSaveExpense}
                   >
                     Sauvegarder
+                  </button>
+                  <button onClick={() => setShowAddExpense(false)}>
+                    Annuler
                   </button>
                 </div>
               </div>
@@ -353,24 +345,17 @@ export default function ExpensePage() {
 
             <div className="expense-list">
               {transactions.map((t) => (
-                <div
-                  key={t.id}
-                  className="expense-row"
-                  style={{
-                    borderLeft: `5px solid ${t.category?.colorCode || "#ccc"}`,
-                    paddingLeft: "10px",
-                  }}
-                >
-
+                <div key={t.id} className="expense-row">
                   <span>{t.category?.name}</span>
                   <span>{t.amount} €</span>
+
+                  {/* ✅ DATE */}
                   <span>{new Date(t.date).toLocaleDateString()}</span>
 
                   <div className="actions">
                     <button onClick={() => handleDeleteExpense(t.id)}>❌</button>
                     <button onClick={() => setEditingTransaction(t)}>✏️</button>
                   </div>
-
                 </div>
               ))}
             </div>
@@ -457,26 +442,7 @@ export default function ExpensePage() {
                 return (
                   <div key={cat.id} className="budget-row">
 
-
-                    <span
-                      className="budget-col"
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                      }}
-                    >
-                      <span
-                        style={{
-                          width: "12px",
-                          height: "12px",
-                          borderRadius: "50%",
-                          backgroundColor: cat.colorCode || "#ccc",
-                        }}
-                      />
-
-                      {cat.name}
-                    </span>
+                    <span className="budget-col">{cat.name}</span>
 
                     <span className="budget-col">
                       {hasBudget ? `${cat.budget.limit} €` : "-"}
