@@ -1,10 +1,13 @@
+import { NavLink } from "react-router-dom";
+
+
 function Footer() {
   return (
   <footer>
     <ul>
-      <li><a href="">RGPD</a></li>
-      <li><a href="">Conditions Générales</a></li>
-      <li><a href="">Contacts</a></li>
+      <li><NavLink to="/rgpd">RGPD</NavLink></li>
+      <li><NavLink to="/legal">Mentions Légales</NavLink></li>
+      <li><NavLink to="/conditions">Conditions Générales</NavLink></li>
     </ul>
   </footer>
 );
