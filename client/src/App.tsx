@@ -9,10 +9,12 @@ import LoginPage from "./pages/auth/LoginPage";
 import ThemeToggle from "./components/ThemeToggle";
 import Register from "./pages/auth/Register";
 import ExpensePage from "./pages/ExpensePage";
+import RGPDPage from "./pages/RGPDPage";
+import LegalPage from "./pages/LegalPage";
+import ConditionsPage from "./pages/ConditionsPage";
 
 import "./styles/index.css";
 import "./services/graphs/graphs-data.service"
-import { RGPDPage } from "./pages/RGPDPage";
 
 export default function App() {
 
@@ -37,6 +39,8 @@ export default function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/transactions" element={<ExpensePage />} />
         <Route path="/rgpd" element={<RGPDPage />} />
+        <Route path="/legal" element={<LegalPage />} />
+        <Route path="/conditions" element={<ConditionsPage />} />
       </Routes>
       <Footer/>
     </>
