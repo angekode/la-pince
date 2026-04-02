@@ -1,6 +1,6 @@
 /* === VARIABLES === */
 :root {
-  --primary-color: #d4af37; /* doré */
+  --primary-color: #d4af37;
   --bg: #ffffff;
   --card-bg: #f9f9f9;
   --text: #111;
@@ -8,9 +8,9 @@
 }
 
 .dark {
-  --primary-color: #d4af37; /* TOUJOURS doré */
+  --primary-color: #d4af37;
   --bg: #0f1115;
-  --card-bg: #0f1115; 
+  --card-bg: #111418;
   --text: #ffffff;
   --border: #2a2f3a;
 }
@@ -38,6 +38,7 @@
   padding: 25px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 /* === TITRE === */
@@ -53,13 +54,19 @@
   gap: 15px;
 }
 
-/* === ITEM === */
+/* === LIGNE STANDARD (historique dépenses) === */
 .expense-row {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  align-items: center;
   padding: 15px;
   border: 1px solid var(--border);
   border-radius: 12px;
+  background: #111418;
+}
+
+.expense-row:hover {
+  border-color: var(--primary-color);
 }
 
 /* === FOOTER === */
@@ -69,7 +76,7 @@
   margin-top: 25px;
 }
 
-/* === BOUTON === */
+/* === BOUTON PRINCIPAL === */
 .primary-button {
   background: var(--primary-color);
   color: #000;
@@ -84,52 +91,7 @@
 
 .primary-button:hover {
   opacity: 0.9;
-}
-
-/* === RESPONSIVE === */
-@media (max-width: 768px) {
-  .expense-container {
-    flex-direction: column;
-  }
-}
-
-/* === MODAL === */
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal {
-  background: var(--card-bg);
-  padding: 25px;
-  border-radius: 16px;
-  width: 320px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.modal input {
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text);
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
+  transform: scale(1.02);
 }
 
 /* === FORMULAIRE INLINE === */
@@ -137,21 +99,42 @@
   margin-top: 20px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
-.form input {
+/* INPUT + SELECT */
+.form input,
+.form select {
   padding: 12px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border);
-  background: transparent;
+  background: #111418;
   color: var(--text);
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s;
 }
 
-.form input:focus {
+/* FOCUS */
+.form input:focus,
+.form select:focus {
   border-color: var(--primary-color);
+  box-shadow: 0 0 0 1px var(--primary-color);
 }
 
+/* SELECT CUSTOM */
+.form select {
+  appearance: none;
+  cursor: pointer;
+}
+
+/* OPTIONS */
+.form select option {
+  background: #111418;
+  color: #fff;
+}
+
+/* ACTION BUTTONS */
 .form-actions {
   display: flex;
   gap: 10px;
@@ -160,9 +143,147 @@
 .form-actions button {
   flex: 1;
   padding: 12px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border);
-  background: transparent;
+  background: #111418;
   color: var(--text);
   cursor: pointer;
+  transition: 0.2s;
+}
+
+.form-actions button:hover {
+  border-color: var(--primary-color);
+}
+
+/* ACTION ICONS */
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.actions button {
+  background: #111418;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: 0.2s;
+  color: var(--text);
+}
+
+.actions button:hover {
+  border-color: var(--primary-color);
+  transform: scale(1.05);
+}
+
+/* ===== TABLEAU BUDGET ===== */
+
+.budget-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 0.7fr;
+  align-items: center;
+  padding: 12px 15px;
+  font-weight: 700;
+  color: var(--primary-color);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 10px;
+}
+
+.budget-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 0.7fr;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #111418;
+  transition: 0.2s;
+}
+
+.budget-row:hover {
+  border-color: var(--primary-color);
+}
+
+.budget-col {
+  display: flex;
+  align-items: center;
+  color: var(--text);
+  min-width: 0;
+}
+
+.budget-col.status {
+  justify-content: flex-start;
+}
+
+.budget-col.actions {
+  justify-content: flex-end;
+}
+
+/* === STATUT === */
+.warning {
+  color: orange;
+  font-weight: 600;
+}
+
+.danger {
+  color: red;
+  font-weight: 600;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .expense-container {
+    flex-direction: column;
+  }
+
+  .budget-header,
+  .budget-row {
+    grid-template-columns: 1.5fr 1fr 1fr 1fr 0.8fr;
+    font-size: 13px;
+    gap: 10px;
+  }
+
+  .primary-button {
+    width: 100%;
+  }
+}
+
+/* SELECT GLOBAL */
+.form select {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #111418;
+  color: var(--text);
+  appearance: none;
+  cursor: pointer;
+}
+
+/* OPTION STYLE */
+.form select option {
+  background: #111418;
+  color: #fff;
+}
+
+/* OPTION HOVER (partiellement supporté) */
+.form select option:hover {
+  background: var(--primary-color);
+  color: #000;
+}
+
+/* OPTION SELECTED (fonctionne sur certains navigateurs) */
+.form select option:checked {
+  background: var(--primary-color);
+  color: #000;
+}
+
+.custom-datepicker {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #111418;
+  color: white;
+  width: 100%;
+  font-size: 14px;
 }

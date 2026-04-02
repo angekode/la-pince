@@ -10,7 +10,7 @@ function LoginPage() {
     const navigate = useNavigate();
 
     function handleLoginSuccess() {
-    navigate("/")
+    navigate("/dashboard")
     }
 
     
