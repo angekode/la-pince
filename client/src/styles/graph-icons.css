@@ -1,40 +1,35 @@
-/**
- * ------------------------------------------------------------
- * graph-icons.css
- * ------------------------------------------------------------
 /**************************************************************
- * Styles du composant GraphIcons utilisé dans le Dashboard.
- * Mobile-first : la version mobile est la base.
+ * Styles du composant GraphIcons
  * ------------------------------------------------------------
  * Ce fichier gère :
- *  - l'affichage horizontal des icônes 
+ *  - l'affichage horizontal des icônes (sous le select)
  *  - les effets de survol (hover)
  *  - l'état actif (icône sélectionnée)
- *  - la taille des icônes (mobile & desktop)
- *  - une variante “small” utilisée dans le bloc C
-  *************************************************************
-  */
+ *  - la couleur des SVG en light/dark mode
+ *  - la gestion du stroke (pour l’icône courbe)
+ **************************************************************/
 
 
-/* =============================================================
-   1. CONTENEUR GLOBAL DES ICÔNES
-   ============================================================= 
- * - Icônes alignées HORIZONTALLEMENT 
+/**************************************************************
+ * Conteneur des icônes
+ * ------------------------------------------------------------
+ * - Icônes alignées HORIZONTALLEMENT (option B validée)
+ * - Centrage parfait sous le select
  * - Espacement constant entre les icônes
  **************************************************************/
 .graph-icons-container {
   display: flex;
-  flex-direction: row;       /* Icônes alignées horizontalement */
+  flex-direction: row;       /* Icônes sur une seule ligne */
   justify-content: center;   /* Centrage horizontal */
   align-items: center;       /* Alignement vertical */
-  gap: 24px;                 /* Espacement mobileentre icônes */
-  margin: 16px 0;            /* Espace autour du bloc */
+  gap: 20px;                 /* Espacement entre icônes */
+  margin: 20px 0;            /* Espace autour du bloc */
 }
 
 
-/* ============================================================
-   2. BOUTONS D’ICÔNES
-   ============================================================
+/**************************************************************
+ * Bouton contenant chaque icône
+ * ------------------------------------------------------------
  * - Aucun fond ni bordure
  * - Légère transparence par défaut
  * - Transition fluide pour hover/active
@@ -43,10 +38,11 @@
   background: none;
   border: none;
   cursor: pointer;
-  opacity: 0.85; /* Légère transparence par défaut */
+  opacity: 0.8;
   transition: 0.2s ease;
   padding: 0;
 }
+
 
 /**************************************************************
  * Icône active ou survolée
@@ -57,60 +53,55 @@
 .graph-icon-btn:hover,
 .graph-icon-btn.active {
   opacity: 1;
-  transform: scale(1.1);
+  transform: scale(1.15);
 }
 
-/* ===========================================================
-   3. ICÔNES (PNG)
-   ===========================================================
- * Mobile : petites icônes
- **************************************************************/
-.graph-icon-img {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-}
 
-/* ============================================================
-   4. VARIANTE “SMALL” (utilisée dans le bloc C)
-   ============================================================
- * (Appliquée via className="graph-icons--small")
+/**************************************************************
+ * Style des SVG (mode light)
+ * ------------------------------------------------------------
+ * - Taille standard
+ * - Couleur héritée du thème
+ * - Stroke géré pour l’icône courbe
  **************************************************************/
-.graph-icons--small .graph-icon-img {
-  width: 36px; /* Plus petit en mobile */
+.graph-icon-btn svg {
+  width: 36px;
   height: 36px;
+  display: block;
+  fill: var(--text-main);        /* Couleur claire en mode light */
 }
 
-.graph-icons--small.graph-icons-container {
-  gap: 32px;  /* Plus d’espace entre les icônes en mobile */
-  margin: 12px 0 28px 0;
+/* Stroke pour l’icône courbe */
+.graph-icon-btn svg path,
+.graph-icon-btn svg circle {
+  stroke: var(--text-main);
+  fill: var(--text-main);
 }
 
-/* ===========================================================
-   5. VERSION DESKTOP (≥ 1024px)
-   ==========================================================
- * Icônes plus grandes + espacement plus large
+
+/**************************************************************
+ * Mode sombre : icônes blanches
+ * ------------------------------------------------------------
+ * - fill + stroke forcés en blanc
+ * - garantit que l’icône courbe n’est plus noire
  **************************************************************/
-@media (min-width: 1024px) {
-  /* Icônes standard */
+
+
+.graph-icon-img {
+  width: 106px;
+  height: 106px;
+  object-fit: contain;
+
+}
+
+/* Version mobile */
+@media (max-width: 768px) {
   .graph-icon-img {
-    width: 72px;   /* Taille desktop */
-    height: 72px;
+    width: 56px;
+    height: 56px;
   }
 
-  .graph-icons-container {
-    gap: 80px;  /* Espacement desktop très large */
-    margin: 24px 0;
-  }
-
-  /* Variante small en desktop */
-  .graph-icons--small .graph-icon-img {
-    width: 50px;
-    height: 50px;
-  }
-
-  .graph-icons--small.graph-icons-container {
-    gap: 110px; /* Espacement desktop pour small */
-    margin: 20px 0 40px 0;
+  .graph-icon-btn {
+    padding: 8px;
   }
 }

@@ -23,15 +23,11 @@ import "../styles/graph-icons.css"; // Styles dédiés aux icônes
 interface GraphIconsProps {
   graphType: "pie" | "bar" | "curve";     // Type de graphique sélectionné
   onChange: (type: "pie" | "bar" | "curve") => void; // Callback lors d'un clic
-  className?: string;
 }
 
-const GraphIcons: React.FC<GraphIconsProps> = ({ 
-  graphType, 
-  onChange, 
-  className = "" }) => {
+const GraphIcons: React.FC<GraphIconsProps> = ({ graphType, onChange }) => {
   return (
-    <div className={`graph-icons-container ${className}`}>
+    <div className="graph-icons-container">
       {/********************************************************************
        * Icône 1 — Graphique en barres (Bar Chart)
        ********************************************************************/}

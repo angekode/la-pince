@@ -232,14 +232,16 @@ function DashboardPage() {
               )
             }
           >
-            <option value="all">Toutes les catégories (budget total)</option>
+            <option value="all">Toutes les catégories</option>
             {categories.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
               </option>
             ))}
           </select>
-         
+
+          <GraphIcons graphType={graphType} onChange={setGraphType} />
+
           <div className="dashboard-left__indicators">
             <div>
               <h4>Budget limite</h4>
@@ -266,13 +268,6 @@ function DashboardPage() {
 
         {/*********************** BLOC C — GRAPHIQUES ************************/}
         <section className="dashboard-graph">
-
-          <GraphIcons 
-            graphType={graphType} 
-            onChange={setGraphType}
-            className="graph-icons--small"
-            />
-
           {graphType === "pie" && (
             <PieGraph
               key={`pie-${JSON.stringify(transactions)}`}
