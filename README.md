@@ -227,7 +227,7 @@ Pour déployer un service, Render utilise les conteneurs Docker. Pour le service
 
 ![alt text](docs/images/render-directories-api.png)
 
-- Indiquer la valeur des variables d'environnement. Attention il faut mettre l'url du service de la base de donnée sur render :
+- Indiquer la valeur des variables d'environnement. Attention il faut mettre l'url du service de la base de donnée qui sera généré par le site Neon.com.
 
 ![alt text](docs/images/render-env-var-api.png)
 
@@ -245,8 +245,12 @@ Attention render met toujours le port 80 pour tous les services, même si on lui
 - Choisir un serveur en Europe :
 <img src="docs/images/Déploiement/neon-new-project-config.png" width="300">
 
-- Aller dans le dashboard du nouveau projet et cliquer sur 
+- Aller dans le dashboard du nouveau projet et cliquer sur `Connection string` pour récupérer l'adresse de la base de données :
 <img src="docs/images/Déploiement/neon-project-dashboard.png" width="600">
+<img src="docs/images/Déploiement/neon-database-string.png" width="600">
+
+- L'adresse doit être utilisée dans la variable d'environnement `DATABASE_URL` du service `api`.
+
 
 ---
 # 4) Documentation API
