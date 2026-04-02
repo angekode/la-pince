@@ -27,7 +27,12 @@ export const findById = (id: number) => {
 // SERVICE : CRÉER UNE CATÉGORIE
 // ---------------------------------------------------------
 export const create = (userId: number, data: CreateCategoryInput) => {
-  return prisma.category.create({ data });
+  return prisma.category.create({
+    data: {
+      ...data,
+      userId,
+    },
+  });
 };
 
 // ---------------------------------------------------------
@@ -37,7 +42,7 @@ export const update = (id: number, userId: number, data: UpdateCategoryInput) =>
   const cleanedData = stripUndefined(data);
   if (data.name) {
     return prisma.category.updateMany({
-      where: { id },
+      where: { id, userId },
       data: cleanedData,
     });
   }
@@ -48,6 +53,6 @@ export const update = (id: number, userId: number, data: UpdateCategoryInput) =>
 // ---------------------------------------------------------
 export const remove = (id: number, userId: number) => {
   return prisma.category.deleteMany({
-    where: { id },
+    where: { id, userId },
   });
 };

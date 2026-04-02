@@ -1,31 +1,28 @@
-import Header from "../components/Header";
+import HeaderHome from "../components/Header-home";
 import HomeSlide from "../components/HomeSlide";
 import "../styles/home.css"
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 function Home() {
   const navigate = useNavigate();
-  
   return (
-    <div className="home-page">
+    <div>
 
       {/* Header de la page Home */}
-      <Header />
-      
+      <HeaderHome />
+
       <main className="home-main">
 
         {/* Section présentation des slides */}
-        {/*<section id="gestion-budget" className="home-section">*/}
-        <section id="visualisation" className="home-section">
+        <section id="gestion-budget" className="home-section">
           <HomeSlide />
         </section>
 
         {/* Section Cybersecurité */}
-        <section  className="home-section">
+        <section id="securite" className="home-section">
           <div className="security-section">
     
-            <h2 id="securite">Sécurité Avancé</h2>
+            <h2>Sécurité Avancé</h2>
 
             <div className="security-points">
               <p>🔒 Vos données sont chiffrées et protégées.</p>
@@ -41,10 +38,10 @@ function Home() {
         </section>
 
         {/* Section proposition d'inscription */}
-        <section  className="home-section">
+        <section id="inscription" className="home-section">
           <div className="signup-section">
 
-            <h2 id="inscription">Alors convaincu ?</h2>
+            <h2>Alors convaincu ?</h2>
 
             <p>Inscrivez-vous gratuitement en quelques secondes et commencez à mieux gérer votre budget dès aujourd’hui.</p>
 
@@ -58,7 +55,5 @@ function Home() {
     </div>
   );
 }
-
-
 
 export default Home;

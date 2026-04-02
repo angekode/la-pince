@@ -66,7 +66,7 @@ export async function loginUser(payload: { email: string; password: string }) {
   return data;
 }
 
-/* VERIFICATION DE L'EXISTANCE DU TOKEN PAR LE FRONT */
+
 export async function getMe() {
   const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/me`, {
     method: "GET",

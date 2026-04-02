@@ -4,10 +4,11 @@ import { StatusCodes } from 'http-status-codes';
 
 import { 
   postObject,
-  extractTokenFromCookie,
-  apiUrl
+  createNewUser, 
+  generateRandomUserInfo, 
+  seedCategories,
+  extractTokenFromCookie
 } from '../tools';
-
 
 /**
  * Il faut que la base de données soit vierge pour réaliser ces tests (à faire dans le setup.js).
@@ -16,7 +17,10 @@ import {
  *  il faudra faire du setup/teardown dans chaque test pour créer et supprimer les données de test.
  */
 
-const skip = true; // tant que les routes ne sont pas implémentés
+const skip = false; // tant que les routes ne sont pas implémentés
+
+
+const apiUrl = `http://localhost:${process.env.PORT}`;
 
 
 // ---------------------------------------------------------

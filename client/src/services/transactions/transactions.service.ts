@@ -1,8 +1,8 @@
 /**
- * budget.service.ts
+ * transactions.service.ts
  * ------------------------------------------------------------
  * Ce fichier regroupe toutes les fonctions permettant de
- * communiquer avec l’API concernant les budgets.
+ * communiquer avec l’API concernant les transactions.
  *
  * Chaque fonction correspond à un endpoint backend.
  * Les commentaires expliquent clairement le rôle de chaque ligne.
@@ -15,12 +15,12 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 /**
  * ------------------------------------------------------------
- * Récupère tous les budgets existants.
+ * Récupère toutes les transactions de l’utilisateur connecté.
  * ------------------------------------------------------------
  */
-export async function getBudgets() {
-  // Appel GET vers /budgets
-  const response = await axios.get(`${API_URL}/budgets`);
+export async function getTransactions() {
+  // Appel GET vers /transactions
+  const response = await axios.get(`${API_URL}/transactions`);
 
   // Retourne les données reçues depuis le backend
   return response.data;
@@ -28,27 +28,27 @@ export async function getBudgets() {
 
 /**
  * ------------------------------------------------------------
- * Crée un nouveau budget.
- * @param budgetData - données envoyées au backend
+ * Crée une nouvelle transaction.
+ * @param transactionData - données envoyées au backend
  * ------------------------------------------------------------
  */
-export async function createBudget(budgetData: any) {
-  // Appel POST vers /budgets avec les données du formulaire
-  const response = await axios.post(`${API_URL}/budgets`, budgetData);
+export async function createTransaction(transactionData: any) {
+  // Appel POST vers /transactions avec les données du formulaire
+  const response = await axios.post(`${API_URL}/transactions`, transactionData);
 
-  // Retourne le budget créé
+  // Retourne la transaction créée
   return response.data;
 }
 
 /**
  * ------------------------------------------------------------
- * Supprime un budget par son ID.
- * @param id - identifiant du budget
+ * Supprime une transaction par son ID.
+ * @param id - identifiant de la transaction
  * ------------------------------------------------------------
  */
-export async function deleteBudget(id: number) {
-  // Appel DELETE vers /budgets/:id
-  const response = await axios.delete(`${API_URL}/budgets/${id}`);
+export async function deleteTransaction(id: number) {
+  // Appel DELETE vers /transactions/:id
+  const response = await axios.delete(`${API_URL}/transactions/${id}`);
 
   // Retourne la réponse du backend (souvent un message de succès)
   return response.data;
@@ -56,21 +56,20 @@ export async function deleteBudget(id: number) {
 
 /**
  * ------------------------------------------------------------
- * Met à jour un budget existant.
- * @param id - identifiant du budget
+ * Met à jour une transaction existante.
+ * @param id - identifiant de la transaction
  * @param updatedData - données modifiées
  * ------------------------------------------------------------
  */
-export async function updateBudget(id: number, updatedData: any) {
-  // Appel PATCH vers /budgets/:id avec les nouvelles données
+export async function updateTransaction(id: number, updatedData: any) {
+  // Appel PATCH vers /transactions/:id avec les nouvelles données
   const response = await axios.patch(
-    `${API_URL}/budgets/${id}`,
+    `${API_URL}/transactions/${id}`,
     updatedData
   );
 
-  // Retourne le budget mis à jour
+  // Retourne la transaction mise à jour
   return response.data;
 }
-
 
 

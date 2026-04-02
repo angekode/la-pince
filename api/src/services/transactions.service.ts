@@ -67,7 +67,6 @@ export const create = (
   return prisma.expense.create({
     data: {
       ...data, // Récupération des données validées
-      date: new Date(data.date),
       userId   // Ajout de l'id de l'utilisateur connecté
     }
   });

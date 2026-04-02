@@ -32,9 +32,8 @@
   grid-template-areas:
     "left global"
     "left graph";
-  height: calc(100vh - 140px);
-  overflow: visible;
-  padding-top: 20px;
+  height: calc(100vh - 80px);
+  overflow: hidden;
 }
 
 /**************************************************************
@@ -159,7 +158,6 @@ body.dark .dashboard-left__indicators h4 {
 .dashboard-graph {
   grid-area: graph;
   flex: 1;
-  margin-top: 40px; 
   overflow-y: auto;
   padding: 20px;
   min-height: 800px;

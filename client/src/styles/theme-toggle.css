@@ -1,16 +1,17 @@
 /**
- * theme-toggle.css
- * ---------------------------------------------------------------------------
- * Styles du bouton de changement de thème.
- * ---------------------------------------------------------------------------
+ * Styles du bouton de changement de thème
+ * ------------------------------------------------------------
+ * Ce fichier définit l'apparence du bouton permettant de basculer
+ * entre le thème clair et le thème sombre.
+ *
+ * Le bouton adopte un style minimaliste :
+ * - aucune bordure
+ * - aucune ombre
+ * - fond identique au fond global du dashboard
+ * - texte et icône adaptés selon le thème actif
  */
 
-.theme-toggle-wrapper {
-  display: flex;
-  align-items: center;
-  margin-left: 16px;
-}
-
+/* Style du bouton */
 .theme-toggle-button {
   display: flex;
   align-items: center;
@@ -20,6 +21,7 @@
   border-radius: 999px;
 
   border: none;
+  box-shadow: none;
   background: var(--bg-page);
 
   font-size: 0.95rem;
@@ -29,6 +31,7 @@
   transition: color 0.2s ease;
 }
 
+/* Icône */
 .theme-icon {
   font-size: 1.2rem;
 }
@@ -38,8 +41,16 @@ body.light .theme-toggle-button {
   color: #000;
 }
 
+body.light .theme-toggle-button .theme-icon {
+  color: #000;
+}
+
 /* Mode sombre */
 body.dark .theme-toggle-button {
+  color: var(--color-primary-dark);
+}
+
+body.dark .theme-toggle-button .theme-icon {
   color: var(--color-primary-dark);
 }
 

@@ -10,7 +10,6 @@
 @import url("header.css");                 /* Styles du header */
 @import url("footer.css");                 /* Styles du footer */
 @import url("charts.css");                 /* Styles des graphiques */
-@import url("infos-page.css");                 /* Styles des graphiques */
 
 /* -----------------------------------------------------------
    RÉGLAGES GLOBAUX
@@ -34,21 +33,7 @@ body,
   color: var(--text-main);                 /* Couleur de texte principale */
   font-family: Inter, Arial, sans-serif;   /* Police globale */
 }
-body {
-  padding-top: 185px;
-}
 
-body.home-page {
-  padding-top: 0;
-}
-@media (max-width: 768px) {
-  body {
-    padding-top: 160px;
-  }
-  body.home-page {
-    padding-top: 0;
-  }
-}
 /* -----------------------------------------------------------
    LIENS GLOBAUX
    Style par défaut appliqué à tous les <a> de l'application.

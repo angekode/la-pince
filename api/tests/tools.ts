@@ -117,16 +117,16 @@ export function generateRandomUserInfo(): {
  * Elles sont clonées pour chaque utilisateur via seedCategories().
  */
 const categoriesToCreate = [
-    { name: 'nourriture', colorCode: '#ff00ff' },
-    { name: 'impots', colorCode: '#ff00ff' },
-    { name: 'loisirs', colorCode: '#ff00ff' }
+    { name: 'nourriture' },
+    { name: 'impots' },
+    { name: 'loisirs' }
 ];
 
 /**
  * Insère plusieurs catégories pour un utilisateur donné.
  * Utilisé dans les tests des routes /categories.
  */
-export async function seedCategories(): Promise<{ id: number, name: string, colorCode: string }[]> {
+export async function seedCategories(): Promise<{ id: number, name: string }[]> {
    return await prisma.category.createManyAndReturn(
     { 
       data: categoriesToCreate 

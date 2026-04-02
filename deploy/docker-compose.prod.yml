@@ -9,9 +9,9 @@ services:
       # Attention : l'adresse de l'API est celle visible par le navigateur du client
       # donc pour un dépoloiement local c'est localhost, si c'est déployé sur internet,
       # c'est le nom de domaine du site qui héberge l'API.
-        - API_BASE_URL=https://lapince.angekode.fr/api
+        - API_BASE_URL=http://localhost:3000
     ports:
-      - 8081:80
+      - 80:80
     depends_on:
       api:
         condition: service_healthy
@@ -24,9 +24,8 @@ services:
       - DATABASE_URL=postgres://lapince:lapince@database:5432/lapince
       - JWT_SECRET=dev-secret
       - SALT_ROUNDS=10
-      - PRODUCTION_CLIENT_URL=https://lapince.angekode.fr # pour le CORS
     ports:
-      - 3001:3000
+      - 3000:3000
     depends_on:
       database:
         condition: service_healthy

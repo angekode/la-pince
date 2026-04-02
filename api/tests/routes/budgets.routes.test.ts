@@ -12,8 +12,6 @@ import {
 } from '../tools';
 
 
-const skip = true; // tant que les routes ne sont pas implémentés
-
 const apiBudgetItemScheme = zod.object({
   id: zod.number(),
   limit: zod.number(),
@@ -32,7 +30,7 @@ const apiBudgetListBodyScheme = zod.object({
 // Doit renvoyer un status 200 et un object { count, budgets }
 // ---------------------------------------------------------
 
-describe('GET /budgets', { skip }, () => {
+describe('GET /budgets', () => {
   it('should return all budgets from user', async () => {
     // Arrange 
     const { user, token } = await createNewUser();
@@ -67,7 +65,7 @@ describe('GET /budgets', { skip }, () => {
 // Doit renvoyer un status 200 et un object contenant les infos d'un seul budget
 // ---------------------------------------------------------
 
-describe('GET /budgets/:id', { skip }, () => {
+describe('GET /budgets/:id', () => {
   it('should return on budget from user', async () => {
     // Arrange 
     const { user, token } = await createNewUser();
@@ -125,7 +123,7 @@ const postBudgetBodyResponse = zod.object({
   alertEnabled: zod.boolean()
 });
 
-describe('POST /budgets', { skip }, () => {
+describe('POST /budgets', () => {
   it('should create one budget', async () => {
     // Arrange 
     const { user, token } = await createNewUser();
@@ -171,7 +169,7 @@ const patchBudgetBodyResponse = zod.object({
   alertEnabled: zod.boolean()
 });
 
-describe('PATCH /budgets/:id', { skip }, () => {
+describe('PATCH /budgets/:id', () => {
   it('should update one budget', async () => {
     // Arrange 
     const { user, token } = await createNewUser();
@@ -229,7 +227,7 @@ describe('PATCH /budgets/:id', { skip }, () => {
 // Supprime un budget et doit renvoyer un status 204
 // ---------------------------------------------------------
 
-describe('PATCH /budgets/:id', { skip }, () => {
+describe('PATCH /budgets/:id', () => {
   it('should delete one budget', async () => {
     // Arrange 
     const { user, token } = await createNewUser();

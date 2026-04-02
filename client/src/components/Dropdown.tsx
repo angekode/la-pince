@@ -1,32 +1,27 @@
-/**
- * Dropdown.tsx
- * ---------------------------------------------------------------------------
- * Composant générique pour afficher un menu déroulant en mobile.
- * Il reçoit son contenu via props.children (permet au Header de contrôler
- * totalement le contenu du menu selon la page et l’état de connexion).
- * Menu déroulant mobile contrôlé par le Header.
- * Le Header déclenche l’ouverture via la prop "open" et "onToggle".
- * ---------------------------------------------------------------------------
- */
+import { useState } from "react";
 
-import "../styles/dropdown.css";
+function Dropdown() {
+  const [isOpen, setIsOpen] = useState(false);
 
-type DropdownProps = {
-  open: boolean;
-  onToggle: () => void;
-  children: React.ReactNode;
-};
-
-export default function Dropdown({ open, onToggle, children }: DropdownProps) {
   return (
     <div className="dropdown">
-      {/* Le bouton hamburger est dans Header.tsx → ici on ne met rien */}
+      <button onClick={() => setIsOpen(!isOpen)}>Menu</button>
 
-      {open && (
+      {isOpen && (
         <div className="dropdown-menu">
-          {children}
+          <a href="#gestion-budget" onClick={() => setIsOpen(false)}>
+            Gestion de budget
+          </a>
+          <a href="#visualisation" onClick={() => setIsOpen(false)}>
+            Visualisation
+          </a>
+          <a href="#securite" onClick={() => setIsOpen(false)}>
+            Sécurité
+          </a>
         </div>
       )}
     </div>
   );
 }
+
+export default Dropdown;

@@ -53,8 +53,6 @@ router.use(authMiddleware);
  *                         type: string
  *                       userId:
  *                         type: number
- *                       colorCode:
- *                         type: string
  */
 router.get("/", getAllCategories);
 
@@ -96,11 +94,8 @@ router.get("/", getAllCategories);
  *                   type: string
  *                 userId:
  *                   type: number
- *                 colorCode:
- *                   type: string
  */
 router.get("/:id", getCategoryById);
-
 
 /**
  * Swagger : POST /categories
@@ -122,14 +117,11 @@ router.get("/:id", getCategoryById);
  *          application/json:
  *             schema:
  *               type: object
- *               required: [name, colorCode]
+ *               required: [name]
  *               properties:
  *                 name:
  *                   type: string
  *                   description: Nom de la catégorie (entre 2 et 50 caractères).
- *                 colorCode:
- *                   type: string
- *                   description: Code de la couleur au format #FFFFFF / #000000 utilisée pour l'affichage
  * 
  *     responses:
  *       200: 
@@ -145,8 +137,6 @@ router.get("/:id", getCategoryById);
  *                   type: string
  *                 userId:
  *                   type: number
- *                 colorCode:
- *                   type: string
  */
 router.post("/", createCategory);
 
@@ -185,9 +175,7 @@ router.post("/", createCategory);
  *                 name:
  *                   type: string
  *                   description: Nom de la catégorie (entre 2 et 50 caractères).
- *                 colorCode:
- *                   type: string
- *                   description: Code de la couleur au format #FFFFFF / #000000 utilisée pour l'affichage
+ * 
  *     responses:
  *       200: 
  *         description: Mise à jour avec succès
@@ -202,8 +190,6 @@ router.post("/", createCategory);
  *                   type: string
  *                 userId:
  *                   type: number
- *                 colorCode:
- *                   type: string
  */
 router.patch("/:id", updateCategory);
 

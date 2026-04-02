@@ -85,23 +85,16 @@
  * - fill + stroke forcés en blanc
  * - garantit que l’icône courbe n’est plus noire
  **************************************************************/
-
-
-.graph-icon-img {
-  width: 106px;
-  height: 106px;
-  object-fit: contain;
-
-}
-
-/* Version mobile */
-@media (max-width: 768px) {
-  .graph-icon-img {
-    width: 56px;
-    height: 56px;
+@media (prefers-color-scheme: dark) {
+  .graph-icon-btn svg {
+    fill: #ffffff !important;
   }
 
-  .graph-icon-btn {
-    padding: 8px;
+  .graph-icon-btn svg path,
+  .graph-icon-btn svg circle {
+    stroke: #ffffff !important;
+    fill: #ffffff !important;
   }
 }
+
+

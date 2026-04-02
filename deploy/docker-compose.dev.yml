@@ -6,7 +6,6 @@ services:
     working_dir: /app
     volumes:
       - ../client:/app
-      - /app/node_modules # Pour écraser les modules déjà présent sur le pc hote
     ports:
       - 80:5173
     environment:
@@ -20,7 +19,6 @@ services:
     working_dir: /app
     volumes:
       - ../api:/app
-      - /app/node_modules # Pour écraser les modules déjà présent sur le pc hote
     environment:
       - PORT=3000
       - DATABASE_URL=postgres://lapince:lapince@database:5432/lapince
