@@ -34,9 +34,9 @@ function HeaderHome() {
 
       {/* Menu Desktop */}
       <nav className="home-header__sections desktop-only">
-        <a href="#visualisation">À propos</a>
-        <a href="#gestion-budget">Gestion de budget</a>
+        <a href="#visualisation">Presentation</a>
         <a href="#securite">Sécurité</a>
+        <a href="#inscription">A propos</a>
         
 
       </nav>

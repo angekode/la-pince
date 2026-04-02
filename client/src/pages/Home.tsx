@@ -62,7 +62,7 @@ function Home() {
 
 
           {/* Section Cybersecurité */}
-          <section  className="home-section">
+          <section  id="securite" className="home-section">
             {/* Mobile */}
             <div className="security-section-mobile">
       
@@ -116,7 +116,7 @@ function Home() {
 
 
           {/* Section proposition d'inscription */}
-          <section  className="home-section">
+          <section  id="inscription" className="home-section">
 
             {/* Mobile */}
             <div className="signup-section-mobile">
