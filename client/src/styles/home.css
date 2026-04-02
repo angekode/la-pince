@@ -1,4 +1,23 @@
 /* CSS de Section présentation des slides */
+.home-main {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+
+
+.home-section {
+  
+  margin-bottom: 32px;
+  padding: 24px;
+  background: var(--bg-card);
+  border-radius: 16px;
+  scroll-margin-top: 120px;
+}
+
 
 .home-slide {
   display: flex;
@@ -31,6 +50,7 @@
 
 .home-slide__dots {
   display: flex;
+  justify-content: center;
   gap: 10px;
 }
 
@@ -139,6 +159,15 @@
 
 /* //////////////////////////////////////////////////////////////////////// */
 /* RESPONSIVE MOBILE */
+/* HOME */
+.home-slide{
+  display: block;
+}
+
+.home-desktop{
+  display: none;
+}
+
 /* SIGNUP */
 .signup-section-desktop {
   display: flex;
@@ -167,6 +196,15 @@
 
 @media (min-width: 1024px) {
   /* RESPONSIVE DESKTOP */
+  /* HOME */
+  .home-slide{
+  display: none;
+  }
+
+  .home-desktop{
+    display: block;
+  }
+
   /* SIGNUP */
   .signup-section-mobile {
     display: none;
@@ -187,19 +225,78 @@
   }
 
   /* //////////////////////////////////////////////////////////////////////// */
-  
-  
-  .home-slide {
-    padding: 40px;
-  }
+  /* Home */
+  .home-desktop {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 48px;
+  align-items: center;
+  width: 100%;
+}
 
-  .home-slide__image {
-    max-width: 500px;
-  }
+.home-desktop__content {
+  max-width: 520px;
+}
 
-  .home-slide p {
-    max-width: 600px;
-  }
+.home-desktop__content h2 {
+  margin: 0 0 20px;
+  font-size: 48px;
+  line-height: 1.05;
+  color: var(--text-main);
+}
+
+.home-desktop__content p {
+  margin: 0 0 16px;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.home-desktop__visual {
+  position: relative;
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-desktop__screen {
+  width: 100%;
+  max-width: 780px;
+  aspect-ratio: 16 / 10;
+  border-radius: 32px;
+  overflow: hidden;
+  background: #111;
+  border: 6px solid #0d0d0d;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+.home-desktop__screen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.home-desktop__phone {
+  position: absolute;
+  left: -40px;
+  bottom: -20px;
+  width: 220px;
+  aspect-ratio: 9 / 19;
+  border-radius: 32px;
+  overflow: hidden;
+  background: #111;
+  border: 6px solid #0d0d0d;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+.home-desktop__phone img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
   /* Security */
   .security-cards {
@@ -209,12 +306,11 @@
   }
 
   .security-card {
-  position: relative;
-  border-radius: 12px;
-  overflow: hidden;
-  cursor: pointer;
-  
-}
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+  }
 
 .security-card img {
   width: 100%;

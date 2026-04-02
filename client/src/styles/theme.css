@@ -129,20 +129,7 @@ a {
   padding: 88px 16px 32px;
 }
 
-.home-main {
-  padding: 24px;
-}
 
-
-
-.home-section {
-  
-  margin-bottom: 32px;
-  padding: 24px;
-  background: var(--bg-card);
-  border-radius: 16px;
-  scroll-margin-top: 120px;
-}
 
 /* -----------------------------------------------------------
    CARTE D'AUTHENTIFICATION
