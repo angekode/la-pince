@@ -25,7 +25,7 @@ function LoginPage() {
 
         
         <div className="home-button-wrapper">
-            <button className="acceuil-button" onClick={() => navigate("/")}><Home size={18}></Home>
+            <button className="acceuil-button" onClick={() => navigate("/home")}><Home size={18}></Home>
             Acceuil
             </button>
         </div>

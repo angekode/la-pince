@@ -26,18 +26,7 @@ header h1 {
   margin: 0;                               /* Supprime le margin par défaut */
   font-size: 1.5rem;                       /* Taille de titre lisible */
   font-weight: 600;                        /* Poids intermédiaire pour un rendu moderne */
-  color: var(--color-primary-dark);        /* Couleur d'accent utilisée dans theme */
-}
-
-/* -----------------------------------------------------------
-   UTILISATEUR CONNECTÉ (affiché à droite du header)
-   Affiche le nom de l'utilisateur connecté, ou un message de bienvenue.
------------------------------------------------------------ */
-.header__user {
-  margin: 1rem;                                  /* Espacement */
-  font-size: smaller;                            /* Taille réduite */
-  font-style: italic;                            /* Style informatif */
-  color: var(--text-secondary);                  /* Couleur discrète */
+  color: var(--color-primary-dark);        /* Couleur d'accent utilisée dans ton thème */
 }
 
 /* Paragraphe éventuel dans le header */

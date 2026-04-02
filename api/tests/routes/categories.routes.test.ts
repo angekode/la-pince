@@ -32,7 +32,7 @@ describe('GET /categories', { skip }, () => {
   it('should return catagories list', async () => {
     // Arrange: création d’un utilisateur + token + quelques catégories pour cet utilisateur
     const { user, token } = await createNewUser();
-    const categories = await seedCategories();
+    const categories = await seedCategories(user.id);
 
     // Act : appel de l’API (la route) pour récupérer les catégories
     const response = await fetch(`${apiUrl}/categories`, {
@@ -56,7 +56,7 @@ describe('GET /categories', { skip }, () => {
   it('should return 401 UNAUTHORIZED for non connected users', async () => {
     // Arrange
     const { user, token } = await createNewUser();
-    const categories = await seedCategories();
+    const categories = await seedCategories(user.id);
 
     // Act
     const response = await fetch(`${apiUrl}/categories`); // pas de token
@@ -76,7 +76,7 @@ describe('GET /categories/:id', { skip }, () => {
   it('should return one category', async () => {
     // Arrange
     const { user, token } = await createNewUser();
-    const categories = await seedCategories();
+    const categories = await seedCategories(user.id);
 
     // Act
     const response = await fetch(`${apiUrl}/categories/${categories[0].id}`, {
@@ -88,17 +88,19 @@ describe('GET /categories/:id', { skip }, () => {
     assert.strictEqual(response.status, StatusCodes.OK);
     assert.strictEqual(responseBody.id, categories[0].id);
     assert.strictEqual(responseBody.name, categories[0].name);
+    assert.strictEqual(responseBody.userId, categories[0].userId);
   });
 
   it('should return 404 NOT FOUND for unknown category', async () => {
     // Arrange
     const { user, token } = await createNewUser();
-    const categories = await seedCategories();
+    const categories = await seedCategories(user.id);
 
     // Act
     const response = await fetch(`${apiUrl}/categories/45686`, {
       headers: { 'Cookie' : `token=${token}`}
     });
+    const responseBody = await response.json();
 
     // Check
     assert.strictEqual(response.status, StatusCodes.NOT_FOUND);

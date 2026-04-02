@@ -6,9 +6,9 @@ import { stripUndefined } from "../utils/optional-objects.ts";
 // SERVICE : RÉCUPÉRER TOUTES LES CATÉGORIES D'UN UTILISATEUR
 // ---------------------------------------------------------
 
-export const findAll = () => {
+export const findAll = (userId: number) => {
   return prisma.category.findMany({
-    where: {},
+    where: { userId },
     orderBy: { name: "asc" },
   });
 };
@@ -17,9 +17,9 @@ export const findAll = () => {
 // SERVICE : RÉCUPÉRER UNE CATÉGORIE PAR ID (sécurisé par userId)
 // ---------------------------------------------------------
 
-export const findById = (id: number) => {
+export const findById = (id: number, userId: number) => {
   return prisma.category.findFirst({
-    where: { id },
+    where: { id, userId },
   });
 };
 
