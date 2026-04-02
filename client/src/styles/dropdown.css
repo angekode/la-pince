@@ -1,0 +1,46 @@
+/**
+ * ---------------------------------------------------------------------------
+ * dropdown.css
+ * ---------------------------------------------------------------------------
+ * Styles du menu déroulant mobile utilisé dans le Header.
+ * ---------------------------------------------------------------------------
+ */
+
+.dropdown {
+  position: relative;
+}
+
+/* Le bouton est fourni par Header.tsx → on ne le stylise pas ici */
+.dropdown-trigger {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Conteneur du menu mobile */
+.dropdown-menu {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 180px;
+  box-shadow: var(--shadow-card);
+  z-index: 9999;
+}
+
+/* Liens du menu mobile */
+.dropdown-menu a {
+  color: var(--text-main);
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.dropdown-menu a:hover {
+  text-decoration: underline;
+}

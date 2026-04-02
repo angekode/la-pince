@@ -11,7 +11,7 @@
     "db:generate": "prisma generate",
     "db:migrate:dev": "prisma migrate dev --name dev",
     "db:seed": "prisma migrate reset -f && tsx src/db/seeding/seed.ts",
-    "test": ""
+    "test": "tsx --test --env-file=.env.test --import ./tests/setup.ts --test-concurrency=1"
   },
   "keywords": [],
   "author": "",

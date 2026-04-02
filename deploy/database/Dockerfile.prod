@@ -1,0 +1,11 @@
+# Définir les variables https://hub.docker.com/_/postgres#environment-variables
+# POSTGRES_PASSWORD
+# POSTGRES_USER
+# POSTGRES_DB
+
+# Sur render.com quand on utilise ce conteneur en tant que service web, il détecte que postgres
+# communique sur 5432. Il redirige ce port vers le 80, donc l'API doit utiliser le port 80.
+
+FROM postgres:18-alpine
+
+EXPOSE 5432

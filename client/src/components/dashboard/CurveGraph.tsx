@@ -76,7 +76,8 @@ function CurveGraph({ categories, transactions, budgets }: CurveGraphProps) {
         } 
       }
     },
-
+      legend: { enabled: false },
+      credits: { enabled: false },
     // Données du graphique (récupérés par le useEffect)
     series: [
       {

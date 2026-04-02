@@ -10,6 +10,7 @@
 @import url("header.css");                 /* Styles du header */
 @import url("footer.css");                 /* Styles du footer */
 @import url("charts.css");                 /* Styles des graphiques */
+@import url("infos-page.css");                 /* Styles des graphiques */
 
 /* -----------------------------------------------------------
    RÉGLAGES GLOBAUX
@@ -36,9 +37,16 @@ body,
 body {
   padding-top: 185px;
 }
+
+body.home-page {
+  padding-top: 0;
+}
 @media (max-width: 768px) {
   body {
     padding-top: 160px;
+  }
+  body.home-page {
+    padding-top: 0;
   }
 }
 /* -----------------------------------------------------------
