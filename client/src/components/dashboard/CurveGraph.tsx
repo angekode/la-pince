@@ -76,8 +76,10 @@ function CurveGraph({ categories, transactions, budgets }: CurveGraphProps) {
         } 
       }
     },
-      legend: { enabled: false },
-      credits: { enabled: false },
+
+    legend: { enabled: false },
+    credits: { enabled: false },
+    
     // Données du graphique (récupérés par le useEffect)
     series: [
       {
@@ -85,10 +87,6 @@ function CurveGraph({ categories, transactions, budgets }: CurveGraphProps) {
         data: graphData ?? []
       }
     ],
-
-    legend: {
-      enabled: false
-    },
 
     title: {
       text: `<span class="curve-title">Evolution du solde</span>`,
