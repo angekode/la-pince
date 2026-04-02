@@ -4,14 +4,14 @@ import ThemeToggle from "./ThemeToggle";
 
 describe("ThemeToggle", () => {
   it("affiche 'Light mode' si le thème est dark", () => {
-    render(<ThemeToggle theme="dark" onToggle={() => {}} />);
+    render(<ThemeToggle />);
 
     expect(screen.getByText("Light mode")).toBeInTheDocument();
     expect(screen.getByText("☀️")).toBeInTheDocument();
   });
 
   it("affiche 'Dark mode' si le thème est light", () => {
-    render(<ThemeToggle theme="light" onToggle={() => {}} />);
+    render(<ThemeToggle />);
 
     expect(screen.getByText("Dark mode")).toBeInTheDocument();
     expect(screen.getByText("🌙")).toBeInTheDocument();
@@ -20,7 +20,7 @@ describe("ThemeToggle", () => {
   it("appelle onToggle lors du clic", () => {
     const onToggleMock = vi.fn();
 
-    render(<ThemeToggle theme="dark" onToggle={onToggleMock} />);
+    render(<ThemeToggle />);
 
     const button = screen.getByRole("button");
     fireEvent.click(button);
